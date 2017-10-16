@@ -13,6 +13,8 @@ script:
   - yarn test:coverage
   - yarn build
 after_success:
-  - yarn semantic-release
+  - yarn semantic-release pre
+  - npm publish
+  - yarn semantic-release post
 branches:
   only: master
