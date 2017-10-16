@@ -7,7 +7,13 @@ notifications:
   email: false
 node_js: '8'
 install: npm install
-script: npm run validate
-after_success: kcd-scripts travis-after-success
+before_script:
+  - npm prune
+script:
+  - yarn test:coverage
+after_success:
+  - yarn report-coverage
+  - yarn semantic-release
 branches:
   only: master
+  
