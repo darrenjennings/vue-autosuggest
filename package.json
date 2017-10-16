@@ -1,6 +1,6 @@
 {
   "name": "vue-autosuggest",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Vue autosuggest component.",
   "main": "dist/index.js",
   "engines": {
