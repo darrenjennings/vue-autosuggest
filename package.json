@@ -1,6 +1,6 @@
 {
   "name": "vue-autosuggest",
-  "version": "v0.0.1",
+  "version": "0.0.1",
   "description": "Vue autosuggest component.",
   "main": "dist/index.js",
   "engines": {
@@ -11,6 +11,7 @@
     "commit": "git-cz",
     "build": "rm -rf dist && NODE_ENV=production webpack",
     "test": "yarn jest",
+    "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codecov",
     "test:coverage": "yarn jest -- --coverage",
     "test:update": "npm test -- --updateSnapshot --coverage",
     "add-contributor": "kcd-scripts contributors add",
