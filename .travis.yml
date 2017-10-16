@@ -11,9 +11,9 @@ before_script:
   - npm prune
 script:
   - yarn test:coverage
+  - yarn build
 after_success:
   - yarn report-coverage
   - yarn semantic-release
 branches:
   only: master
-  
