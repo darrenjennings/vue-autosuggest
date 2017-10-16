@@ -1,0 +1,89 @@
+{
+  "name": "vue-autosuggest",
+  "version": "0.0.0-semantically-released",
+  "description": "Vue autosuggest component.",
+  "main": "dist/index.js",
+  "engines": {
+    "node": "> 4",
+    "npm": "> 3"
+  },
+  "scripts": {
+    "commit": "git-cz",
+    "build": "rm -rf dist && NODE_ENV=production webpack",
+    "test": "yarn jest",
+    "test:coverage": "yarn jest -- --coverage",
+    "test:update": "npm test -- --updateSnapshot --coverage",
+    "add-contributor": "kcd-scripts contributors add",
+    "setup": "yarn install"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [],
+  "author": "Darren Jennings <dmjenn02@gmail.com> (http://www.darrenjennings.com/)",
+  "license": "MIT",
+  "dependencies": {
+    "jest-vue-preprocessor": "1.3.0",
+    "kcd-scripts": "0.27.0"
+  },
+  "eslintConfig": {
+    "extends": "./node_modules/kcd-scripts/eslint.js"
+  },
+  "eslintIgnore": [
+    "node_modules",
+    "coverage",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/educents/vue-autosuggest.git"
+  },
+  "bugs": {
+    "url": "https://github.com/educents/vue-autosuggest/issues"
+  },
+  "homepage": "https://github.com/educents/vue-autosuggest#readme",
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    },
+    "ghooks": {
+      "pre-commit": "yarn test"
+    }
+  },
+  "devDependencies": {
+    "babel-core": "6.26.0",
+    "babel-jest": "21.2.0",
+    "babel-loader": "7.1.2",
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-preset-env": "1.6.0",
+    "codecov": "2.3.1",
+    "codecov.io": "0.1.6",
+    "commitizen": "2.9.6",
+    "css-loader": "0.28.7",
+    "cz-conventional-changelog": "2.0.0",
+    "diffable-html": "2.1.0",
+    "ghooks": "2.0.0",
+    "jest": "21.2.1",
+    "nyc": "11.2.1",
+    "semantic-release": "8.2.0",
+    "vue": "2.5.2",
+    "vue-loader": "13.3.0",
+    "vue-template-compiler": "2.5.2",
+    "webpack": "3.7.1"
+  },
+  "jest": {
+    "testRegex": "test.js$",
+    "moduleFileExtensions": [
+      "js",
+      "vue"
+    ],
+    "snapshotSerializers": [
+      "<rootDir>/__tests__/html-serializer"
+    ],
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      ".*\\.(vue)$": "<rootDir>/node_modules/jest-vue-preprocessor"
+    }
+  }
+}

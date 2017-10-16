@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Autosuggest can mount 1`] = `
+
+<div id="app">
+  <div id="autosuggest"
+       class="search__container"
+       current-query="cool things"
+       placeholder="placeholder"
+  >
+    <input id="autosuggest__input"
+           name="q"
+           type="text"
+           maxlength="256"
+           autocomplete="off"
+           aria-autosuggest="list"
+           aria-owns="autosuggest__results"
+           oninputchange="function (){}"
+           class="form-control"
+    >
+    <div id="autosuggest__results-container">
+      <!---->
+    </div>
+  </div>
+</div>
+
+`;
