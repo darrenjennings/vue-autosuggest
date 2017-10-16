@@ -1,6 +1,6 @@
 {
   "name": "vue-autosuggest",
-  "version": "0.0.0-semantically-released",
+  "version": "0.0.0",
   "description": "Vue autosuggest component.",
   "main": "dist/index.js",
   "engines": {
@@ -23,9 +23,7 @@
   "keywords": [],
   "author": "Darren Jennings <dmjenn02@gmail.com> (http://www.darrenjennings.com/)",
   "license": "MIT",
-  "dependencies": {
-    "kcd-scripts": "0.27.0"
-  },
+  "dependencies": {},
   "eslintConfig": {
     "extends": "./node_modules/kcd-scripts/eslint.js"
   },
@@ -49,8 +47,6 @@
     "ghooks": {
       "pre-commit": "yarn test"
     }
-  },
-  "dependencies": {
   },
   "devDependencies": {
     "babel-core": "6.26.0",
