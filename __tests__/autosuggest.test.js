@@ -19,9 +19,9 @@ describe("Autosuggest", () => {
             </div>
         `;
 
-    await createVm();
-
-    expect(document.body.innerHTML).toMatchSnapshot();
+    createVm().then(() => {
+      expect(document.body.innerHTML).toMatchSnapshot();
+    });
   });
 });
 
