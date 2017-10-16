@@ -50,6 +50,8 @@
       "pre-commit": "yarn test"
     }
   },
+  "dependencies": {
+  },
   "devDependencies": {
     "babel-core": "6.26.0",
     "babel-jest": "21.2.0",
