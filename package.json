@@ -9,6 +9,8 @@
   },
   "scripts": {
     "commit": "git-cz",
+    "start": "webpack-dev-server --config docs/webpack.config.js",
+    "demo": "NODE_ENV=production webpack --config docs/webpack.config.js",
     "build": "rm -rf dist && NODE_ENV=production webpack",
     "test": "yarn jest",
     "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codecov",
@@ -24,7 +26,6 @@
   "author":
     "Darren Jennings <dmjenn02@gmail.com> (http://www.darrenjennings.com/)",
   "license": "MIT",
-  "dependencies": {},
   "eslintConfig": {
     "extends": "./node_modules/kcd-scripts/eslint.js"
   },
@@ -66,7 +67,9 @@
     "vue-loader": "13.3.0",
     "vue-template-compiler": "2.5.2",
     "vue-template-es2015-compiler": "1.6.0",
-    "webpack": "3.7.1"
+    "webpack": "3.7.1",
+    "webpack-dev-server": "2.9.2",
+    "webpack-merge": "4.1.0"
   },
   "jest": {
     "testRegex": "test.js$",

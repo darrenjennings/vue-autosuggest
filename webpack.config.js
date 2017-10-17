@@ -1,26 +1,9 @@
 const path = require("path");
 const webpack = require("webpack");
+const merge = require("webpack-merge");
 
-module.exports = {
+module.exports = merge(require("./webpack.base"), {
   context: __dirname,
-  module: {
-    rules: [
-      {
-        test: /\.js/,
-        loaders: ["babel-loader"],
-        exclude: /node_modules/
-      },
-      {
-        test: /\.vue$/,
-        loaders: ["vue-loader"],
-        exclude: /node_modules/
-      }
-    ]
-  },
-
-  resolve: {
-    extensions: [".js", ".vue"]
-  },
 
   entry: {
     index: "./src/index.js",
@@ -42,4 +25,4 @@ module.exports = {
       minimize: true
     })
   ]
-};
+});
