@@ -4,21 +4,21 @@ exports[`Autosuggest can mount 1`] = `
 
 <div id="app">
   <div id="autosuggest"
-       class="search__container"
        current-query="cool things"
        placeholder="placeholder"
   >
-    <input id="autosuggest__input"
-           name="q"
+    <input name="q"
            type="text"
            maxlength="256"
            autocomplete="off"
            aria-autosuggest="list"
            aria-owns="autosuggest__results"
+           aria-activedescendant="autosuggest__results--item-null"
+           aria-haspopup="true"
            oninputchange="function (){}"
-           class="form-control"
+           class="form-control autosuggest__input-open"
     >
-    <div id="autosuggest__results-container">
+    <div class="autosuggest__results-container">
       <!---->
     </div>
   </div>
