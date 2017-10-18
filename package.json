@@ -14,8 +14,8 @@
     "build": "rm -rf dist && NODE_ENV=production webpack",
     "test": "yarn jest",
     "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codecov",
-    "test:coverage": "yarn jest --coverage",
-    "test:update": "yarn test --updateSnapshot --coverage",
+    "test:coverage": "yarn jest -- --coverage",
+    "test:update": "yarn test -- --updateSnapshot --coverage",
     "add-contributor": "kcd-scripts contributors add",
     "setup": "yarn install",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
