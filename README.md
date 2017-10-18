@@ -1,7 +1,7 @@
 <div align="center">
 <h1>⚠️ CURRENTLY UNDER DEVELOPMENT - Vue-autosuggest</h1>
 
-<p>🔍 Vue autosuggest component.</p>
+<p>🔍 Vue autosuggest component. [Demo](https://educents.github.io/vue-autosuggest/)</p>
 </div>
 
 <hr />
@@ -20,14 +20,6 @@
 [![Star on GitHub][github-star-badge]][github-star]
 [![Tweet][twitter-badge]][twitter]
 
-## The problem
-
-// TODO
-
-## This solution
-
-// TODO
-
 ## Table of Contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -36,8 +28,6 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [Props](#props)
-- [Control Props](#control-props)
-- [Child Callback Function](#child-callback-function)
 - [Examples](#examples)
 - [FAQ](#faq)
 - [Inspiration](#inspiration)
@@ -57,6 +47,14 @@ npm install --save vue-autosuggest
 ```
 
 ## Usage
+
+// TODO
+
+## Props
+
+// TODO
+
+## Examples
 
 // TODO
 
