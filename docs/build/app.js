@@ -101,20 +101,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else if (typeof exports !== "undefined") {
-    factory(require("vue"), require("../src"));
+    factory(require("vue"), require("../src/Autosuggest.vue"));
   } else {
     var mod = {
       exports: {}
     };
-    factory(global.vue, global.src);
+    factory(global.vue, global.Autosuggest);
     global.app = mod.exports;
   }
-})(this, function (_vue, _src) {
+})(this, function (_vue, _Autosuggest) {
   "use strict";
 
   var _vue2 = _interopRequireDefault(_vue);
 
-  var _src2 = _interopRequireDefault(_src);
+  var _Autosuggest2 = _interopRequireDefault(_Autosuggest);
 
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -125,7 +125,29 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   new _vue2.default({
     el: "#app",
     components: {
-      AutoSuggest: _src2.default
+      VueAutosuggest: _Autosuggest2.default
+    },
+    data: function data() {
+      return {
+        suggestions: [],
+        selected: '',
+        clicked: '',
+        limit: 5,
+        autoSuggestInputId: 'autosuggest__input',
+        results: [{ firstname: "Frodo", lastname: "Baggins" }, { firstname: "Samwise", lastname: "Gamgee" }, { firstname: "Gandalf", lastname: "the Grey" }, { firstname: "Gollum", lastname: "" }, { firstname: "Glorfindel", lastname: "" }, { firstname: "Galadriel", lastname: "" }, { firstname: "Faramir", lastname: "Second Son of Denethor II" }, { firstname: "Boromir", lastname: "First Son of Denother II" }]
+      };
+    },
+
+    methods: {
+      onInputChange: function onInputChange(text) {
+        this.suggestions = this.results.filter(function (person) {
+          return person.firstname.toLowerCase().indexOf(text.toLowerCase()) > -1;
+        });
+      },
+      clickHandler: function clickHandler(e) {
+        var value = window.document.getElementById(this.autoSuggestInputId).value;
+        this.selected = value;
+      }
     }
   });
 });
@@ -11133,55 +11155,14 @@ process.umask = function() { return 0; };
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(7)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else if (typeof exports !== "undefined") {
-    factory(exports, require("./Autosuggest.vue"));
-  } else {
-    var mod = {
-      exports: {}
-    };
-    factory(mod.exports, global.Autosuggest);
-    global.index = mod.exports;
-  }
-})(this, function (exports, _Autosuggest) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _Autosuggest2 = _interopRequireDefault(_Autosuggest);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  exports.default = {
-    install: function install(Vue) {
-      Vue.component("vue-autosuggest", _Autosuggest2.default);
-    }
-  };
-});
-
-/***/ }),
-/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_60ffdade_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Autosuggest_vue__ = __webpack_require__(10);
-var normalizeComponent = __webpack_require__(8)
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_60ffdade_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Autosuggest_vue__ = __webpack_require__(9);
+var normalizeComponent = __webpack_require__(7)
 /* script */
 
 /* template */
@@ -11207,7 +11188,7 @@ var Component = normalizeComponent(
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -11316,7 +11297,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -11344,17 +11325,25 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         name: 'autosuggest',
         props: {
             inputProps: {
+                id: {
+                    type: String,
+                    default: 'autosuggest__input'
+                },
                 onInputChange: {
                     type: Function,
                     required: true
                 },
-                currentQuery: {
+                initialValue: {
                     type: String,
-                    required: true
+                    default: ""
                 },
                 placeholder: {
                     type: String,
                     required: true
+                },
+                onClick: {
+                    type: Function,
+                    required: false
                 }
             },
             limit: {
@@ -11364,31 +11353,47 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             onSelected: {
                 type: Function,
-                required: true,
+                required: false,
                 default: function _default() {}
             },
             suggestions: {
                 type: Array,
                 required: true,
                 default: []
+            },
+            shouldRenderSuggestions: {
+                type: Function,
+                required: false,
+                default: function _default() {
+                    return true;
+                }
+            },
+            resultItemKey: {
+                type: String,
+                required: false
             }
         },
         data: function data() {
             return {
                 searchInput: '',
                 currentIndex: null,
-                loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */
+                loading: false, /** Helps with making sure the dropdown doesn't stay open after certain actions */
+                didSelectFromOptions: false
             };
         },
         computed: {
             isOpen: function isOpen() {
-                return this.suggestions.length > 0;
+                return this.shouldRenderSuggestions() && !this.loading;
             }
         },
         methods: {
             styleItem: function styleItem(item) {
-                var r = new RegExp('' + this.searchInput, 'ig');
-                return item.replace(r, '<b>' + this.searchInput + '</b>');
+                if (!this.didSelectFromOptions) {
+                    var value = this.searchInput.trim();
+                    var r = new RegExp('' + value, 'ig');
+                    return item.replace(r, '<b>' + value + '</b>');
+                }
+                return item;
             },
             handleKeyStroke: function handleKeyStroke(e) {
                 var _this = this;
@@ -11396,6 +11401,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 var keyCode = e.keyCode;
 
                 this.loading = false;
+                this.didSelectFromOptions = false;
                 switch (keyCode) {
                     case 40: // ArrowDown
                     case 38:
@@ -11406,6 +11412,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                             var direction = keyCode === 40 ? 1 : -1;
                             var newIndex = this.currentIndex + direction;
                             this.setCurrentIndex(newIndex, this.suggestions.length, direction);
+                            this.didSelectFromOptions = true;
+                            if (this.suggestions.length > 0 && this.currentIndex >= 0 && this.suggestions[this.currentIndex][this.resultItemKey]) {
+                                this.setChangeItem(this.suggestions[this.currentIndex][this.resultItemKey]);
+                                this.didSelectFromOptions = true;
+                            }
                         }
                         break;
                     case 13:
@@ -11416,18 +11427,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                             break;
                         }
                         this.$nextTick(function () {
-                            if (_this.suggestions.length > 0 && _this.currentIndex >= 0) {
-                                _this.setChangeItem(_this.suggestions[_this.currentIndex].query_terms);
+                            if (_this.suggestions.length > 0 && _this.currentIndex >= 0 && _this.suggestions[_this.currentIndex]) {
+                                _this.setChangeItem(_this.suggestions[_this.currentIndex][_this.resultItemKey]);
+                                _this.didSelectFromOptions = true;
                             }
-                            _this.onSelected();
                             _this.loading = true;
+                            _this.$nextTick(function () {
+                                _this.onSelected(_this.didSelectFromOptions);
+                            });
                         });
                         break;
                     case 27:
                         // Escape
                         if (this.isOpen) {
-                            this.setResults([]);
                             /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
+                            this.loading = true;
+                            this.currentIndex = null;
                             e.preventDefault();
                         }
                         break;
@@ -11436,22 +11451,26 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             setChangeItem: function setChangeItem(item) {
                 this.searchInput = item;
             },
-            setResults: function setResults(data) {
-                this.results = data.slice(0, this.limit);
-            },
             onSuggestionMouseEnter: function onSuggestionMouseEnter(event) {
-                this.setCurrentIndex(event.currentTarget.getAttribute('data-suggestion-index'));
+                this.currentIndex = event.currentTarget.getAttribute('data-suggestion-index');
             },
             resetHighlightedSuggestionOnMouseLeave: function resetHighlightedSuggestionOnMouseLeave() {
-                this.setCurrentIndex(null);
+                this.currentIndex = null;
             },
             onDocumentMouseUp: function onDocumentMouseUp() {
-                if (this.currentIndex === null || !this.suggestions[this.currentIndex]) {
+                var _this2 = this;
+
+                /** Clicks outside of dropdown to exit */
+                if (this.currentIndex === null || !this.suggestions[this.currentIndex][this.resultItemKey]) {
+                    this.loading = this.shouldRenderSuggestions();
                     return;
                 }
-                this.setChangeItem(this.suggestions[this.currentIndex].query_terms);
-                this.onSelected();
+                /** Selects an item in the dropdown */
                 this.loading = true;
+                this.setChangeItem(this.suggestions[this.currentIndex][this.resultItemKey]);
+                this.$nextTick(function () {
+                    _this2.onSelected(true);
+                });
             },
             setCurrentIndex: function setCurrentIndex(newIndex) {
                 var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
@@ -11469,33 +11488,67 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 }
                 // if we hit the upper limit then just stop iterating the index
                 if (newIndex >= limit) {
-                    adjustedValue = limit - 1;
+                    adjustedValue = 0;
                 }
                 this.currentIndex = adjustedValue;
+
+                var element = document.getElementById('autosuggest__results_item-' + this.currentIndex);
+                var hoverClass = 'autosuggest__results_item-highlighted';
+                if (document.querySelector('.' + hoverClass)) {
+                    this.removeClass(document.querySelector('.' + hoverClass), hoverClass);
+                }
+                if (element) {
+                    this.addClass(element, hoverClass);
+                }
+            },
+            onClick: function onClick() {
+                this.loading = false;
+                this.inputProps.onClick();
+            },
+
+
+            /** DOM Utilities */
+            hasClass: function hasClass(el, className) {
+                if (el.classList) return el.classList.contains(className);else return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
+            },
+            addClass: function addClass(el, className) {
+                if (el.classList) el.classList.add(className);else if (!hasClass(el, className)) el.className += " " + className;
+            },
+            removeClass: function removeClass(el, className) {
+                if (el.classList) {
+                    el.classList.remove(className);
+                } else if (hasClass(el, className)) {
+                    var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
+                    el.className = el.className.replace(reg, ' ');
+                }
             }
         },
         mounted: function mounted() {
             document.addEventListener('mouseup', this.onDocumentMouseUp);
+            var input = document.getElementById(this.inputProps.id);
+            if (input) {
+                input.value = this.inputProps.initialValue; // set default query, e.g. loaded server side.
+            }
         },
 
         watch: {
             searchInput: function searchInput(newValue, oldValue) {
-                this.currentIndex = null;
-                this.inputProps.onInputChange(newValue);
-            },
-            suggestions: function suggestions(newData, oldData) {
-                this.setResults(newData);
+                this.value = newValue;
+                if (!this.didSelectFromOptions) {
+                    this.currentIndex = null;
+                    this.inputProps.onInputChange(newValue);
+                }
             }
         }
     };
 });
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"search__container",attrs:{"id":"autosuggest"}},[_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:{'autosuggest__input-open': _vm.isOpen},attrs:{"id":"autosuggest__input","name":"q","type":"text","maxlength":"256","autocomplete":"off","aria-autosuggest":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen ? ("autosuggest__results--item-" + _vm.currentIndex) : null,"aria-haspopup":_vm.suggestions.length > 0},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value}}},'input',_vm.inputProps,false)),_vm._v(" "),_c('div',{attrs:{"id":"autosuggest__results-container"}},[(_vm.suggestions.length > 0 && _vm.searchInput !== '' && !_vm.loading)?_c('ul',{staticClass:"autosuggest__results",attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},_vm._l((_vm.suggestions),function(result,index){return _c('li',{key:index,staticClass:"autosuggest__results_item",class:{'autosuggest__results_item-highlighted' : index == _vm.currentIndex},attrs:{"data-suggestion-index":index,"role":"option"},on:{"mouseenter":_vm.onSuggestionMouseEnter,"mouseleave":_vm.resetHighlightedSuggestionOnMouseLeave}},[_c('span',{domProps:{"innerHTML":_vm._s(_vm.styleItem(result.query_terms))}})])})):_vm._e()])])}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"autosuggest"}},[_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"name":"q","type":"text","maxlength":"256","autocomplete":"off","aria-autosuggest":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen ? ("autosuggest__results--item-" + _vm.currentIndex) : '',"aria-haspopup":_vm.isOpen},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"click":_vm.onClick,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value}}},'input',_vm.inputProps,false)),_vm._v(" "),_c('div',{staticClass:"autosuggest__results-container"},[(_vm.suggestions.length > 0 && !_vm.loading)?_c('ul',{staticClass:"autosuggest__results",attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},[_vm._l((_vm.suggestions),function(result,index){return _vm._t("autosuggest",[_c('li',{key:index,staticClass:"autosuggest__results_item",class:{'autosuggest__results_item-highlighted' : index == _vm.currentIndex, 'autosuggest__results_item':true},attrs:{"data-suggestion-index":index,"role":"option","id":("autosuggest__results_item-" + index)},on:{"mouseenter":_vm.onSuggestionMouseEnter,"mouseleave":_vm.resetHighlightedSuggestionOnMouseLeave}},[_c('span',{domProps:{"innerHTML":_vm._s(result[_vm.resultItemKey])}})])],{result:result,mouseenter:_vm.onSuggestionMouseEnter,mouseleave:_vm.resetHighlightedSuggestionOnMouseLeave,dataSuggestionIndex:index,role:"option",styleItem:_vm.styleItem,id:("autosuggest__results_item-" + index)})})],2):_vm._e()])])}
 var staticRenderFns = []
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
