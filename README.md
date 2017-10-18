@@ -1,7 +1,7 @@
 <div align="center">
 <h1>⚠️ CURRENTLY UNDER DEVELOPMENT - Vue-autosuggest</h1>
 
-<p>🔍 Vue autosuggest component. [Demo](https://educents.github.io/vue-autosuggest/)</p>
+<p>🔍 Vue autosuggest component. <a href="https://educents.github.io/vue-autosuggest/">Demo</a></p>
 </div>
 
 <hr />
