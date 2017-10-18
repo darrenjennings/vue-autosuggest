@@ -101,6 +101,7 @@ export default {
         },
         data: () => ({
             searchInput: '',
+            searchInputOriginal: '',
             currentIndex: null,
             loading: false, /** Helps with making sure the dropdown doesn't stay open after certain actions */
             didSelectFromOptions: false
@@ -133,7 +134,7 @@ export default {
                             const newIndex = this.currentIndex + direction;
                             this.setCurrentIndex(newIndex, this.suggestions.length, direction);
                             this.didSelectFromOptions = true;
-                            if (this.suggestions.length > 0 && this.currentIndex >= 0 && this.suggestions[this.currentIndex][this.resultItemKey]) {
+                            if (this.suggestions.length > 0 && this.currentIndex >= 0 && this.suggestions[this.currentIndex]) {
                                 this.setChangeItem(this.suggestions[this.currentIndex][this.resultItemKey]);
                                 this.didSelectFromOptions = true;
                             }
@@ -160,6 +161,7 @@ export default {
                             /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
                             this.loading = true;
                             this.currentIndex = null;
+                            this.searchInput = this.searchInputOriginal;
                             e.preventDefault();
                         }
                         break;
@@ -176,7 +178,7 @@ export default {
             },
             onDocumentMouseUp() {
                 /** Clicks outside of dropdown to exit */
-                if (this.currentIndex === null || !this.suggestions[this.currentIndex][this.resultItemKey]) {
+                if (this.currentIndex === null || !this.suggestions[this.currentIndex]) {
                     this.loading = this.shouldRenderSuggestions();
                     return;
                 }
@@ -251,6 +253,7 @@ export default {
             searchInput(newValue, oldValue) {
                 this.value = newValue;
                 if(!this.didSelectFromOptions){
+                    this.searchInputOriginal = this.value;
                     this.currentIndex = null;
                     this.inputProps.onInputChange(newValue);
                 }

@@ -14,7 +14,7 @@ new Vue({
       limit: 5,
       autoSuggestInputId: 'autosuggest__input',
       results: [
-        { firstname: "Frodo", lastname: "Baggins" },
+        { firstname: "Frodoz", lastname: "Baggins" },
         { firstname: "Samwise", lastname: "Gamgee" },
         { firstname: "Gandalf", lastname: "the Grey" },
         { firstname: "Gollum", lastname: "" },

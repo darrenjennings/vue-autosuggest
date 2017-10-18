@@ -76,20 +76,19 @@
             :suggestions="suggestions" 
             :on-selected="clickHandler"
             :result-item-key="'firstname'"
-            :limit="Number(limit)"
             :input-props="{id:autoSuggestInputId, initialValue: '', onClick: () => {}, onInputChange: this.onInputChange, placeholder:'Type \'G\''}"
         >
         <li slot="autosuggest"
             slot-scope="props"
             @mouseenter="props.mouseenter"
             @mouseleave="props.mouseleave"
-            :data-suggestion-index="props.index"
+            :data-suggestion-index="props.dataSuggestionIndex"
             role="option"
             class="autosuggest__results_item"
             :class="props.class"
             :id="props.id" 
             :key="props.id">
-            <span v-html="props.styleItem(props.result.firstname)"></span>
+            Educents - <span v-html="props.styleItem(props.result.firstname)"></span>
         </li>
         </vue-autosuggest>
     </div>
