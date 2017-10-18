@@ -72,8 +72,8 @@ Basic usage
 
 ## Inspiration
 
-Misha Moroshko's react-autosuggest component inspired the api + WAI-ARIA completeness https://github.com/moroshko/react-autosuggest
-Spatie inspired the vue component setup + docs https://github.com/spatie/vue-table-component
+- Misha Moroshko's react-autosuggest component inspired the api + WAI-ARIA completeness https://github.com/moroshko/react-autosuggest
+- Spatie inspired the vue component setup + docs https://github.com/spatie/vue-table-component
 
 ## Contributors
 
