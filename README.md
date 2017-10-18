@@ -1,4 +1,4 @@
-<div align="center">
+<div>
 <h1>⚠️ CURRENTLY UNDER DEVELOPMENT - Vue-autosuggest</h1>
 
 <p>🔍 Vue autosuggest component. <a href="https://educents.github.io/vue-autosuggest/">Demo</a></p>
@@ -34,7 +34,6 @@
 - [Other Solutions](#other-solutions)
 - [Contributors](#contributors)
 - [LICENSE](#license)
-
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Installation
@@ -45,10 +44,24 @@ should be installed as one of your project's `dependencies`:
 ```
 npm install --save vue-autosuggest
 ```
+or
+
+```
+yarn add vue-autosuggest
+```
 
 ## Usage
+Basic usage
+```html
+<vue-autosuggest 
+    :suggestions="suggestions" 
+    :on-selected="clickHandler"
+    :result-item-key="'firstname'"
+    :input-props="{id:autoSuggestInputId, onInputChange: this.onInputChange, placeholder:'Enter some text'}"
+/>
+```
 
-// TODO
+// TODO more details...
 
 ## Props
 
@@ -56,11 +69,11 @@ npm install --save vue-autosuggest
 
 ## Examples
 
-// TODO
 
 ## Inspiration
 
-https://github.com/moroshko/react-autosuggest
+Misha Moroshko's react-autosuggest component inspired the api + WAI-ARIA completeness https://github.com/moroshko/react-autosuggest
+Spatie inspired the vue component setup + docs https://github.com/spatie/vue-table-component
 
 ## Contributors
 
