@@ -60,100 +60,11 @@
 /******/ 	__webpack_require__.p = "/build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(2), __webpack_require__(6)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else if (typeof exports !== "undefined") {
-    factory(require("vue"), require("../src/Autosuggest.vue"));
-  } else {
-    var mod = {
-      exports: {}
-    };
-    factory(global.vue, global.Autosuggest);
-    global.app = mod.exports;
-  }
-})(this, function (_vue, _Autosuggest) {
-  "use strict";
-
-  var _vue2 = _interopRequireDefault(_vue);
-
-  var _Autosuggest2 = _interopRequireDefault(_Autosuggest);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  new _vue2.default({
-    el: "#app",
-    components: {
-      VueAutosuggest: _Autosuggest2.default
-    },
-    data: function data() {
-      return {
-        suggestions: [],
-        selected: '',
-        clicked: '',
-        limit: 5,
-        autoSuggestInputId: 'autosuggest__input',
-        results: [{ firstname: "Frodoz", lastname: "Baggins" }, { firstname: "Samwise", lastname: "Gamgee" }, { firstname: "Gandalf", lastname: "the Grey" }, { firstname: "Gollum", lastname: "" }, { firstname: "Glorfindel", lastname: "" }, { firstname: "Galadriel", lastname: "" }, { firstname: "Faramir", lastname: "Second Son of Denethor II" }, { firstname: "Boromir", lastname: "First Son of Denother II" }]
-      };
-    },
-
-    methods: {
-      onInputChange: function onInputChange(text) {
-        this.suggestions = this.results.filter(function (person) {
-          return person.firstname.toLowerCase().indexOf(text.toLowerCase()) > -1;
-        });
-      },
-      clickHandler: function clickHandler(e) {
-        var value = window.document.getElementById(this.autoSuggestInputId).value;
-        this.selected = value;
-      }
-    }
-  });
-});
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, setImmediate) {/*!
@@ -10709,10 +10620,187 @@ return Vue$3;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(3).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(4).setImmediate))
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(0), __webpack_require__(7)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(require("vue"), require("./App.vue"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(global.vue, global.App);
+        global.index = mod.exports;
+    }
+})(this, function (_vue, _App) {
+    "use strict";
+
+    var _vue2 = _interopRequireDefault(_vue);
+
+    var _App2 = _interopRequireDefault(_App);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    new _vue2.default({
+        el: "#app",
+        components: {
+            App: _App2.default
+        },
+        template: "<App/>"
+    });
+});
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -10765,13 +10853,13 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(4);
+__webpack_require__(5);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -10961,10 +11049,10 @@ exports.clearImmediate = clearImmediate;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(6)))
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -11154,15 +11242,119 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9a15e98a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(12);
+var normalizeComponent = __webpack_require__(2)
+/* script */
+
+/* template */
+
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue___default.a,
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9a15e98a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__["a" /* default */],
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+
+/* harmony default export */ __webpack_exports__["default"] = (Component.exports);
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(0), __webpack_require__(9)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports !== "undefined") {
+    factory(exports, require("vue"), require("../src/Autosuggest.vue"));
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod.exports, global.vue, global.Autosuggest);
+    global.App = mod.exports;
+  }
+})(this, function (exports, _vue, _Autosuggest) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _vue2 = _interopRequireDefault(_vue);
+
+  var _Autosuggest2 = _interopRequireDefault(_Autosuggest);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = {
+    components: {
+      VueAutosuggest: _Autosuggest2.default
+    },
+    data: function data() {
+      return {
+        selected: "",
+        limit: 10,
+        options: [{ firstname: "Frodo", lastname: "Baggins" }, { firstname: "Samwise", lastname: "Gamgee" }, { firstname: "Gandalf", lastname: "the Grey" }, { firstname: "Gollum", lastname: "aka Sméagol" }, { firstname: "Glorfindel" }, { firstname: "Galadriel" }, { firstname: "Faramir" }, { firstname: "Boromir" }, { firstname: "Saruman" }, { firstname: "Sauron" }, { firstname: "Eomer" }, { firstname: "Éowyn" }, { firstname: "Elrond" }],
+        filteredOptions: [],
+        inputProps: {
+          id: "autosuggest__input",
+          initialValue: "",
+          onClick: function onClick() {},
+          onInputChange: this.onInputChange,
+          placeholder: "Type 'G'"
+        }
+      };
+    },
+
+    methods: {
+      onInputChange: function onInputChange(text) {
+        this.filteredOptions = this.options.filter(function (person) {
+          return person.firstname.toLowerCase().indexOf(text.toLowerCase()) > -1;
+        });
+      },
+      clickHandler: function clickHandler(e) {
+        var value = window.document.getElementById(this.inputProps.id).value;
+        this.selected = value;
+      }
+    }
+  };
+});
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_60ffdade_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Autosuggest_vue__ = __webpack_require__(9);
-var normalizeComponent = __webpack_require__(7)
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_60ffdade_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Autosuggest_vue__ = __webpack_require__(11);
+var normalizeComponent = __webpack_require__(2)
 /* script */
 
 /* template */
@@ -11188,116 +11380,7 @@ var Component = normalizeComponent(
 
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -11385,6 +11468,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         computed: {
             isOpen: function isOpen() {
                 return this.shouldRenderSuggestions() && !this.loading;
+            },
+            suggestionsFiltered: function suggestionsFiltered() {
+                return this.suggestions.slice(0, this.limit);
             }
         },
         methods: {
@@ -11547,11 +11633,21 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"autosuggest"}},[_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"name":"q","type":"text","maxlength":"256","autocomplete":"off","aria-autosuggest":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen ? ("autosuggest__results--item-" + _vm.currentIndex) : '',"aria-haspopup":_vm.isOpen},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"click":_vm.onClick,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value}}},'input',_vm.inputProps,false)),_vm._v(" "),_c('div',{staticClass:"autosuggest__results-container"},[(_vm.suggestions.length > 0 && !_vm.loading)?_c('ul',{staticClass:"autosuggest__results",attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},[_vm._l((_vm.suggestions),function(result,index){return _vm._t("autosuggest",[_c('li',{key:index,staticClass:"autosuggest__results_item",class:{'autosuggest__results_item-highlighted' : index == _vm.currentIndex, 'autosuggest__results_item':true},attrs:{"data-suggestion-index":index,"role":"option","id":("autosuggest__results_item-" + index)},on:{"mouseenter":_vm.onSuggestionMouseEnter,"mouseleave":_vm.resetHighlightedSuggestionOnMouseLeave}},[_c('span',{domProps:{"innerHTML":_vm._s(result[_vm.resultItemKey])}})])],{result:result,mouseenter:_vm.onSuggestionMouseEnter,mouseleave:_vm.resetHighlightedSuggestionOnMouseLeave,dataSuggestionIndex:index,role:"option",styleItem:_vm.styleItem,id:("autosuggest__results_item-" + index)})})],2):_vm._e()])])}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"autosuggest"}},[_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"name":"q","type":"text","maxlength":"256","autocomplete":"off","aria-autosuggest":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen ? ("autosuggest__results--item-" + _vm.currentIndex) : '',"aria-haspopup":_vm.isOpen},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"click":_vm.onClick,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value}}},'input',_vm.inputProps,false)),_vm._v(" "),_c('div',{staticClass:"autosuggest__results-container"},[(_vm.suggestionsFiltered.length > 0 && !_vm.loading)?_c('ul',{staticClass:"autosuggest__results",attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},[_vm._l((_vm.suggestionsFiltered),function(result,index){return _vm._t("autosuggest",[_c('li',{key:index,staticClass:"autosuggest__results_item",class:{'autosuggest__results_item-highlighted' : index == _vm.currentIndex, 'autosuggest__results_item':true},attrs:{"data-suggestion-index":index,"role":"option","id":("autosuggest__results_item-" + index)},on:{"mouseenter":_vm.onSuggestionMouseEnter,"mouseleave":_vm.resetHighlightedSuggestionOnMouseLeave}},[_c('span',{domProps:{"innerHTML":_vm._s(result[_vm.resultItemKey])}})])],{result:result,mouseenter:_vm.onSuggestionMouseEnter,mouseleave:_vm.resetHighlightedSuggestionOnMouseLeave,dataSuggestionIndex:index,role:"option",styleItem:_vm.styleItem,id:("autosuggest__results_item-" + index)})})],2):_vm._e()])])}
+var staticRenderFns = []
+var esExports = { render: render, staticRenderFns: staticRenderFns }
+/* harmony default export */ __webpack_exports__["a"] = (esExports);
+
+/***/ }),
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticStyle:{"padding-top":"10px","margin-bottom":"10px"}},[(_vm.selected)?_c('span',[_vm._v("You have selected "+_vm._s(_vm.selected))]):_vm._e()]),_vm._v(" "),_c('vue-autosuggest',{attrs:{"limit":_vm.limit,"suggestions":_vm.filteredOptions,"on-selected":_vm.clickHandler,"result-item-key":'firstname',"input-props":_vm.inputProps},scopedSlots:_vm._u([{key:"autosuggest",fn:function(props){return _c('li',{key:props.id,staticClass:"autosuggest__results_item",class:props.class,attrs:{"data-suggestion-index":props.dataSuggestionIndex,"role":"option","id":props.id},on:{"mouseenter":props.mouseenter,"mouseleave":props.mouseleave}},[_c('span',{staticClass:"bullet"}),_c('span',{domProps:{"innerHTML":_vm._s(props.styleItem(props.result.firstname))}})])}}])})],1)}
 var staticRenderFns = []
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
