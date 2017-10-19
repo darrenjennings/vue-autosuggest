@@ -51,15 +51,18 @@ yarn add vue-autosuggest
 ```
 
 ## Usage
-Basic usage
+Basic usage:
 ```html
 <vue-autosuggest 
-    :suggestions="suggestions" 
+    :suggestions="[{ firstname: "Frodo", lastname: "Baggins" }, { firstname: "Samwise", lastname: "Gamgee" }]" 
     :on-selected="clickHandler"
     :result-item-key="'firstname'"
-    :input-props="{id:autoSuggestInputId, onInputChange: this.onInputChange, placeholder:'Enter some text'}"
+    :input-props="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?', initialValue: '' }"
 />
 ```
+
+Examples
+https://jsfiddle.net/darrenjennings/dugbvezs/3/
 
 // TODO more details...
 

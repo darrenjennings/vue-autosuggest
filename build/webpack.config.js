@@ -6,14 +6,14 @@ module.exports = merge(require("./webpack.base"), {
   context: __dirname,
 
   entry: {
-    index: "./src/index.js",
-    "index.min": "./src/index.js"
+    index: "../src/index.js",
+    "index.min": "../src/index.js"
   },
 
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].js",
-    library: "vue-autosuggest",
+    library: "VueAutosuggest",
     libraryTarget: "umd"
   },
 

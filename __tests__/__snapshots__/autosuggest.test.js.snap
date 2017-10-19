@@ -45,6 +45,69 @@ exports[`Autosuggest can filter suggestions 1`] = `
 
 `;
 
+exports[`Autosuggest can limit options via 'limit' prop 1`] = `
+
+<div id="app">
+  <div id="autosuggest">
+    <input name="q"
+           type="text"
+           maxlength="256"
+           autocomplete="off"
+           aria-autosuggest="list"
+           aria-owns="autosuggest__results"
+           aria-activedescendant="autosuggest__results--item-null"
+           aria-haspopup="true"
+           id="autosuggest__input"
+           initialvalue
+           oninputchange="function boundFn(a) {
+    var l = arguments.length;
+    return l
+      ? l > 1
+        ? fn.apply(ctx, arguments)
+        : fn.call(ctx, a)
+      : fn.call(ctx)
+  }"
+           class="form-control autosuggest__input-open"
+    >
+    <div class="autosuggest__results-container">
+      <ul role="listbox"
+          aria-labelledby="autosuggest"
+          class="autosuggest__results"
+      >
+        <li data-suggestion-index="0"
+            role="option"
+            id="autosuggest__results_item-0"
+            class="autosuggest__results_item autosuggest__results_item"
+        >
+          <span>
+            Frodo
+          </span>
+        </li>
+        <li data-suggestion-index="1"
+            role="option"
+            id="autosuggest__results_item-1"
+            class="autosuggest__results_item autosuggest__results_item"
+        >
+          <span>
+            Samwise
+          </span>
+        </li>
+        <li data-suggestion-index="2"
+            role="option"
+            id="autosuggest__results_item-2"
+            class="autosuggest__results_item autosuggest__results_item"
+        >
+          <span>
+            Gandalf
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+`;
+
 exports[`Autosuggest can mount 1`] = `
 
 <div id="app">
@@ -170,6 +233,51 @@ exports[`Autosuggest can render suggestions 1`] = `
         >
           <span>
             Boromir
+          </span>
+        </li>
+        <li data-suggestion-index="8"
+            role="option"
+            id="autosuggest__results_item-8"
+            class="autosuggest__results_item autosuggest__results_item"
+        >
+          <span>
+            Saruman
+          </span>
+        </li>
+        <li data-suggestion-index="9"
+            role="option"
+            id="autosuggest__results_item-9"
+            class="autosuggest__results_item autosuggest__results_item"
+        >
+          <span>
+            Sauron
+          </span>
+        </li>
+        <li data-suggestion-index="10"
+            role="option"
+            id="autosuggest__results_item-10"
+            class="autosuggest__results_item autosuggest__results_item"
+        >
+          <span>
+            Eomer
+          </span>
+        </li>
+        <li data-suggestion-index="11"
+            role="option"
+            id="autosuggest__results_item-11"
+            class="autosuggest__results_item autosuggest__results_item"
+        >
+          <span>
+            Éowyn
+          </span>
+        </li>
+        <li data-suggestion-index="12"
+            role="option"
+            id="autosuggest__results_item-12"
+            class="autosuggest__results_item autosuggest__results_item"
+        >
+          <span>
+            Elrond
           </span>
         </li>
       </ul>

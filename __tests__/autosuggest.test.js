@@ -8,11 +8,16 @@ describe("Autosuggest", () => {
     { firstname: "Frodo", lastname: "Baggins" },
     { firstname: "Samwise", lastname: "Gamgee" },
     { firstname: "Gandalf", lastname: "the Grey" },
-    { firstname: "Gollum", lastname: "" },
-    { firstname: "Glorfindel", lastname: "" },
-    { firstname: "Galadriel", lastname: "" },
-    { firstname: "Faramir", lastname: "Second Son of Denethor II" },
-    { firstname: "Boromir", lastname: "First Son of Denother II" }
+    { firstname: "Gollum", lastname: "aka Sméagol" },
+    { firstname: "Glorfindel" },
+    { firstname: "Galadriel" },
+    { firstname: "Faramir" },
+    { firstname: "Boromir" },
+    { firstname: "Saruman" },
+    { firstname: "Sauron" },
+    { firstname: "Eomer" },
+    { firstname: "Éowyn" },
+    { firstname: "Elrond" }
   ];
 
   const id = `autosuggest__input`;
@@ -151,6 +156,32 @@ describe("Autosuggest", () => {
     autosuggest._watcher.run();
 
     await Vue.nextTick(() => {});
+    expect(document.body.innerHTML).toMatchSnapshot();
+  });
+
+  it("can limit options via 'limit' prop", async () => {
+    const limit = 3;
+    document.body.innerHTML = `
+            <div id="app">
+                <vue-autosuggest 
+                  :limit="${limit}"
+                  :suggestions="suggestions"
+                  :on-selected="clickHandler"
+                  :result-item-key="'firstname'"
+                  :input-props="{id:autoSuggestInputId, initialValue: '', onInputChange:onInputChange}"
+                  >
+                </vue-autosuggest>
+            </div>
+        `;
+
+    const searchText = "E";
+    const autosuggest = await createVm(defaultVM);
+
+    autosuggest.searchInput = searchText;
+
+    await Vue.nextTick(() => {});
+
+    expect(document.querySelectorAll(`ul li`).length).toEqual(limit);
     expect(document.body.innerHTML).toMatchSnapshot();
   });
 });

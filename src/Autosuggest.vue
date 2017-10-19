@@ -16,7 +16,7 @@
                :aria-haspopup="isOpen"
         />
         <div class="autosuggest__results-container">
-            <ul role="listbox" v-if="suggestions.length > 0 && !loading" class="autosuggest__results" aria-labelledby="autosuggest">
+            <ul role="listbox" v-if="suggestionsFiltered.length > 0 && !loading" class="autosuggest__results" aria-labelledby="autosuggest">
                 <slot name="autosuggest" 
                     :result="result"
                     :mouseenter="onSuggestionMouseEnter"
@@ -27,7 +27,7 @@
                     class="autosuggest__results_item"
                     :class="{'autosuggest__results_item-highlighted' : index == currentIndex, 'autosuggest__results_item':true}" 
                     :id="`autosuggest__results_item-${index}`"
-                    v-for="(result, index) in suggestions"
+                    v-for="(result, index) in suggestionsFiltered"
                 >
                     <li @mouseenter="onSuggestionMouseEnter"
                         @mouseleave="resetHighlightedSuggestionOnMouseLeave"
@@ -109,6 +109,9 @@ export default {
         computed: {
             isOpen() {
                 return this.shouldRenderSuggestions() && !this.loading;
+            },
+            suggestionsFiltered(){
+                return this.suggestions.slice(0, this.limit);
             }
         },
         methods: {
