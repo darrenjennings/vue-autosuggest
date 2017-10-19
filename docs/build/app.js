@@ -134,7 +134,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         clicked: '',
         limit: 5,
         autoSuggestInputId: 'autosuggest__input',
-        results: [{ firstname: "Frodo", lastname: "Baggins" }, { firstname: "Samwise", lastname: "Gamgee" }, { firstname: "Gandalf", lastname: "the Grey" }, { firstname: "Gollum", lastname: "" }, { firstname: "Glorfindel", lastname: "" }, { firstname: "Galadriel", lastname: "" }, { firstname: "Faramir", lastname: "Second Son of Denethor II" }, { firstname: "Boromir", lastname: "First Son of Denother II" }]
+        results: [{ firstname: "Frodoz", lastname: "Baggins" }, { firstname: "Samwise", lastname: "Gamgee" }, { firstname: "Gandalf", lastname: "the Grey" }, { firstname: "Gollum", lastname: "" }, { firstname: "Glorfindel", lastname: "" }, { firstname: "Galadriel", lastname: "" }, { firstname: "Faramir", lastname: "Second Son of Denethor II" }, { firstname: "Boromir", lastname: "First Son of Denother II" }]
       };
     },
 
@@ -11376,6 +11376,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         data: function data() {
             return {
                 searchInput: '',
+                searchInputOriginal: '',
                 currentIndex: null,
                 loading: false, /** Helps with making sure the dropdown doesn't stay open after certain actions */
                 didSelectFromOptions: false
@@ -11413,7 +11414,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                             var newIndex = this.currentIndex + direction;
                             this.setCurrentIndex(newIndex, this.suggestions.length, direction);
                             this.didSelectFromOptions = true;
-                            if (this.suggestions.length > 0 && this.currentIndex >= 0 && this.suggestions[this.currentIndex][this.resultItemKey]) {
+                            if (this.suggestions.length > 0 && this.currentIndex >= 0 && this.suggestions[this.currentIndex]) {
                                 this.setChangeItem(this.suggestions[this.currentIndex][this.resultItemKey]);
                                 this.didSelectFromOptions = true;
                             }
@@ -11443,6 +11444,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                             /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
                             this.loading = true;
                             this.currentIndex = null;
+                            this.searchInput = this.searchInputOriginal;
                             e.preventDefault();
                         }
                         break;
@@ -11461,7 +11463,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 var _this2 = this;
 
                 /** Clicks outside of dropdown to exit */
-                if (this.currentIndex === null || !this.suggestions[this.currentIndex][this.resultItemKey]) {
+                if (this.currentIndex === null || !this.suggestions[this.currentIndex]) {
                     this.loading = this.shouldRenderSuggestions();
                     return;
                 }
@@ -11535,6 +11537,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             searchInput: function searchInput(newValue, oldValue) {
                 this.value = newValue;
                 if (!this.didSelectFromOptions) {
+                    this.searchInputOriginal = this.value;
                     this.currentIndex = null;
                     this.inputProps.onInputChange(newValue);
                 }

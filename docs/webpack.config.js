@@ -1,10 +1,10 @@
 const path = require("path");
 const merge = require("webpack-merge");
 
-module.exports = merge(require("../webpack.base"), {
+module.exports = merge(require("../build/webpack.base"), {
   context: __dirname,
 
-  entry: "./app.js",
+  entry: "./index.js",
 
   output: {
     path: path.resolve(__dirname, "build"),
