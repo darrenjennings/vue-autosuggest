@@ -2,6 +2,7 @@
   <div>
     <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected {{selected}}</span></div>
     <vue-autosuggest 
+              :limit="limit"
               :suggestions="filteredOptions" 
               :on-selected="clickHandler"
               :result-item-key="'firstname'"
@@ -33,20 +34,31 @@ export default {
   },
   data() {
     return {
-      selected: '',
-      limit: 5,
+      selected: "",
+      limit: 10,
       options: [
         { firstname: "Frodo", lastname: "Baggins" },
         { firstname: "Samwise", lastname: "Gamgee" },
         { firstname: "Gandalf", lastname: "the Grey" },
-        { firstname: "Gollum", lastname: "" },
-        { firstname: "Glorfindel", lastname: "" },
-        { firstname: "Galadriel", lastname: "" },
-        { firstname: "Faramir", lastname: "Second Son of Denethor II" },
-        { firstname: "Boromir", lastname: "First Son of Denother II" }
+        { firstname: "Gollum", lastname: "aka Sméagol" },
+        { firstname: "Glorfindel" },
+        { firstname: "Galadriel" },
+        { firstname: "Faramir" },
+        { firstname: "Boromir" },
+        { firstname: "Saruman" },
+        { firstname: "Sauron" },
+        { firstname: "Eomer" },
+        { firstname: "Éowyn" },
+        { firstname: "Elrond" }
       ],
       filteredOptions: [],
-      inputProps:{id:'autosuggest__input', initialValue: '', onClick: () => {}, onInputChange: this.onInputChange, placeholder:'Type \'G\''}
+      inputProps: {
+        id: "autosuggest__input",
+        initialValue: "",
+        onClick: () => {},
+        onInputChange: this.onInputChange,
+        placeholder: "Type 'G'"
+      }
     };
   },
   methods: {
@@ -60,16 +72,5 @@ export default {
       this.selected = value;
     }
   }
-}
+};
 </script>
-<style>
-  .bullet {
-      width: 5px;
-  height: 5px;
-  margin-right: 10px;
-  background-color: #616161;
-  border-radius: 5px;
-  display: inline-block;
-
-  }
-</style>
