@@ -62,7 +62,7 @@ Basic usage:
 ```
 
 Examples
-https://jsfiddle.net/darrenjennings/dugbvezs/3/
+https://jsfiddle.net/darrenjennings/dugbvezs/
 
 // TODO more details...
 
