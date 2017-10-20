@@ -11,7 +11,7 @@ module.exports = merge(require("./webpack.base"), {
   },
 
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "../dist"),
     filename: "[name].js",
     library: "VueAutosuggest",
     libraryTarget: "umd"
