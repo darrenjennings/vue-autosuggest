@@ -14,6 +14,5 @@ script:
   - yarn build
 after_success:
   - yarn report-coverage
-  - yarn semantic-release
 branches:
   only: master

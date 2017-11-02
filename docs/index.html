@@ -9,8 +9,8 @@
     <script src="build/app.js" defer></script>
     <style>
         body{
-            max-width: 500px;
-            width:500px;
+            
+            width:800px;
             padding:20px;
             margin-left: auto!important;
             margin-right: auto!important;
@@ -52,12 +52,20 @@
             border-bottom-right-radius: 4px;
             background: white;
             padding: 0px;
+        }
+
+        .autosuggest__results ul {
             list-style: none;
+            padding-left: 5px;
         }
     
         .autosuggest__results .autosuggest__results_item {
             cursor: pointer;
             padding: 15px;
+        }
+
+        .autosuggest__results .autosuggest__results_title {
+            font-style: italic;
         }
 
         .autosuggest__results .autosuggest__results_item:active,

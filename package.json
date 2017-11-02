@@ -1,6 +1,6 @@
 {
   "name": "vue-autosuggest",
-  "version": "0.0.2-beta.4",
+  "version": "0.0.2-beta.5",
   "description": "Vue autosuggest component.",
   "main": "dist/index.js",
   "engines": {
@@ -17,8 +17,7 @@
     "test:coverage": "yarn jest -- --coverage",
     "test:update": "yarn test -- --updateSnapshot --coverage",
     "add-contributor": "kcd-scripts contributors add",
-    "setup": "yarn install",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "setup": "yarn install"
   },
   "files": [
     "dist"
@@ -67,7 +66,6 @@
     "jest": "21.2.1",
     "jest-serializer-html": "4.0.0",
     "jest-vue-preprocessor": "1.3.0",
-    "semantic-release": "8.2.0",
     "vue": "2.5.2",
     "vue-loader": "13.3.0",
     "vue-template-compiler": "2.5.2",
