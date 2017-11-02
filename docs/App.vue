@@ -3,23 +3,11 @@
     <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected {{selected}}</span></div>
     <vue-autosuggest 
               :limit="limit"
-              :suggestions="filteredOptions" 
-              :on-selected="clickHandler"
+              :suggestions="filteredOptions"
               :result-item-key="'firstname'"
               :input-props="inputProps"
+              :section-configs="sectionConfigs"
           >
-          <li slot="autosuggest"
-              slot-scope="props"
-              @mouseenter="props.mouseenter"
-              @mouseleave="props.mouseleave"
-              :data-suggestion-index="props.dataSuggestionIndex"
-              role="option"
-              class="autosuggest__results_item"
-              :class="props.class"
-              :id="props.id" 
-              :key="props.id">
-              <span class="bullet"></span><span v-html="props.styleItem(props.result.firstname)"></span>
-          </li>
     </vue-autosuggest>
   </div>
 </template>
@@ -37,20 +25,19 @@ export default {
       selected: "",
       limit: 10,
       options: [
-        { firstname: "Frodo", lastname: "Baggins" },
-        { firstname: "Samwise", lastname: "Gamgee" },
-        { firstname: "Gandalf", lastname: "the Grey" },
-        { firstname: "Gollum", lastname: "aka Sméagol" },
-        { firstname: "Glorfindel" },
-        { firstname: "Galadriel" },
-        { firstname: "Faramir" },
-        { firstname: "Boromir" },
-        { firstname: "Saruman" },
-        { firstname: "Sauron" },
-        { firstname: "Eomer" },
-        { firstname: "Éowyn" },
-        { firstname: "Elrond" }
       ],
+      sectionConfigs: {
+        "default": {
+          onSelected: function(item) {
+            alert('default: ' + item.label)
+          }
+        },
+        "url": {
+          onSelected: function(item) {
+            alert('url: ' + item.item.url);
+          }
+        }
+      },
       filteredOptions: [],
       inputProps: {
         id: "autosuggest__input",
@@ -63,13 +50,42 @@ export default {
   },
   methods: {
     onInputChange(text) {
-      this.filteredOptions = this.options.filter(person => {
-        return person.firstname.toLowerCase().indexOf(text.toLowerCase()) > -1;
-      });
-    },
-    clickHandler(e) {
-      let value = window.document.getElementById(this.inputProps.id).value;
-      this.selected = value;
+      this.filteredOptions = [{
+          "label": "Search",
+          "type": "default",
+          "data": [
+            "clifford kits",
+            "friendly chemistry",
+            "phonics",
+            "life of fred",
+            "life of fred math",
+            "magic school bus",
+            "math mammoth light blue",
+            "handwriting",
+            "math",
+            "minecraft",
+            "free worksheets",
+            "4th grade",
+            "snap circuits",
+            "bath toys",
+            "channies",
+            "fred",
+            "lego",
+            "math life of fred",
+            "multiplication",
+            "thinking tree" 
+          ]
+        },
+        {
+          "label": "Blog",
+          "type": "url",
+          "data": [
+            {"url": "http://bla.com/1", "value":"blog link 1"},
+            {"url": "http://bla.com/1", "value":"blog link 1"},
+            {"url": "http://bla.com/1", "value":"blog link 1"},
+            {"url": "http://bla.com/1", "value":"blog link 1"}
+          ]
+        }]
     }
   }
 };
