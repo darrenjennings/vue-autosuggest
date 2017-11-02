@@ -108,6 +108,7 @@ export default {
             }
         },
         created() {
+            
         },
         methods: {
             getSectionRef(i) {
@@ -265,7 +266,7 @@ export default {
                 }
             },
             generateName(name) {
-                return `${name.charAt(0).toUpperCase()}${name.slice(1)}Section`;
+                return `${name}-section`;
             },
             getType(type) {
                     if (!type) {
@@ -280,6 +281,7 @@ export default {
             if(input){
                 input.value = this.inputProps.initialValue; // set default query, e.g. loaded server side.
             }
+        
         },
         watch: {
             searchInput(newValue, oldValue) {

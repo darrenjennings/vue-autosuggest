@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Autosuggest can mount 1`] = `
+
+<div id="app">
+  <div id="autosuggest">
+    <input name="q"
+           type="text"
+           maxlength="256"
+           autocomplete="off"
+           aria-autosuggest="list"
+           aria-owns="autosuggest__results"
+           aria-activedescendant="autosuggest__results--item-null"
+           aria-haspopup="true"
+           id="autosuggest__input"
+           initialvalue
+           onclick="function onClick() {}"
+           oninputchange="function boundFn(a) {
+    var l = arguments.length;
+    return l
+      ? l > 1
+        ? fn.apply(ctx, arguments)
+        : fn.call(ctx, a)
+      : fn.call(ctx)
+  }"
+           placeholder="Type 'G'"
+           class="form-control autosuggest__input-open"
+    >
+    <div class="autosuggest__results-container">
+      <!---->
+    </div>
+  </div>
+</div>
+
+`;
