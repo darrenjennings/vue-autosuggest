@@ -12,7 +12,6 @@
             @mouseleave="onMouseLeave"
             :id="`autosuggest__results_item-${getItemIndex(key)}`"
             v-html="styleItem(val)"></li>
-        
     </ul>
 </template>
 
@@ -63,9 +62,6 @@ export default {
         onMouseLeave(event) {
             this.updateCurrentIndex(null);
         }
-    },
-    getLimit() {
-        return 10;
     }
 }
 </script>

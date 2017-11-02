@@ -52,9 +52,6 @@ export default {
         onMouseLeave(event) {
             this.updateCurrentIndex(null);
         }
-    },
-    getLimit() {
-        return 5;
     }
 }
 </script>

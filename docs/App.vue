@@ -1,9 +1,17 @@
 <template>
   <div>
     <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected {{selected}}</span></div>
+    <div>
     <vue-autosuggest 
-              :limit="limit"
               :suggestions="filteredOptions"
+              :result-item-key="'firstname'"
+              :input-props="inputProps"
+              :section-configs="sectionConfigs"
+          >
+    </vue-autosuggest>
+    </div>
+    <vue-autosuggest 
+              :suggestions="[filteredOptions[0]]"
               :result-item-key="'firstname'"
               :input-props="inputProps"
               :section-configs="sectionConfigs"
@@ -28,11 +36,13 @@ export default {
       ],
       sectionConfigs: {
         "default": {
+          limit: 5,
           onSelected: function(item) {
             alert('default: ' + item.label)
           }
         },
         "url": {
+          limit: 2,
           onSelected: function(item) {
             alert('url: ' + item.item.url);
           }
@@ -51,8 +61,6 @@ export default {
   methods: {
     onInputChange(text) {
       this.filteredOptions = [{
-          "label": "Search",
-          "type": "default",
           "data": [
             "clifford kits",
             "friendly chemistry",

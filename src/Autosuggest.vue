@@ -32,13 +32,11 @@
 <script>
 
 import DefaultSection from './parts/DefaultSection.vue';
-import UrlSection from './parts/UrlSection.vue';
 
 export default {
         name: 'autosuggest',
         components: {
-            DefaultSection,
-            UrlSection
+            DefaultSection
         },
         props: {
             inputProps: {
@@ -107,9 +105,6 @@ export default {
         computed: {
             isOpen() {
                 return this.shouldRenderSuggestions() && !this.loading;
-            },
-            suggestionsFiltered(){
-                return this.suggestions.slice(0, this.limit);
             }
         },
         created() {
@@ -143,6 +138,10 @@ export default {
             },
             handleKeyStroke(e) {
                 const {keyCode} = e;
+                const ignoredKeyCodes = [91, 92, 9]; // Don't trigger on tab, os key etc. 
+                if(ignoredKeyCodes.indexOf(keyCode) > -1){
+                    return;
+                }
                 this.loading = false;
                 this.didSelectFromOptions = false;
                 switch (keyCode) {
@@ -264,6 +263,15 @@ export default {
                     var reg = new RegExp('(\\s|^)' + className + '(\\s|$)')
                     el.className = el.className.replace(reg, ' ')
                 }
+            },
+            generateName(name) {
+                return `${name.charAt(0).toUpperCase()}${name.slice(1)}Section`;
+            },
+            getType(type) {
+                    if (!type) {
+                        type = 'default';
+                    }
+                    return type;
             }
         },
         mounted() {
@@ -285,22 +293,11 @@ export default {
             suggestions() {
                 this.computedSections = [];
                 this.computedSize = 0;
-                var generateName = function(name) {
-                    name = name.toString();
-                    return name.charAt(0).toUpperCase() + name.slice(1) + 'Section';
-                }
-
-                var getType = function(type) {
-                    if (!type) {
-                        type = 'default';
-                    }
-
-                    return type;
-                }
-
-                this.suggestions.forEach(function(section) {
-                    var n = generateName(getType(section.type));
-                    var lim = this.$options.components[n].getLimit();
+                
+                this.suggestions.forEach(section => {
+                    const t = this.getType(section.type);
+                    const n = this.generateName(t);
+                    var lim = this.sectionConfigs[t].limit ? this.sectionConfigs[t].limit : Infinity;
                     lim = (section.data.length < lim) ? section.data.length : lim;
                     var obj = {
                         limit: lim,
@@ -309,7 +306,7 @@ export default {
                         label: section.label,
                         start_index: this.computedSize,
                         end_index: this.computedSize + lim - 1,
-                        type: getType(section.type)
+                        type: t
                     };
                     this.computedSections.push(obj);
                     this.computedSize += lim;
