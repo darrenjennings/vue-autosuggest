@@ -65,7 +65,9 @@
     "ghooks": "2.0.0",
     "jest": "21.2.1",
     "jest-serializer-html": "4.0.1",
+    "kcd-scripts": "0.27.1",
     "vue": "2.5.2",
+    "vue-jest": "1.0.0",
     "vue-loader": "13.3.0",
     "vue-server-renderer": "2.5.2",
     "vue-template-compiler": "2.5.2",
@@ -87,10 +89,7 @@
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
-    }
-  },
-  "dependencies": {
-    "kcd-scripts": "^0.27.1",
-    "vue-jest": "1.0.0"
+    },
+    "mapCoverage": true    
   }
 }

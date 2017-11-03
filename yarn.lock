@@ -4542,7 +4542,7 @@ jsx-ast-utils@^2.0.0:
   dependencies:
     array-includes "^3.0.3"
 
-kcd-scripts@^0.27.1:
+kcd-scripts@0.27.1:
   version "0.27.1"
   resolved "https://registry.yarnpkg.com/kcd-scripts/-/kcd-scripts-0.27.1.tgz#5f538b330b10620eae24723a776504aa685352ef"
   dependencies:

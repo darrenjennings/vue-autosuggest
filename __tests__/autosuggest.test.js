@@ -28,16 +28,6 @@ describe("Autosuggest", () => {
         "multiplication",
         "thinking tree"
       ]
-    },
-    {
-      label: "Blog",
-      type: "url",
-      data: [
-        { url: "http://bla.com/1", value: "blog link 1" },
-        { url: "http://bla.com/1", value: "blog link 1" },
-        { url: "http://bla.com/1", value: "blog link 1" },
-        { url: "http://bla.com/1", value: "blog link 1" }
-      ]
     }
   ];
 
@@ -78,21 +68,23 @@ describe("Autosuggest", () => {
   });
 
   it("can render suggestions", async () => {
-    const wrapper = shallow(Autosuggest, {
+    const wrapper = mount(Autosuggest, {
       propsData: defaultProps
     });
 
-    wrapper.find("#autosuggest__input").trigger("click");
-    wrapper.setData({searchInput: 'G'});
+    const input = wrapper.find("input");
+    expect(input.hasAttribute("id", defaultProps.inputProps.id));
+
+    input.trigger("click");
+    wrapper.setData({ searchInput: "G" });
+    input.trigger("keydown.down");
+    
+    expect(wrapper.findAll(`ul li`).length).toBeLessThanOrEqual(defaultProps.sectionConfigs.default.limit);
+
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
-      if (err) throw new Error(err);
       expect(str).toMatchSnapshot();
     });
-    //expect(document.body.querySelector(`#${id}`).id).toEqual(id);
-    //expect(document.querySelectorAll(`ul li`).length).toEqual(
-    //  filteredOptions[0].data.length + filteredOptions[1].data.length + 1
-    //);
   });
   /*
   it("can filter suggestions", async () => {
