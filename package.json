@@ -83,6 +83,9 @@
       "js",
       "vue"
     ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
     "snapshotSerializers": [
       "<rootDir>/node_modules/jest-serializer-html"
     ],
