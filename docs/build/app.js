@@ -11321,7 +11321,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 return this.section.data.slice(0, l);
             },
             className: function className() {
-                return 'autosuggest__results_title ' + 'autosuggest__results_title_' + this.section.type;
+                return 'autosuggest__results_title ' + 'autosuggest__results_title_' + this.section.name;
             }
         },
         methods: {
@@ -11349,7 +11349,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},[(_vm.section.label)?_c('li',{class:_vm.className},[_vm._v(_vm._s(_vm.section.label))]):_vm._e(),_vm._v(" "),_vm._l((_vm.list),function(val,key){return _c('li',{key:_vm.getItemIndex(key),staticClass:"autosuggest__results_item",class:{'autosuggest__results_item-highlighted' : _vm.getItemIndex(key) == _vm.currentIndex, 'autosuggest__results_item':true},attrs:{"role":"option","data-suggestion-index":_vm.getItemIndex(key),"data-section-type":_vm.section.type,"id":("autosuggest__results_item-" + (_vm.getItemIndex(key)))},on:{"mouseenter":_vm.onMouseEnter,"mouseleave":_vm.onMouseLeave}},[_vm._v(_vm._s(val.value))])})],2)}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},[(_vm.section.label)?_c('li',{class:_vm.className},[_vm._v(_vm._s(_vm.section.label))]):_vm._e(),_vm._v(" "),_vm._l((_vm.list),function(val,key){return _c('li',{key:_vm.getItemIndex(key),staticClass:"autosuggest__results_item",class:{'autosuggest__results_item-highlighted' : _vm.getItemIndex(key) == _vm.currentIndex, 'autosuggest__results_item':true},attrs:{"role":"option","data-suggestion-index":_vm.getItemIndex(key),"data-section-name":_vm.section.name,"id":("autosuggest__results_item-" + (_vm.getItemIndex(key)))},on:{"mouseenter":_vm.onMouseEnter,"mouseleave":_vm.onMouseLeave}},[_vm._v(_vm._s(val.value))])})],2)}
 var staticRenderFns = []
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
@@ -11435,13 +11435,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         options: [],
         sectionConfigs: {
           "default": {
-            limit: 5,
+            limit: 6,
             onSelected: function onSelected(item) {
               alert('default: ' + item.label);
             }
           },
-          "url": {
-            limit: 2,
+          "blog": {
+            limit: 3,
+            type: 'url-section',
             onSelected: function onSelected(item) {
               alert('url: ' + item.item.url);
             }
@@ -11464,8 +11465,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           "data": ["clifford kits", "friendly chemistry", "phonics", "life of fred", "life of fred math", "magic school bus", "math mammoth light blue", "handwriting", "math", "minecraft", "free worksheets", "4th grade", "snap circuits", "bath toys", "channies", "fred", "lego", "math life of fred", "multiplication", "thinking tree"]
         }, {
           "label": "Blog",
-          "type": "url",
-          "data": [{ "url": "http://bla.com/1", "value": "blog link 1" }, { "url": "http://bla.com/1", "value": "blog link 1" }, { "url": "http://bla.com/1", "value": "blog link 1" }, { "url": "http://bla.com/1", "value": "blog link 1" }]
+          "name": "blog",
+          "data": [{ "url": "http://bla.com/1", "value": "blog link 1" }, { "url": "http://bla.com/2", "value": "blog link 2" }, { "url": "http://bla.com/3", "value": "blog link 3" }, { "url": "http://bla.com/4", "value": "blog link 4" }]
         }];
       }
     }
@@ -11605,8 +11606,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 computedSections: [],
                 computedSize: 0,
                 onSelected: function onSelected() {
-                    if (this.currentItem && this.sectionConfigs[this.currentItem.type]) {
-                        this.sectionConfigs[this.currentItem.type].onSelected(this.currentItem);
+                    if (this.currentItem && this.sectionConfigs[this.currentItem.name]) {
+                        this.sectionConfigs[this.currentItem.name].onSelected(this.currentItem);
                     }
                 }
             };
@@ -11616,8 +11617,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 return this.shouldRenderSuggestions() && !this.loading;
             }
         },
-        created: function created() {},
-
         methods: {
             getSectionRef: function getSectionRef(i) {
                 return 'computed_section_' + i;
@@ -11627,13 +11626,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             getItemByIndex: function getItemByIndex(index) {
                 var obj = false;
-                if (!index) return obj;
+                if (index === null) return obj;
                 for (var i = 0; i < this.computedSections.length; i++) {
                     if (index >= this.computedSections[i].start_index && index <= this.computedSections[i].end_index) {
                         var trueIndex = index - this.computedSections[i].start_index;
                         var childSection = this.$refs['computed_section_' + i][0];
                         if (childSection) {
                             obj = {
+                                "name": this.computedSections[i].name,
                                 "type": this.computedSections[i].type,
                                 "label": childSection.getLabelByIndex(trueIndex),
                                 "item": childSection.getItemByIndex(trueIndex)
@@ -11662,6 +11662,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         // ArrowUp
                         e.preventDefault();
                         if (this.isOpen) {
+                            if (keyCode === 38 && this.currentIndex === null) {
+                                break;
+                            }
                             // Determine direction of arrow up/down and determine new currentIndex
                             var direction = keyCode === 40 ? 1 : -1;
                             var newIndex = this.currentIndex + direction;
@@ -11670,6 +11673,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                             if (this.getSize() > 0 && this.currentIndex >= 0) {
                                 this.setChangeItem(this.getItemByIndex(this.currentIndex));
                                 this.didSelectFromOptions = true;
+                            } else if (this.currentIndex == -1) {
+                                this.currentIndex = null;
+                                this.searchInput = this.searchInputOriginal;
+                                e.preventDefault();
                             }
                         }
                         break;
@@ -11723,7 +11730,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 /** Selects an item in the dropdown */
                 this.loading = true;
-
                 this.setChangeItem(this.getItemByIndex(this.currentIndex));
                 this.$nextTick(function () {
                     _this2.onSelected(true);
@@ -11779,14 +11785,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     el.className = el.className.replace(reg, ' ');
                 }
             },
-            generateName: function generateName(name) {
-                return '' + name.charAt(0).toUpperCase() + name.slice(1) + 'Section';
-            },
-            getType: function getType(type) {
-                if (!type) {
-                    type = 'default';
+            getSectionName: function getSectionName(section) {
+                if (!section.name) {
+                    section.name = 'default';
                 }
-                return type;
+
+                return section.name;
             }
         },
         mounted: function mounted() {
@@ -11806,29 +11810,38 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     this.inputProps.onInputChange(newValue);
                 }
             },
-            suggestions: function suggestions() {
-                var _this3 = this;
 
-                this.computedSections = [];
-                this.computedSize = 0;
+            suggestions: {
+                immediate: true,
+                handler: function handler(oldValue, newValue) {
+                    var _this3 = this;
 
-                this.suggestions.forEach(function (section) {
-                    var t = _this3.getType(section.type);
-                    var n = _this3.generateName(t);
-                    var lim = _this3.sectionConfigs[t].limit ? _this3.sectionConfigs[t].limit : Infinity;
-                    lim = section.data.length < lim ? section.data.length : lim;
-                    var obj = {
-                        limit: lim,
-                        name: n,
-                        data: section.data,
-                        label: section.label,
-                        start_index: _this3.computedSize,
-                        end_index: _this3.computedSize + lim - 1,
-                        type: t
-                    };
-                    _this3.computedSections.push(obj);
-                    _this3.computedSize += lim;
-                }, this);
+                    this.computedSections = [];
+                    this.computedSize = 0;
+
+                    this.suggestions.forEach(function (section) {
+                        var n = _this3.getSectionName(section);
+                        var t;
+                        if (_this3.sectionConfigs[n] && _this3.sectionConfigs[n].type) {
+                            t = _this3.sectionConfigs[n].type;
+                        } else {
+                            t = 'default-section';
+                        }
+                        var lim = _this3.sectionConfigs[n].limit ? _this3.sectionConfigs[n].limit : Infinity;
+                        lim = section.data.length < lim ? section.data.length : lim;
+                        var obj = {
+                            limit: lim,
+                            name: n,
+                            data: section.data,
+                            label: section.label,
+                            start_index: _this3.computedSize,
+                            end_index: _this3.computedSize + lim - 1,
+                            type: t
+                        };
+                        _this3.computedSections.push(obj);
+                        _this3.computedSize += lim;
+                    }, this);
+                }
             }
         }
     };
@@ -11911,12 +11924,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 return this.section.data.slice(0, l);
             },
             className: function className() {
-                return 'autosuggest__results_title ' + 'autosuggest__results_title_' + this.section.type;
+                return 'autosuggest__results_title autosuggest__results_title_' + this.section.name;
             }
         },
         methods: {
             styleItem: function styleItem(text) {
-                if (this.searchInput) {
+                if (this.searchInput && typeof text === 'string' && this.searchInput !== text) {
                     var value = this.searchInput.trim();
                     var r = new RegExp('' + value, 'ig');
                     return text.replace(r, '<b>' + value + '</b>');
@@ -11948,7 +11961,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},[(_vm.section.label)?_c('li',{class:_vm.className},[_vm._v(_vm._s(_vm.section.label))]):_vm._e(),_vm._v(" "),_vm._l((_vm.list),function(val,key){return _c('li',{key:_vm.getItemIndex(key),staticClass:"autosuggest__results_item",class:{'autosuggest__results_item-highlighted' : _vm.getItemIndex(key) == _vm.currentIndex, 'autosuggest__results_item':true},attrs:{"role":"option","data-suggestion-index":_vm.getItemIndex(key),"data-section-type":_vm.section.type,"id":("autosuggest__results_item-" + (_vm.getItemIndex(key)))},domProps:{"innerHTML":_vm._s(_vm.styleItem(val))},on:{"mouseenter":_vm.onMouseEnter,"mouseleave":_vm.onMouseLeave}})})],2)}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},[(_vm.section.label)?_c('li',{class:_vm.className},[_vm._v(_vm._s(_vm.section.label))]):_vm._e(),_vm._v(" "),_vm._l((_vm.list),function(val,key){return _c('li',{key:_vm.getItemIndex(key),staticClass:"autosuggest__results_item",class:{'autosuggest__results_item-highlighted' : _vm.getItemIndex(key) == _vm.currentIndex, 'autosuggest__results_item':true},attrs:{"role":"option","data-suggestion-index":_vm.getItemIndex(key),"data-section-name":_vm.section.name,"id":("autosuggest__results_item-" + (_vm.getItemIndex(key)))},domProps:{"innerHTML":_vm._s(_vm.styleItem(val))},on:{"mouseenter":_vm.onMouseEnter,"mouseleave":_vm.onMouseLeave}})})],2)}
 var staticRenderFns = []
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
@@ -11958,7 +11971,7 @@ var esExports = { render: render, staticRenderFns: staticRenderFns }
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"autosuggest"}},[_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"name":"q","type":"text","maxlength":"256","autocomplete":"off","aria-autosuggest":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen ? ("autosuggest__results--item-" + _vm.currentIndex) : '',"aria-haspopup":_vm.isOpen},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"click":_vm.onClick,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value}}},'input',_vm.inputProps,false)),_vm._v(" "),_c('div',{staticClass:"autosuggest__results-container"},[(_vm.getSize() > 0 && !_vm.loading)?_c('div',{staticClass:"autosuggest__results",attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},_vm._l((this.computedSections),function(cs,key){return _c(cs.name,{key:_vm.getSectionRef(key),ref:_vm.getSectionRef(key),refInFor:true,tag:"component",attrs:{"section":cs,"updateCurrentIndex":_vm.updateCurrentIndex,"searchInput":_vm.searchInput}})})):_vm._e()])])}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"autosuggest"}},[_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"name":"q","type":"text","maxlength":"256","autocomplete":"off","aria-autosuggest":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen && _vm.currentIndex !== null ? ("autosuggest__results--item-" + _vm.currentIndex) : '',"aria-haspopup":_vm.isOpen},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"click":_vm.onClick,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value}}},'input',_vm.inputProps,false)),_vm._v(" "),_c('div',{staticClass:"autosuggest__results-container"},[(_vm.getSize() > 0 && !_vm.loading)?_c('div',{staticClass:"autosuggest__results",attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},_vm._l((this.computedSections),function(cs,key){return _c(cs.type,{key:_vm.getSectionRef(key),ref:_vm.getSectionRef(key),refInFor:true,tag:"component",attrs:{"section":cs,"updateCurrentIndex":_vm.updateCurrentIndex,"searchInput":_vm.searchInput}})})):_vm._e()])])}
 var staticRenderFns = []
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
@@ -11968,7 +11981,7 @@ var esExports = { render: render, staticRenderFns: staticRenderFns }
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticStyle:{"padding-top":"10px","margin-bottom":"10px"}},[(_vm.selected)?_c('span',[_vm._v("You have selected "+_vm._s(_vm.selected))]):_vm._e()]),_vm._v(" "),_c('div',[_c('vue-autosuggest',{attrs:{"suggestions":_vm.filteredOptions,"result-item-key":'firstname',"input-props":_vm.inputProps,"section-configs":_vm.sectionConfigs}})],1),_vm._v(" "),_c('vue-autosuggest',{attrs:{"suggestions":[_vm.filteredOptions[0]],"result-item-key":'firstname',"input-props":_vm.inputProps,"section-configs":_vm.sectionConfigs}})],1)}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticStyle:{"padding-top":"10px","margin-bottom":"10px"}},[(_vm.selected)?_c('span',[_vm._v("You have selected "+_vm._s(_vm.selected))]):_vm._e()]),_vm._v(" "),_c('div',[_c('vue-autosuggest',{attrs:{"suggestions":_vm.filteredOptions,"result-item-key":'firstname',"input-props":_vm.inputProps,"section-configs":_vm.sectionConfigs}})],1)])}
 var staticRenderFns = []
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
