@@ -10,13 +10,6 @@
           >
     </vue-autosuggest>
     </div>
-    <vue-autosuggest 
-              :suggestions="[filteredOptions[0]]"
-              :result-item-key="'firstname'"
-              :input-props="inputProps"
-              :section-configs="sectionConfigs"
-          >
-    </vue-autosuggest>
   </div>
 </template>
 
@@ -36,13 +29,14 @@ export default {
       ],
       sectionConfigs: {
         "default": {
-          limit: 5,
+          limit: 6,
           onSelected: function(item) {
             alert('default: ' + item.label)
           }
         },
-        "url": {
-          limit: 2,
+        "blog": {
+          limit: 3,
+          type: 'url-section',
           onSelected: function(item) {
             alert('url: ' + item.item.url);
           }
@@ -86,12 +80,12 @@ export default {
         },
         {
           "label": "Blog",
-          "type": "url",
+          "name": "blog",
           "data": [
             {"url": "http://bla.com/1", "value":"blog link 1"},
-            {"url": "http://bla.com/1", "value":"blog link 1"},
-            {"url": "http://bla.com/1", "value":"blog link 1"},
-            {"url": "http://bla.com/1", "value":"blog link 1"}
+            {"url": "http://bla.com/2", "value":"blog link 2"},
+            {"url": "http://bla.com/3", "value":"blog link 3"},
+            {"url": "http://bla.com/4", "value":"blog link 4"}
           ]
         }]
     }
