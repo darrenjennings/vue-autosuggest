@@ -16,7 +16,7 @@ exports[`Autosuggest can mount 1`] = `
          id="autosuggest__input"
          initialvalue
          onclick="function onClick() {}"
-         oninputchange="function onInputChange(text) {}"
+         oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
          value
          class="form-control autosuggest__input-open"
@@ -49,9 +49,9 @@ exports[`Autosuggest can render suggestions 1`] = `
          id="autosuggest__input"
          initialvalue
          onclick="function onClick() {}"
-         oninputchange="function onInputChange(text) {}"
+         oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         value="G"
+         value="clifford kits"
          class="form-control autosuggest__input-open"
   >
   <div class="autosuggest__results-container">
@@ -65,7 +65,7 @@ exports[`Autosuggest can render suggestions 1`] = `
         <!---->
         <li role="option"
             data-suggestion-index="0"
-            data-section-type="default"
+            data-section-name="default"
             id="autosuggest__results_item-0"
             class="autosuggest__results_item autosuggest__results_item"
         >
@@ -73,7 +73,7 @@ exports[`Autosuggest can render suggestions 1`] = `
         </li>
         <li role="option"
             data-suggestion-index="1"
-            data-section-type="default"
+            data-section-name="default"
             id="autosuggest__results_item-1"
             class="autosuggest__results_item autosuggest__results_item"
         >
@@ -81,7 +81,7 @@ exports[`Autosuggest can render suggestions 1`] = `
         </li>
         <li role="option"
             data-suggestion-index="2"
-            data-section-type="default"
+            data-section-name="default"
             id="autosuggest__results_item-2"
             class="autosuggest__results_item autosuggest__results_item"
         >
@@ -89,7 +89,7 @@ exports[`Autosuggest can render suggestions 1`] = `
         </li>
         <li role="option"
             data-suggestion-index="3"
-            data-section-type="default"
+            data-section-name="default"
             id="autosuggest__results_item-3"
             class="autosuggest__results_item autosuggest__results_item"
         >
@@ -97,7 +97,7 @@ exports[`Autosuggest can render suggestions 1`] = `
         </li>
         <li role="option"
             data-suggestion-index="4"
-            data-section-type="default"
+            data-section-name="default"
             id="autosuggest__results_item-4"
             class="autosuggest__results_item autosuggest__results_item"
         >

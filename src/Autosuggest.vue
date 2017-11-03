@@ -107,9 +107,6 @@ export default {
                 return this.shouldRenderSuggestions() && !this.loading;
             }
         },
-        created() {
-            
-        },
         methods: {
             getSectionRef(i) {
                 return 'computed_section_' + i;
@@ -297,7 +294,9 @@ export default {
                     this.inputProps.onInputChange(newValue);
                 }
             },
-            suggestions() {
+            suggestions: {
+              immediate: true,
+              handler(oldValue, newValue){
                 this.computedSections = [];
                 this.computedSize = 0;
                 
@@ -323,6 +322,7 @@ export default {
                     this.computedSections.push(obj);
                     this.computedSize += lim;
                 }, this);
+              }
             }
         }
     }

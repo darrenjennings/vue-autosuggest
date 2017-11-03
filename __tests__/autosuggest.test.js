@@ -38,7 +38,7 @@ describe("Autosuggest", () => {
       id: "autosuggest__input",
       initialValue: "",
       onClick: () => {},
-      onInputChange: text => {},
+      onInputChange: () => {},
       placeholder: "Type 'G'"
     },
     sectionConfigs: {

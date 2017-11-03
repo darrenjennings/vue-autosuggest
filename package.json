@@ -78,7 +78,6 @@
     "webpack-merge": "4.1.0"
   },
   "jest": {
-    "testRegex": "test.js$",
     "moduleFileExtensions": [
       "js",
       "vue"
@@ -86,13 +85,15 @@
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
     },
-    "snapshotSerializers": [
-      "<rootDir>/node_modules/jest-serializer-html"
-    ],
+    "verbose": true,
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
     },
-    "mapCoverage": true    
-  }
+    "snapshotSerializers": [
+      "<rootDir>/node_modules/jest-serializer-html"
+    ],
+    "mapCoverage": true
+  },
+  "dependencies": {}
 }
