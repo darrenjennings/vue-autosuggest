@@ -1,6 +1,6 @@
 {
   "name": "vue-autosuggest",
-  "version": "0.0.2-beta.6",
+  "version": "0.0.2-beta.7",
   "description": "Vue autosuggest component.",
   "main": "dist/index.js",
   "engines": {
@@ -65,7 +65,9 @@
     "ghooks": "2.0.0",
     "jest": "21.2.1",
     "jest-serializer-html": "4.0.1",
+    "kcd-scripts": "0.27.1",
     "vue": "2.5.2",
+    "vue-jest": "1.0.0",
     "vue-loader": "13.3.0",
     "vue-server-renderer": "2.5.2",
     "vue-template-compiler": "2.5.2",
@@ -76,21 +78,22 @@
     "webpack-merge": "4.1.0"
   },
   "jest": {
-    "testRegex": "test.js$",
     "moduleFileExtensions": [
       "js",
       "vue"
     ],
-    "snapshotSerializers": [
-      "<rootDir>/node_modules/jest-serializer-html"
-    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "verbose": true,
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
-    }
+    },
+    "snapshotSerializers": [
+      "<rootDir>/node_modules/jest-serializer-html"
+    ],
+    "mapCoverage": true
   },
-  "dependencies": {
-    "kcd-scripts": "^0.27.1",
-    "vue-jest": "1.0.0"
-  }
+  "dependencies": {}
 }

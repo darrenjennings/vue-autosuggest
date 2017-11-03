@@ -5,3 +5,4 @@ dist
 .opt-out
 .DS_Store
 .eslintcache
+.idea
