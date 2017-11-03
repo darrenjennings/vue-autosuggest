@@ -1,9 +1,8 @@
-import Vue from "vue/dist/vue";
-import Autosuggest from "../src/index";
+import { mount, shallow, createLocalVue } from "vue-test-utils";
+import Autosuggest from "../src/Autosuggest";
+import { createRenderer } from "vue-server-renderer";
 
 describe("Autosuggest", () => {
-  Vue.use(Autosuggest);
-
   const id = `autosuggest__input`;
   const filteredOptions = [
     {
@@ -42,87 +41,60 @@ describe("Autosuggest", () => {
     }
   ];
 
-  const defaultVM = {
-    data() {
-      return {
-        selected: "",
-        limit: 10,
-        options: [],
-        sectionConfigs: {
-          default: {
-            limit: 5,
-            onSelected: function(item) {
-              alert("default: " + item.label);
-            }
-          },
-          url: {
-            limit: 2,
-            onSelected: function(item) {
-              alert("url: " + item.item.url);
-            }
-          }
-        },
-        filteredOptions: [],
-        inputProps: {
-          id: "autosuggest__input",
-          initialValue: "",
-          onClick: () => {},
-          onInputChange: this.onInputChange,
-          placeholder: "Type 'G'"
-        }
-      };
+  const defaultProps = {
+    suggestions: filteredOptions,
+    resultItemKey: "firstname",
+    inputProps: {
+      id: "autosuggest__input",
+      initialValue: "",
+      onClick: () => {},
+      onInputChange: text => {},
+      placeholder: "Type 'G'"
     },
-    methods: {
-      onInputChange(text) {
-        this.filteredOptions = filteredOptions;
+    sectionConfigs: {
+      default: {
+        limit: 5,
+        onSelected: function(item) {
+          alert("default: " + item.label);
+        }
       }
     }
   };
 
   it("can mount", async () => {
-    document.body.innerHTML = `
-            <div id="app">
-                <vue-autosuggest 
-                :suggestions="filteredOptions"
-                :result-item-key="'firstname'"
-                :input-props="inputProps"
-                :section-configs="sectionConfigs">
-                </vue-autosuggest>
-            </div>
-        `;
+    const props = Object.assign({}, defaultProps);
+    props.inputProps = Object.assign({}, defaultProps.inputProps);
+    props.suggestions = [filteredOptions[0]];
 
-    createVm(defaultVM).then(() => {
-      expect(document.body.innerHTML).toMatchSnapshot();
+    const wrapper = shallow(Autosuggest, {
+      propsData: props
+    });
+
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) throw new Error(err);
+      expect(str).toMatchSnapshot();
     });
   });
 
-  /*
   it("can render suggestions", async () => {
-    document.body.innerHTML = `
-            <div id="app">
-              <vue-autosuggest 
-              :suggestions="filteredOptions"
-              :result-item-key="'firstname'"
-              :input-props="inputProps"
-              :section-configs="sectionConfigs">
-              </vue-autosuggest>
-            </div>
-        `;
-    
-    const searchText = "E";
-    const autosuggest = await createVm(defaultVM);
+    const wrapper = shallow(Autosuggest, {
+      propsData: defaultProps
+    });
 
-    autosuggest.searchInput = searchText;
-
-    await Vue.nextTick(() => {});
-
-    expect(document.body.innerHTML).toMatchSnapshot();
-    expect(document.body.querySelector(`#${id}`).id).toEqual(id);
-    expect(document.querySelectorAll(`ul li`).length).toEqual(
-      filteredOptions[0].data.length + filteredOptions[1].data.length + 1
-    );
+    wrapper.find("#autosuggest__input").trigger("click");
+    wrapper.setData({searchInput: 'G'});
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) throw new Error(err);
+      expect(str).toMatchSnapshot();
+    });
+    //expect(document.body.querySelector(`#${id}`).id).toEqual(id);
+    //expect(document.querySelectorAll(`ul li`).length).toEqual(
+    //  filteredOptions[0].data.length + filteredOptions[1].data.length + 1
+    //);
   });
-  
+  /*
   it("can filter suggestions", async () => {
     document.body.innerHTML = `
             <div id="app">

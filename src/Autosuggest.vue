@@ -12,7 +12,7 @@
                v-bind="inputProps"
                aria-autosuggest="list"
                aria-owns="autosuggest__results"
-               :aria-activedescendant="isOpen ? `autosuggest__results--item-${currentIndex}` : ''"
+               :aria-activedescendant="isOpen && currentIndex !== null ? `autosuggest__results--item-${currentIndex}` : ''"
                :aria-haspopup="isOpen"
         />
         <div class="autosuggest__results-container">
