@@ -20,6 +20,18 @@
         "design",
         "example"
       ]
+    },
+    {
+      "login": "ekulish",
+      "name": "Evgeniy Kulish",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/411772?v=4",
+      "profile": "https://github.com/ekulish",
+      "contributions": [
+        "code",
+        "design",
+        "example",
+        "test"
+      ]
     }
   ]
 }

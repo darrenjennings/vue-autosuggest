@@ -90,6 +90,7 @@
     }
   },
   "dependencies": {
+    "kcd-scripts": "^0.27.1",
     "vue-jest": "1.0.0"
   }
 }
