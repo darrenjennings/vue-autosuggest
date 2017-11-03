@@ -34,12 +34,12 @@ export default {
             return this.section.data.slice(0, l);
         },
         className: function() {
-            return 'autosuggest__results_title ' + 'autosuggest__results_title_' + this.section.name;
+            return `autosuggest__results_title autosuggest__results_title_${this.section.name}`;
         }
     },
     methods: {
         styleItem(text) {
-            if (this.searchInput && typeof(text) === 'string' && (this.searchInput != text)) {
+            if (this.searchInput && typeof(text) === 'string' && (this.searchInput !== text)) {
                 const value = this.searchInput.trim();
                 const r = new RegExp(`${value}`, 'ig');
                 return text.replace(r, `<b>${value}</b>`);

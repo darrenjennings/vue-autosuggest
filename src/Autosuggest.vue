@@ -278,12 +278,6 @@ export default {
                 }
 
                 return section.name;
-            },
-            getSectionType(section) {
-                if (!section.type) {
-                    section.type = 'default-section';
-                }
-                return section.type;
             }
         },
         mounted() {
