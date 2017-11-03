@@ -23,7 +23,7 @@
                     v-if="getSize() > 0 && !loading"
                     >
                     <component v-for="(cs, key) in this.computedSections" 
-                        :is="cs.name" :section="cs" :ref="getSectionRef(key)" :key="getSectionRef(key)" :updateCurrentIndex="updateCurrentIndex" :searchInput="searchInput"></component>
+                        :is="cs.type" :section="cs" :ref="getSectionRef(key)" :key="getSectionRef(key)" :updateCurrentIndex="updateCurrentIndex" :searchInput="searchInput"></component>
                 </div>
         </div>
     </div>
@@ -96,9 +96,9 @@ export default {
             didSelectFromOptions: false,
             computedSections: [],
             computedSize: 0,
-            onSelected: function(){
-                if (this.currentItem && this.sectionConfigs[this.currentItem.type]) {
-                    this.sectionConfigs[this.currentItem.type].onSelected(this.currentItem);
+            onSelected: function() {
+                if (this.currentItem && this.sectionConfigs[this.currentItem.name]) {
+                    this.sectionConfigs[this.currentItem.name].onSelected(this.currentItem);
                 }
             }
         }),
@@ -119,13 +119,14 @@ export default {
             },
             getItemByIndex(index) {
                 let obj = false;
-                if (!index) return obj;
+                if (index === null) return obj;
                 for (var i = 0; i < this.computedSections.length; i++) {
                     if (index >= this.computedSections[i].start_index && index <= this.computedSections[i].end_index) {
                         let trueIndex = index - this.computedSections[i].start_index;
                         let childSection = this.$refs['computed_section_' + i][0];
                         if (childSection) {
                             obj = {
+                                "name": this.computedSections[i].name,
                                 "type": this.computedSections[i].type,
                                 "label": childSection.getLabelByIndex(trueIndex),
                                 "item": childSection.getItemByIndex(trueIndex)
@@ -150,6 +151,9 @@ export default {
                     case 38: // ArrowUp
                         e.preventDefault();
                         if (this.isOpen) {
+                            if (keyCode === 38 && this.currentIndex === null) {
+                                break;
+                            }
                             // Determine direction of arrow up/down and determine new currentIndex
                             const direction = keyCode === 40 ? 1 : -1;
                             const newIndex = this.currentIndex + direction;
@@ -158,6 +162,10 @@ export default {
                             if (this.getSize() > 0 && this.currentIndex >= 0) {
                                 this.setChangeItem(this.getItemByIndex(this.currentIndex));
                                 this.didSelectFromOptions = true;
+                            } else if (this.currentIndex == -1) {
+                                this.currentIndex = null;
+                                this.searchInput = this.searchInputOriginal;
+                                e.preventDefault();
                             }
                         }
                         break;
@@ -205,8 +213,7 @@ export default {
                 }
 
                 /** Selects an item in the dropdown */
-                this.loading = true;
-                
+                this.loading = true;                
                 this.setChangeItem(this.getItemByIndex(this.currentIndex));
                 this.$nextTick(() => {
                     this.onSelected(true);
@@ -265,14 +272,18 @@ export default {
                     el.className = el.className.replace(reg, ' ')
                 }
             },
-            generateName(name) {
-                return `${name}-section`;
+            getSectionName(section) {
+                if (!section.name) {
+                    section.name = 'default';
+                }
+
+                return section.name;
             },
-            getType(type) {
-                    if (!type) {
-                        type = 'default';
-                    }
-                    return type;
+            getSectionType(section) {
+                if (!section.type) {
+                    section.type = 'default-section';
+                }
+                return section.type;
             }
         },
         mounted() {
@@ -297,9 +308,14 @@ export default {
                 this.computedSize = 0;
                 
                 this.suggestions.forEach(section => {
-                    const t = this.getType(section.type);
-                    const n = this.generateName(t);
-                    var lim = this.sectionConfigs[t].limit ? this.sectionConfigs[t].limit : Infinity;
+                    const n = this.getSectionName(section);
+                    var t;
+                    if (this.sectionConfigs[n] && this.sectionConfigs[n].type) {
+                        t = this.sectionConfigs[n].type;
+                    } else {
+                        t = 'default-section';
+                    }
+                    var lim = this.sectionConfigs[n].limit ? this.sectionConfigs[n].limit : Infinity;
                     lim = (section.data.length < lim) ? section.data.length : lim;
                     var obj = {
                         limit: lim,

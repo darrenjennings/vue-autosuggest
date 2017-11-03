@@ -7,7 +7,7 @@
             :key="getItemIndex(key)" 
             :class="{'autosuggest__results_item-highlighted' : getItemIndex(key) == currentIndex, 'autosuggest__results_item':true}" 
             :data-suggestion-index="getItemIndex(key)"
-            :data-section-type="section.type"
+            :data-section-name="section.name"
             @mouseenter="onMouseEnter"
             @mouseleave="onMouseLeave"
             :id="`autosuggest__results_item-${getItemIndex(key)}`">{{val.value}}</li>
@@ -33,7 +33,7 @@ export default {
             return this.section.data.slice(0, l);
         },
         className: function() {
-            return 'autosuggest__results_title ' + 'autosuggest__results_title_' + this.section.type;
+            return 'autosuggest__results_title ' + 'autosuggest__results_title_' + this.section.name;
         }
     },
     methods: {
