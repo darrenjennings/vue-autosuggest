@@ -25,20 +25,19 @@ export default {
     return {
       selected: "",
       limit: 10,
-      options: [
-      ],
+      options: [],
       sectionConfigs: {
-        "default": {
+        default: {
           limit: 6,
           onSelected: function(item) {
-            alert('default: ' + item.label)
+            alert("default: " + item.label);
           }
         },
-        "blog": {
+        blog: {
           limit: 3,
-          type: 'url-section',
+          type: "url-section",
           onSelected: function(item) {
-            alert('url: ' + item.item.url);
+            alert("url: " + item.item.url);
           }
         }
       },
@@ -54,8 +53,9 @@ export default {
   },
   methods: {
     onInputChange(text) {
-      this.filteredOptions = [{
-          "data": [
+      this.filteredOptions = [
+        {
+          data: [
             "clifford kits",
             "friendly chemistry",
             "phonics",
@@ -75,19 +75,18 @@ export default {
             "lego",
             "math life of fred",
             "multiplication",
-            "thinking tree" 
+            "thinking tree"
           ]
         },
         {
-          "label": "Blog",
-          "name": "blog",
-          "data": [
-            {"url": "http://bla.com/1", "value":"blog link 1"},
-            {"url": "http://bla.com/2", "value":"blog link 2"},
-            {"url": "http://bla.com/3", "value":"blog link 3"},
-            {"url": "http://bla.com/4", "value":"blog link 4"}
+          label: "Blog",
+          name: "blog",
+          data: [
+            { url: "https://blog.educents.com/best-educational-games-2017-inchimals/", value: "The Best Educational Games and Toys of 2017: Inchimals" },
+            { url: "https://blog.educents.com/reading-exploring-world-through-literature/", value: "Family Read-Alouds: Exploring the World Through Literature" }
           ]
-        }]
+        }
+      ];
     }
   }
 };
