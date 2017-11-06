@@ -301,6 +301,7 @@ export default {
                 this.computedSize = 0;
                 
                 this.suggestions.forEach(section => {
+                    if (!section.data) return;
                     const n = this.getSectionName(section);
                     var t;
                     if (this.sectionConfigs[n] && this.sectionConfigs[n].type) {
