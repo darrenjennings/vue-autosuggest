@@ -29,15 +29,16 @@ export default {
       sectionConfigs: {
         default: {
           limit: 6,
-          onSelected: function(item) {
-            alert("default: " + item.label);
+          onSelected: function(item, originalInput) {
+            //alert("default: " + item.label);
+            console.log(item, originalInput);
           }
         },
         blog: {
           limit: 3,
           type: "url-section",
-          onSelected: function(item) {
-            alert("url: " + item.item.url);
+          onSelected: function(item, originalInput) {
+            //alert("url: " + item.item.url);
           }
         }
       },

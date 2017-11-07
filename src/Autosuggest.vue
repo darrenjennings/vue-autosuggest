@@ -98,7 +98,9 @@ export default {
             computedSize: 0,
             onSelected: function() {
                 if (this.currentItem && this.sectionConfigs[this.currentItem.name]) {
-                    this.sectionConfigs[this.currentItem.name].onSelected(this.currentItem);
+                    this.sectionConfigs[this.currentItem.name].onSelected(this.currentItem, this.searchInputOriginal);
+                } else {
+                    this.sectionConfigs['default'].onSelected(null, this.searchInputOriginal);
                 }
             }
         }),
@@ -194,7 +196,9 @@ export default {
                 }
             },
             setChangeItem(item) {
-                if (item) {
+                if (this.currentIndex === null) {
+                    this.currentItem = null;
+                } else if (item) {
                     this.searchInput = item.label;
                     this.currentItem = item;
                 }
@@ -210,7 +214,8 @@ export default {
                 }
 
                 /** Selects an item in the dropdown */
-                this.loading = true;                
+                this.loading = true;          
+                this.didSelectFromOptions = true;      
                 this.setChangeItem(this.getItemByIndex(this.currentIndex));
                 this.$nextTick(() => {
                     this.onSelected(true);
@@ -311,11 +316,12 @@ export default {
                     }
                     var lim = this.sectionConfigs[n].limit ? this.sectionConfigs[n].limit : Infinity;
                     lim = (section.data.length < lim) ? section.data.length : lim;
+                    var lbl = this.sectionConfigs[n].label ? this.sectionConfigs[n].label : section.label;
                     var obj = {
                         limit: lim,
                         name: n,
                         data: section.data,
-                        label: section.label,
+                        label: lbl,
                         start_index: this.computedSize,
                         end_index: this.computedSize + lim - 1,
                         type: t
