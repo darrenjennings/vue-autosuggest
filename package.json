@@ -12,7 +12,7 @@
     "start": "webpack-dev-server --config docs/webpack.config.js",
     "build:docs": "NODE_ENV=production webpack --config docs/webpack.config.js",
     "build": "rm -rf dist && NODE_ENV=production webpack --config build/webpack.config.js",
-    "publish": "yarn build && npm publish", 
+    "deploy": "yarn build && npm publish", 
     "test": "yarn jest",
     "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codecov",
     "test:coverage": "yarn jest -- --coverage",
