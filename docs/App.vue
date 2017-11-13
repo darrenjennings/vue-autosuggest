@@ -64,7 +64,7 @@ export default {
         default: {
           limit: 6,
           onSelected: function(item, originalInput) {
-            console.log(`Selected "${item.item}"`);
+            console.log(item, originalInput, `Selected "${item.item}"`);
           }
         },
         blog: {

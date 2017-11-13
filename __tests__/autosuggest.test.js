@@ -1,6 +1,15 @@
-import { mount, shallow, createLocalVue } from "vue-test-utils";
-import Autosuggest from "../src/Autosuggest";
+import { mount, shallow } from "vue-test-utils";
 import { createRenderer } from "vue-server-renderer";
+
+import Autosuggest from "../src/Autosuggest.vue";
+
+// Helper to call function x number of times
+const times = x => f => {
+  if (x > 0) {
+    f();
+    times(x - 1)(f);
+  }
+};
 
 describe("Autosuggest", () => {
   const id = `autosuggest__input`;
@@ -35,7 +44,7 @@ describe("Autosuggest", () => {
     suggestions: filteredOptions,
     resultItemKey: "firstname",
     inputProps: {
-      id: "autosuggest__input",
+      id,
       initialValue: "",
       onClick: () => {},
       onInputChange: () => {},
@@ -44,14 +53,12 @@ describe("Autosuggest", () => {
     sectionConfigs: {
       default: {
         limit: 5,
-        onSelected: function(item) {
-          alert("default: " + item.label);
-        }
+        onSelected: () => {}
       }
     }
   };
 
-  it("can mount", async () => {
+  it("can mount", () => {
     const props = Object.assign({}, defaultProps);
     props.inputProps = Object.assign({}, defaultProps.inputProps);
     props.suggestions = [filteredOptions[0]];
@@ -67,142 +74,150 @@ describe("Autosuggest", () => {
     });
   });
 
-  it("can render suggestions", async () => {
+  it("can render suggestions", () => {
     const wrapper = mount(Autosuggest, {
       propsData: defaultProps
     });
 
     const input = wrapper.find("input");
-    expect(input.hasAttribute("id", defaultProps.inputProps.id));
+    expect(input.hasAttribute("id", defaultProps.inputProps.id)).toBeTruthy();
 
     input.trigger("click");
     wrapper.setData({ searchInput: "G" });
     input.trigger("keydown.down");
-    
-    expect(wrapper.findAll(`ul li`).length).toBeLessThanOrEqual(defaultProps.sectionConfigs.default.limit);
+
+    expect(wrapper.findAll(`ul li`).length).toBeLessThanOrEqual(
+      defaultProps.sectionConfigs.default.limit
+    );
 
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
       expect(str).toMatchSnapshot();
     });
   });
-  /*
-  it("can filter suggestions", async () => {
-    document.body.innerHTML = `
-            <div id="app">
-                <vue-autosuggest 
-                  :suggestions="suggestions"
-                  :on-selected="clickHandler"
-                  :result-item-key="'firstname'"
-                  :input-props="{id:autoSuggestInputId, initialValue: '', onInputChange:onInputChange}"
-                  >
-                </vue-autosuggest>
-            </div>
-        `;
 
-    const searchText = "Samwise";
-    const autosuggest = await createVm(defaultVM);
-    autosuggest.searchInput = searchText;
+  it("can use escape key to exit", async () => {
+    const wrapper = mount(Autosuggest, {
+      propsData: defaultProps
+    });
 
-    await Vue.nextTick(() => {});
+    const input = wrapper.find("input");
+    input.trigger("click");
+    wrapper.setData({ searchInput: "G" });
+    input.trigger("keydown.down");
 
-    expect(document.body.innerHTML).toMatchSnapshot();
-    expect(document.querySelectorAll(`ul li`).length).toEqual(
-      suggestions.filter(person => {
-        return (
-          person.firstname.toLowerCase().indexOf(searchText.toLowerCase()) > -1
-        );
-      }).length
+    expect(wrapper.findAll(`ul li`).length).toBeLessThanOrEqual(
+      defaultProps.sectionConfigs.default.limit
     );
+
+    input.trigger("keydown.esc");
+
+    expect(wrapper.findAll(`ul li`).length).toEqual(0);
+
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
   });
 
   it("can select from suggestions using keystroke", async () => {
-    document.body.innerHTML = `
-            <div id="app">
-                <vue-autosuggest 
-                  :suggestions="suggestions"
-                  :on-selected="clickHandler"
-                  :result-item-key="'firstname'"
-                  :input-props="{id:autoSuggestInputId, initialValue: '', onInputChange:onInputChange}"
-                  >
-                </vue-autosuggest>
-            </div>
-        `;
+    const wrapper = mount(Autosuggest, {
+      propsData: defaultProps
+    });
 
-    const searchText = "F";
-    const autosuggest = await createVm(defaultVM);
+    const input = wrapper.find("input");
+    input.trigger("click");
+    wrapper.setData({ searchInput: "G" });
 
-    autosuggest.searchInput = searchText;
+    times(15)(() => {
+      input.trigger("keydown.down");
+    });
 
-    await Vue.nextTick(() => {});
+    times(15)(() => {
+      input.trigger("keydown.up");
+    });
 
-    expect(document.querySelectorAll(`ul li`).length).toEqual(
-      suggestions.filter(person => {
-        return (
-          person.firstname.toLowerCase().indexOf(searchText.toLowerCase()) > -1
-        );
-      }).length
-    );
+    input.trigger("keydown.enter");
 
-    const input = document.querySelector('input');
+    await wrapper.vm.$nextTick(() => {});
 
-    var event = new KeyboardEvent('keydown', {'keyCode': 40});
-    times(10)(() => {input.dispatchEvent(event)}); 
-    autosuggest._watcher.run();
-    await Vue.nextTick(() => {});
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
+  });
+
+  it("can click outside document to trigger close", async () => {
+    const props = Object.assign({}, defaultProps);
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+      attachToDocument: true
+    });
+
+    wrapper.setData({ searchInput: "G" });
     
-    const clickEvent = new Event('mouseup');
-    document.dispatchEvent(clickEvent);
-    autosuggest._watcher.run();
-
-    await Vue.nextTick(() => {});
-    expect(document.body.innerHTML).toMatchSnapshot();
+    const input = wrapper.find("input");
+    
+    input.trigger("click");
+    wrapper.setData({ searchInput: "G" });
+    window.document.dispatchEvent(new Event('mouseup'));
+    
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
   });
 
-  it("can limit options via 'limit' prop", async () => {
-    const limit = 3;
-    document.body.innerHTML = `
-            <div id="app">
-                <vue-autosuggest 
-                  :limit="${limit}"
-                  :suggestions="suggestions"
-                  :on-selected="clickHandler"
-                  :result-item-key="'firstname'"
-                  :input-props="{id:autoSuggestInputId, initialValue: '', onInputChange:onInputChange}"
-                  >
-                </vue-autosuggest>
-            </div>
-        `;
+  it("can display section header", async () => {
+    const props = Object.assign({}, defaultProps);
+    props.sectionConfigs = {
+      default: {
+        label: "Suggestions",
+        limit: 5,
+        onSelected: () => {}
+      }
+    };
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+      attachToDocument: true
+    });
 
-    const searchText = "E";
-    const autosuggest = await createVm(defaultVM);
-
-    autosuggest.searchInput = searchText;
-
-    await Vue.nextTick(() => {});
-
-    expect(document.querySelectorAll(`ul li`).length).toEqual(limit);
-    expect(document.body.innerHTML).toMatchSnapshot();
+    wrapper.setData({ searchInput: "G" });
+    
+    const input = wrapper.find("input");
+    
+    input.trigger("click");
+    wrapper.setData({ searchInput: "G" });
+    expect(wrapper.find('ul li:nth-child(1)').element.innerHTML).toBe(props.sectionConfigs.default.label);
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
   });
-*/
 });
 
-// Helper to call function x number of times
-const times = x => f => {
-  if (x > 0) {
-    f();
-    times(x - 1)(f);
-  }
-};
-
-async function createVm(options = {}) {
-  const vm = new Vue({
-    el: "#app",
-    ...options
+/**
+ * **Force** update until vue-test-utils is out of beta
+ * @param {*} wrapper mounted Vue component
+ */
+function runWatchers(wrapper) {
+  wrapper.vm._watchers.forEach(watcher => {
+    watcher.run();
   });
-
-  await Vue.nextTick(() => {});
-  const component = vm.$children[0];
-
-  return component;
 }

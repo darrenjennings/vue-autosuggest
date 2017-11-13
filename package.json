@@ -19,7 +19,8 @@
     "test:update": "yarn test -- --updateSnapshot --coverage",
     "add-contributor": "kcd-scripts contributors add",
     "setup": "yarn install",
-    "pre-commit": "yarn test"
+    "pre-commit": "yarn test",
+    "storybook": "start-storybook -p 9001 -c .storybook"
   },
   "files": [
     "dist"
@@ -49,6 +50,7 @@
     }
   },
   "devDependencies": {
+    "@storybook/vue": "3.2.15",
     "babel-core": "6.26.0",
     "babel-jest": "21.2.0",
     "babel-loader": "7.1.2",
@@ -65,13 +67,14 @@
     "jest": "21.2.1",
     "jest-serializer-html": "4.0.1",
     "kcd-scripts": "0.27.1",
+    "sinon": "4.1.2",
     "vue": "2.5.2",
     "vue-jest": "1.0.0",
     "vue-loader": "13.3.0",
     "vue-server-renderer": "2.5.2",
     "vue-template-compiler": "2.5.2",
     "vue-template-es2015-compiler": "1.6.0",
-    "vue-test-utils": "1.0.0-beta.4",
+    "vue-test-utils": "1.0.0-beta.5",
     "webpack": "3.7.1",
     "webpack-dev-server": "2.9.2",
     "webpack-merge": "4.1.0"
@@ -81,9 +84,6 @@
       "js",
       "vue"
     ],
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
-    },
     "verbose": true,
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
