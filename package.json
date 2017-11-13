@@ -12,13 +12,14 @@
     "start": "webpack-dev-server --config docs/webpack.config.js",
     "build:docs": "NODE_ENV=production webpack --config docs/webpack.config.js",
     "build": "rm -rf dist && NODE_ENV=production webpack --config build/webpack.config.js",
-    "deploy": "yarn build && npm publish", 
+    "deploy": "yarn build && npm publish",
     "test": "yarn jest",
     "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codecov",
     "test:coverage": "yarn jest -- --coverage",
     "test:update": "yarn test -- --updateSnapshot --coverage",
     "add-contributor": "kcd-scripts contributors add",
     "setup": "yarn install"
+      "pre-commit": "yarn test"
   },
   "files": [
     "dist"
@@ -45,9 +46,6 @@
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
-    },
-    "ghooks": {
-      "pre-commit": "yarn test"
     }
   },
   "devDependencies": {
@@ -63,7 +61,7 @@
     "css-loader": "0.28.7",
     "cz-conventional-changelog": "2.0.0",
     "diffable-html": "2.1.0",
-    "ghooks": "2.0.0",
+    "husky": "0.14.3",
     "jest": "21.2.1",
     "jest-serializer-html": "4.0.1",
     "kcd-scripts": "0.27.1",
