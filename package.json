@@ -19,7 +19,7 @@
     "test:update": "yarn test -- --updateSnapshot --coverage",
     "add-contributor": "kcd-scripts contributors add",
     "setup": "yarn install",
-    "pre-commit": "yarn test",
+    "precommit": "yarn test",
     "storybook": "start-storybook -p 9001 -c .storybook"
   },
   "files": [
