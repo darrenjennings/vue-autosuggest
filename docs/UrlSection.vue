@@ -17,41 +17,47 @@
 
 <script>
 export default {
-    name: 'url-section',
-    props: {
-        section: {type: Object, required: true},
-        currentIndex: {type: Number, required: false, default: Infinity},
-        updateCurrentIndex: {type: Function, required: true}
-    },
-    computed: {
-        list: function() {
-            var l = this.section.limit;
-            if (this.section.data.length < l) {
-                l = this.section.data.length;
-            }
+  name: "url-section",
+  props: {
+    section: { type: Object, required: true },
+    currentIndex: { type: Number, required: false, default: Infinity },
+    updateCurrentIndex: { type: Function, required: true }
+  },
+  computed: {
+    list: function() {
+      var l = this.section.limit;
+      if (this.section.data.length < l) {
+        l = this.section.data.length;
+      }
 
-            return this.section.data.slice(0, l);
-        },
-        className: function() {
-            return 'autosuggest__results_title ' + 'autosuggest__results_title_' + this.section.name;
-        }
+      return this.section.data.slice(0, l);
     },
-    methods: {
-        getItemIndex(i) {
-            return this.section.start_index + i;
-        },
-        getItemByIndex(i) {
-            return this.section.data[i];
-        },
-        getLabelByIndex(i) {
-            return this.section.data[i].value;
-        },
-        onMouseEnter(event) {
-            this.updateCurrentIndex(event.currentTarget.getAttribute('data-suggestion-index'));
-        },
-        onMouseLeave(event) {
-            this.updateCurrentIndex(null);
-        }
+    className: function() {
+      return (
+        "autosuggest__results_title " +
+        "autosuggest__results_title_" +
+        this.section.name
+      );
     }
-}
+  },
+  methods: {
+    getItemIndex(i) {
+      return this.section.start_index + i;
+    },
+    getItemByIndex(i) {
+      return this.section.data[i];
+    },
+    getLabelByIndex(i) {
+      return this.section.data[i].value;
+    },
+    onMouseEnter(event) {
+      this.updateCurrentIndex(
+        event.currentTarget.getAttribute("data-suggestion-index")
+      );
+    },
+    onMouseLeave() {
+      this.updateCurrentIndex(null);
+    }
+  }
+};
 </script>
