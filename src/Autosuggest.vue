@@ -13,7 +13,7 @@
                aria-autosuggest="list"
                aria-owns="autosuggest__results"
                :aria-activedescendant="isOpen && currentIndex !== null ? `autosuggest__results--item-${currentIndex}` : ''"
-               :aria-haspopup="isOpen"
+               :aria-haspopup="isOpen ? 'true' : 'false'"
         />
         <div class="autosuggest__results-container">
                 <div
@@ -39,16 +39,25 @@ export default {
   },
   props: {
     inputProps: {
-      required: true,
-      default: () => {
-        return {
-          id: "autosuggest__input",
-          class: "",
-          onInputChange: () => {},
-          initialValue: null,
-          placeholder: null,
-          onClick: () => {}
-        };
+      id: {
+        type: String,
+        default: "autosuggest__input"
+      },
+      onInputChange: {
+        type: Function,
+        required: true
+      },
+      initialValue: {
+        type: String,
+        default: ""
+      },
+      placeholder: {
+        type: String,
+        required: true
+      },
+      onClick: {
+        type: Function,
+        required: false
       }
     },
     limit: {
@@ -100,9 +109,6 @@ export default {
           this.searchInputOriginal
         );
       } else {
-        /* TODO handle empty onselected in section configs
-        if (!this.sectionConfigs["default"].onSelected) {
-        } */
         this.sectionConfigs["default"].onSelected(
           null,
           this.searchInputOriginal
@@ -112,7 +118,7 @@ export default {
   }),
   computed: {
     isOpen() {
-      return this.shouldRenderSuggestions() && !this.loading;
+      return this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading;
     }
   },
   methods: {
@@ -325,31 +331,33 @@ export default {
 
         this.suggestions.forEach(section => {
           if (!section.data) return;
-          const n = this.getSectionName(section);
-          var t;
-          if (this.sectionConfigs[n] && this.sectionConfigs[n].type) {
-            t = this.sectionConfigs[n].type;
-          } else {
-            t = "default-section";
+
+          const name = this.getSectionName(section);
+
+          if (!this.sectionConfigs[name]) {
+            return;
           }
-          var lim = this.sectionConfigs[n].limit
-            ? this.sectionConfigs[n].limit
-            : Infinity;
-          lim = section.data.length < lim ? section.data.length : lim;
-          var lbl = this.sectionConfigs[n].label
-            ? this.sectionConfigs[n].label
-            : section.label;
-          var obj = {
-            limit: lim,
-            name: n,
+
+          let { type, limit, label } = this.sectionConfigs[name];
+
+          type = type ? type : "default-section";
+          limit = limit
+            ? limit
+            : section.data.length < Infinity ? section.data.length : Infinity;
+          label = label ? label : section.label;
+
+          let obj = {
+            name,
+            label,
+            type,
+            limit,
             data: section.data,
-            label: lbl,
             start_index: this.computedSize,
-            end_index: this.computedSize + lim - 1,
-            type: t
+            end_index: this.computedSize + limit - 1
           };
+
           this.computedSections.push(obj);
-          this.computedSize += lim;
+          this.computedSize += limit;
         }, this);
       }
     }

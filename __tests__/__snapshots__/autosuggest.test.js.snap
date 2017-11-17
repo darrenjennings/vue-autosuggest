@@ -12,6 +12,7 @@ exports[`Autosuggest can click outside document to trigger close 1`] = `
          aria-autosuggest="list"
          aria-owns="autosuggest__results"
          aria-activedescendant
+         aria-haspopup="false"
          id="autosuggest__input"
          initialvalue
          onclick="function onClick() {}"
@@ -228,6 +229,7 @@ exports[`Autosuggest can select from suggestions using keystroke 1`] = `
          aria-autosuggest="list"
          aria-owns="autosuggest__results"
          aria-activedescendant
+         aria-haspopup="false"
          id="autosuggest__input"
          initialvalue
          onclick="function onClick() {}"
@@ -255,6 +257,7 @@ exports[`Autosuggest can use escape key to exit 1`] = `
          aria-autosuggest="list"
          aria-owns="autosuggest__results"
          aria-activedescendant
+         aria-haspopup="false"
          id="autosuggest__input"
          initialvalue
          onclick="function onClick() {}"
@@ -265,6 +268,83 @@ exports[`Autosuggest can use escape key to exit 1`] = `
   >
   <div class="autosuggest__results-container">
     <!---->
+  </div>
+</div>
+
+`;
+
+exports[`Autosuggest is aria complete 1`] = `
+
+<div id="autosuggest"
+     data-server-rendered="true"
+>
+  <input name="q"
+         type="text"
+         maxlength="256"
+         autocomplete="off"
+         aria-autosuggest="list"
+         aria-owns="autosuggest__results"
+         aria-activedescendant
+         aria-haspopup="true"
+         id="autosuggest__input"
+         initialvalue
+         onclick="function onClick() {}"
+         oninputchange="function onInputChange() {}"
+         placeholder="Type 'G'"
+         value="G"
+         class="form-control autosuggest__input-open"
+  >
+  <div class="autosuggest__results-container">
+    <div role="listbox"
+         aria-labelledby="autosuggest"
+         class="autosuggest__results"
+    >
+      <ul role="listbox"
+          aria-labelledby="autosuggest"
+      >
+        <!---->
+        <li role="option"
+            data-suggestion-index="0"
+            data-section-name="default"
+            id="autosuggest__results_item-0"
+            class="autosuggest__results_item autosuggest__results_item"
+        >
+          clifford kits
+        </li>
+        <li role="option"
+            data-suggestion-index="1"
+            data-section-name="default"
+            id="autosuggest__results_item-1"
+            class="autosuggest__results_item autosuggest__results_item"
+        >
+          friendly chemistry
+        </li>
+        <li role="option"
+            data-suggestion-index="2"
+            data-section-name="default"
+            id="autosuggest__results_item-2"
+            class="autosuggest__results_item autosuggest__results_item"
+        >
+          phonics
+        </li>
+        <li role="option"
+            data-suggestion-index="3"
+            data-section-name="default"
+            id="autosuggest__results_item-3"
+            class="autosuggest__results_item autosuggest__results_item"
+        >
+          life of fred
+        </li>
+        <li role="option"
+            data-suggestion-index="4"
+            data-section-name="default"
+            id="autosuggest__results_item-4"
+            class="autosuggest__results_item autosuggest__results_item"
+        >
+          life of fred math
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 

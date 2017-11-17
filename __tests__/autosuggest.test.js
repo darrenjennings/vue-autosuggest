@@ -165,13 +165,13 @@ describe("Autosuggest", () => {
     });
 
     wrapper.setData({ searchInput: "G" });
-    
+
     const input = wrapper.find("input");
-    
+
     input.trigger("click");
     wrapper.setData({ searchInput: "G" });
-    window.document.dispatchEvent(new Event('mouseup'));
-    
+    window.document.dispatchEvent(new Event("mouseup"));
+
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) {
@@ -196,12 +196,40 @@ describe("Autosuggest", () => {
     });
 
     wrapper.setData({ searchInput: "G" });
-    
+
     const input = wrapper.find("input");
+
+    input.trigger("click");
+    wrapper.setData({ searchInput: "G" });
+    expect(wrapper.find("ul li:nth-child(1)").element.innerHTML).toBe(
+      props.sectionConfigs.default.label
+    );
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
+  });
+
+  it("is aria complete", async () => {
+    const wrapper = mount(Autosuggest, {
+      propsData: defaultProps
+    });
+
+    const input = wrapper.find("input");
+    expect(input.hasAttribute('aria-autosuggest','list')).toBeTruthy();
+    expect(input.hasAttribute('aria-activedescendant', '')).toBeTruthy();
+    expect(input.hasAttribute('aria-owns', 'autosuggest__results')).toBeTruthy();   
+    
+    // TODO: Make sure aria-completeness is actually 2legit2quit.
     
     input.trigger("click");
     wrapper.setData({ searchInput: "G" });
-    expect(wrapper.find('ul li:nth-child(1)').element.innerHTML).toBe(props.sectionConfigs.default.label);
+
+    expect(input.hasAttribute('aria-haspopup', 'true')).toBeTruthy();
+    
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) {

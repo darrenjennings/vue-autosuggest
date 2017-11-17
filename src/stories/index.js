@@ -93,28 +93,7 @@ storiesOf("Autosuggest", module)
         filteredOptions: [],
         options: [
           {
-            data: [
-              "clifford kits",
-              "friendly chemistry",
-              "phonics",
-              "life of fred",
-              "life of fred math",
-              "magic school bus",
-              "math mammoth light blue",
-              "handwriting",
-              "math",
-              "minecraft",
-              "free worksheets",
-              "4th grade",
-              "snap circuits",
-              "bath toys",
-              "channies",
-              "fred",
-              "lego",
-              "math life of fred",
-              "multiplication",
-              "thinking tree"
-            ]
+            data: sharedData.options
           }
         ],
         sectionConfigs: {
