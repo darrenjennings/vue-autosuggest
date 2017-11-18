@@ -95,7 +95,7 @@ export default {
   },
   data: () => ({
     searchInput: "",
-    searchInputOriginal: "",
+    searchInputOriginal: null,
     currentIndex: null,
     currentItem: null,
     loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */,
@@ -118,7 +118,12 @@ export default {
   }),
   computed: {
     isOpen() {
-      return this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading;
+      return (
+        (this.getSize() > 0 &&
+          this.shouldRenderSuggestions() &&
+          !this.loading) ||
+        this.searchInputOriginal == null
+      );
     }
   },
   methods: {
@@ -309,10 +314,8 @@ export default {
   },
   mounted() {
     document.addEventListener("mouseup", this.onDocumentMouseUp);
-    const input = document.getElementById(this.inputProps.id);
-    if (input) {
-      input.value = this.inputProps.initialValue; // set default query, e.g. loaded server side.
-    }
+    this.searchInput = this.inputProps.initialValue; // set default query, e.g. loaded server side.
+    this.loading = true;
   },
   watch: {
     searchInput(newValue) {

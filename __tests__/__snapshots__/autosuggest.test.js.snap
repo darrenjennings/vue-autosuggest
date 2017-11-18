@@ -129,12 +129,7 @@ exports[`Autosuggest can mount 1`] = `
          class="form-control autosuggest__input-open"
   >
   <div class="autosuggest__results-container">
-    <div role="listbox"
-         aria-labelledby="autosuggest"
-         class="autosuggest__results"
-    >
-      <!---->
-    </div>
+    <!---->
   </div>
 </div>
 
