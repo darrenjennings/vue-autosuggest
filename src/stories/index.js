@@ -26,10 +26,29 @@ const sharedData = {
     "math life of fred",
     "multiplication",
     "thinking tree"
-  ]
+  ],
+  methods: {
+    onInputChange(text) {
+      if (text === null) {
+        return;
+      }
+      const filtered = [];
+      const suggestionsData = this.options[0].data.filter(item => {
+        return item.toLowerCase().indexOf(text.toLowerCase()) > -1;
+      });
+
+      suggestionsData.length > 0 &&
+        filtered.push({
+          label: "Suggestions",
+          data: suggestionsData
+        });
+
+      this.filteredOptions = filtered;
+    }
+  }
 };
 
-storiesOf("Autosuggest", module)
+storiesOf("Vue-Autosuggest", module)
   .add("simplest", () => ({
     components: { Autosuggest },
     template: `<div>
@@ -44,13 +63,12 @@ storiesOf("Autosuggest", module)
         filteredOptions: [],
         options: [
           {
-            data: sharedData.options
+            data: sharedData.options.slice(0, 10)
           }
         ],
         inputProps: {
           id: "autosuggest__input",
           onInputChange: this.onInputChange,
-          placeholder: "Type 'g'",
           onClick: () => {
             action("clicked-it");
           },
@@ -63,17 +81,10 @@ storiesOf("Autosuggest", module)
         if (text === null) {
           return;
         }
-        const filtered = [];
-        const suggestionsData = this.options[0].data.filter(item => {
+        const filteredData = this.options[0].data.filter(item => {
           return item.toLowerCase().indexOf(text.toLowerCase()) > -1;
         });
-
-        suggestionsData.length > 0 &&
-          filtered.push({
-            data: suggestionsData
-          });
-
-        this.filteredOptions = filtered;
+        this.filteredOptions = [{data:filteredData}];
       }
     }
   }))
@@ -116,26 +127,7 @@ storiesOf("Autosuggest", module)
         }
       };
     },
-    methods: {
-      onInputChange(text) {
-        if (text === null) {
-          return;
-        }
-
-        const filtered = [];
-        const suggestionsData = this.options[0].data.filter(item => {
-          return item.toLowerCase().indexOf(text.toLowerCase()) > -1;
-        });
-
-        suggestionsData.length > 0 &&
-          filtered.push({
-            label: "Suggestions",
-            data: suggestionsData
-          });
-
-        this.filteredOptions = filtered;
-      }
-    }
+    methods: sharedData.methods
   }))
   .add("with property: initial value", () => ({
     components: { Autosuggest },
@@ -176,23 +168,5 @@ storiesOf("Autosuggest", module)
         }
       };
     },
-    methods: {
-      onInputChange(text) {
-        if (text === null) {
-          return;
-        }
-        const filtered = [];
-        const suggestionsData = this.options[0].data.filter(item => {
-          return item.toLowerCase().indexOf(text.toLowerCase()) > -1;
-        });
-
-        suggestionsData.length > 0 &&
-          filtered.push({
-            label: "Suggestions",
-            data: suggestionsData
-          });
-
-        this.filteredOptions = filtered;
-      }
-    }
+    methods: sharedData.methods
   }));
