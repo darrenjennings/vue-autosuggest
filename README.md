@@ -29,9 +29,7 @@
 - [Usage](#usage)
 - [Examples](#examples)
 - [Props](#props)
-- [FAQ](#faq)
 - [Inspiration](#inspiration)
-- [Other Solutions](#other-solutions)
 - [Contributors](#contributors)
 - [LICENSE](#license)
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
