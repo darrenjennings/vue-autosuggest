@@ -21,7 +21,7 @@
     "setup": "yarn install",
     "precommit": "yarn test",
     "storybook": "start-storybook -p 9001 -c .storybook",
-    "storybook:build": "build-storybook -c .storybook -o docs/build/storybook"    
+    "storybook:build": "build-storybook -c .storybook -o docs/storybook"    
   },
   "files": [
     "dist"
