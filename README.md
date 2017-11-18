@@ -62,7 +62,7 @@ Basic usage:
 
 
 ## Examples
-- <a href="https://educents.github.io/vue-autosuggest/">Storybook</a><br/>
+- <a href="https://educents.github.io/vue-autosuggest/storybook">Storybook</a><br/>
 - <a href="https://jsfiddle.net/darrenjennings/dugbvezs/">JSFiddle</a>
 
 ## Props
