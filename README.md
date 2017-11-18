@@ -1,7 +1,7 @@
 <div>
-<h1>⚠️ CURRENTLY UNDER DEVELOPMENT - Vue-autosuggest</h1>
+<h1>vue-autosuggest</h1>
 
-<p>🔍 Vue autosuggest component. <a href="https://educents.github.io/vue-autosuggest/">Demo</a></p>
+<p>🔍 Autosuggest component built for Vue.</a></p>
 </div>
 
 <hr />
@@ -27,8 +27,8 @@
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Props](#props)
 - [Examples](#examples)
+- [Props](#props)
 - [FAQ](#faq)
 - [Inspiration](#inspiration)
 - [Other Solutions](#other-solutions)
@@ -60,17 +60,16 @@ Basic usage:
 />
 ```
 
-Examples
-https://jsfiddle.net/darrenjennings/dugbvezs/
-
-// TODO more details...
-
-## Props
-
-// TODO
 
 ## Examples
+- <a href="https://educents.github.io/vue-autosuggest/">Storybook</a><br/>
+- <a href="https://jsfiddle.net/darrenjennings/dugbvezs/">JSFiddle</a>
 
+## Props
+| Prop | Type | Required | Description |
+| :--- | :--- | :---: | :--- |
+| [`suggestions`](#suggestionsProp) | Array | ✓ | Suggestions to be rendered. |
+| [`input-props`](#inputPropsProp) | Object | ✓ | Add props to the `<input>`.|
 
 ## Inspiration
 
