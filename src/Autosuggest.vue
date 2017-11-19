@@ -76,10 +76,6 @@ export default {
                 return true;
             }
         },
-        resultItemKey: {
-            type: String,
-            required: false
-        },
         sectionConfigs: {
             type: Object,
             required: false,
