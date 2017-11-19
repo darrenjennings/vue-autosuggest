@@ -21,7 +21,7 @@
     "setup": "yarn install",
     "precommit": "yarn test",
     "storybook": "start-storybook -p 9001 -c .storybook",
-    "storybook:build": "build-storybook -c .storybook -o docs/storybook"    
+    "storybook:build": "build-storybook -c .storybook -o docs/storybook"
   },
   "files": [
     "dist"
@@ -74,6 +74,7 @@
     "jest": "21.2.1",
     "jest-serializer-html": "4.0.1",
     "kcd-scripts": "0.27.1",
+    "prettier": "1.8.2",
     "sinon": "4.1.2",
     "vue": "2.5.2",
     "vue-jest": "1.0.0",
