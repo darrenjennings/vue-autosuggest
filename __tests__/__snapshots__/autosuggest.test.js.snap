@@ -152,7 +152,14 @@ exports[`Autosuggest can render simplest component with single onSelected 1`] = 
          initialvalue
          oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         onclick="function () {}"
+         onclick="function boundFn(a) {
+    var l = arguments.length;
+    return l
+      ? l &gt; 1
+        ? fn.apply(ctx, arguments)
+        : fn.call(ctx, a)
+      : fn.call(ctx)
+  }"
          value="phonics"
          class="form-control autosuggest__input-open cool-class"
   >

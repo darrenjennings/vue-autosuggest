@@ -109,10 +109,13 @@ export default {
         },
         created(){
             if(!this.inputProps.onClick){
-                this.inputProps.onClick = function(){};
+                this.inputProps.onClick = this._onClick;
             }
         },
         methods: {
+            _onClick(){
+                return this;
+            },
             _onSelected() {
                 if (
                     this.currentItem &&
