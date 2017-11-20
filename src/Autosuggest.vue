@@ -32,336 +32,332 @@
 <script>
 import DefaultSection from "./parts/DefaultSection.vue";
 export default {
-    name: "autosuggest",
-    components: {
-        DefaultSection
-    },
-    props: {
-        inputProps: {
-            id: {
-                type: String,
-                default: "autosuggest__input"
+        name: "autosuggest",
+        components: {
+            DefaultSection
+        },
+        props: {
+            inputProps: {
+                id: {
+                    type: String,
+                    default: "autosuggest__input"
+                },
+                onInputChange: {
+                    type: Function,
+                    required: true
+                },
+                initialValue: {
+                    type: String,
+                    default: ""
+                },
+                placeholder: {
+                    type: String,
+                    required: true
+                },
+                onClick: {
+                    type: Function,
+                    required: false
+                }
             },
-            onInputChange: {
+            limit: {
+                type: Number,
+                required: false,
+                default: Infinity
+            },
+            suggestions: {
+                type: Array,
+                required: true,
+                default: []
+            },
+            shouldRenderSuggestions: {
                 type: Function,
-                required: true
+                required: false,
+                default: () => {
+                    return true;
+                }
             },
-            initialValue: {
-                type: String,
-                default: ""
-            },
-            placeholder: {
-                type: String,
-                required: true
-            },
-            onClick: {
-                type: Function,
-                required: false
-            }
-        },
-        limit: {
-            type: Number,
-            required: false,
-            default: Infinity
-        },
-        suggestions: {
-            type: Array,
-            required: true,
-            default: []
-        },
-        shouldRenderSuggestions: {
-            type: Function,
-            required: false,
-            default: () => {
-                return true;
-            }
-        },
-        sectionConfigs: {
-            type: Object,
-            required: false,
-            default: () => {
-                return {
-                    default: {
-                        onSelected: () => {}
-                    }
-                };
-            }
-        }
-    },
-    data: () => ({
-        searchInput: "",
-        searchInputOriginal: null,
-        currentIndex: null,
-        currentItem: null,
-        loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */,
-        didSelectFromOptions: false,
-        computedSections: [],
-        computedSize: 0,
-        onSelected: function() {
-            if (
-                this.currentItem &&
-                this.sectionConfigs[this.currentItem.name]
-            ) {
-                this.sectionConfigs[this.currentItem.name].onSelected(
-                    this.currentItem,
-                    this.searchInputOriginal
-                );
-            } else {
-                this.sectionConfigs["default"].onSelected(
-                    null,
-                    this.searchInputOriginal
-                );
-            }
-        }
-    }),
-    computed: {
-        isOpen() {
-            return (
-                (this.getSize() > 0 &&
-                    this.shouldRenderSuggestions() &&
-                    !this.loading) || this.searchInputOriginal == null
-            );
-        }
-    },
-    methods: {
-        getSectionRef(i) {
-            return "computed_section_" + i;
-        },
-        getSize() {
-            return this.computedSize;
-        },
-        getItemByIndex(index) {
-            let obj = false;
-            if (index === null) return obj;
-            for (var i = 0; i < this.computedSections.length; i++) {
-                if (
-                    index >= this.computedSections[i].start_index &&
-                    index <= this.computedSections[i].end_index
-                ) {
-                    let trueIndex =
-                        index - this.computedSections[i].start_index;
-                    let childSection = this.$refs["computed_section_" + i][0];
-                    if (childSection) {
-                        obj = {
-                            name: this.computedSections[i].name,
-                            type: this.computedSections[i].type,
-                            label: childSection.getLabelByIndex(trueIndex),
-                            item: childSection.getItemByIndex(trueIndex)
-                        };
-                        break;
-                    }
+            sectionConfigs: {
+                type: Object,
+                required: false,
+                default: () => {
+                    return {
+                        default: {
+                            onSelected: () => {}
+                        }
+                    };
                 }
             }
-
-            return obj;
         },
-        handleKeyStroke(e) {
-            const { keyCode } = e;
-
-            const ignoredKeyCodes = [
-                16, // Shift
-                9, // Tab
-                18, // alt/option
-                91, // OS Key
-                93 // Right OS Key
-            ];
-
-            if (ignoredKeyCodes.indexOf(keyCode) > -1) {
-                return;
+        data: () => ({
+            searchInput: "",
+            searchInputOriginal: null,
+            currentIndex: null,
+            currentItem: null,
+            loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */,
+            didSelectFromOptions: false,
+            computedSections: [],
+            computedSize: 0,
+            onSelected: function() {
+                if (
+                    this.currentItem &&
+                    this.sectionConfigs[this.currentItem.name]
+                ) {
+                    this.sectionConfigs[this.currentItem.name].onSelected(
+                        this.currentItem,
+                        this.searchInputOriginal
+                    );
+                } else {
+                    this.sectionConfigs["default"].onSelected(
+                        null,
+                        this.searchInputOriginal
+                    );
+                }
             }
-
-            this.loading = false;
-            this.didSelectFromOptions = false;
-            switch (keyCode) {
-                case 40: // ArrowDown
-                case 38: // ArrowUp
-                    e.preventDefault();
-                    if (this.isOpen) {
-                        if (keyCode === 38 && this.currentIndex === null) {
+        }),
+        computed: {
+            isOpen() {
+                return (
+                    (this.getSize() > 0 &&
+                        this.shouldRenderSuggestions() &&
+                        !this.loading) || this.searchInputOriginal == null
+                );
+            }
+        },
+        methods: {
+            getSectionRef(i) {
+                return "computed_section_" + i;
+            },
+            getSize() {
+                return this.computedSize;
+            },
+            getItemByIndex(index) {
+                let obj = false;
+                if (index === null) return obj;
+                for (var i = 0; i < this.computedSections.length; i++) {
+                    if (
+                        index >= this.computedSections[i].start_index &&
+                        index <= this.computedSections[i].end_index
+                    ) {
+                        let trueIndex =
+                            index - this.computedSections[i].start_index;
+                        let childSection = this.$refs["computed_section_" + i][0];
+                        if (childSection) {
+                            obj = {
+                                name: this.computedSections[i].name,
+                                type: this.computedSections[i].type,
+                                label: childSection.getLabelByIndex(trueIndex),
+                                item: childSection.getItemByIndex(trueIndex)
+                            };
                             break;
                         }
-                        // Determine direction of arrow up/down and determine new currentIndex
-                        const direction = keyCode === 40 ? 1 : -1;
-                        const newIndex = this.currentIndex + direction;
-                        this.setCurrentIndex(
-                            newIndex,
-                            this.getSize(),
-                            direction
-                        );
-                        this.didSelectFromOptions = true;
-                        if (this.getSize() > 0 && this.currentIndex >= 0) {
-                            this.setChangeItem(
-                                this.getItemByIndex(this.currentIndex)
+                    }
+                }
+
+                return obj;
+            },
+            handleKeyStroke(e) {
+                const { keyCode } = e;
+
+                const ignoredKeyCodes = [
+                    16, // Shift
+                    9, // Tab
+                    18, // alt/option
+                    91, // OS Key
+                    93 // Right OS Key
+                ];
+
+                if (ignoredKeyCodes.indexOf(keyCode) > -1) {
+                    return;
+                }
+
+                this.loading = false;
+                this.didSelectFromOptions = false;
+                switch (keyCode) {
+                    case 40: // ArrowDown
+                    case 38: // ArrowUp
+                        e.preventDefault();
+                        if (this.isOpen) {
+                            if (keyCode === 38 && this.currentIndex === null) {
+                                break;
+                            }
+                            // Determine direction of arrow up/down and determine new currentIndex
+                            const direction = keyCode === 40 ? 1 : -1;
+                            const newIndex = this.currentIndex + direction;
+                            this.setCurrentIndex(
+                                newIndex,
+                                this.getSize(),
+                                direction
                             );
                             this.didSelectFromOptions = true;
-                        } else if (this.currentIndex == -1) {
+                            if (this.getSize() > 0 && this.currentIndex >= 0) {
+                                this.setChangeItem(
+                                    this.getItemByIndex(this.currentIndex)
+                                );
+                                this.didSelectFromOptions = true;
+                            } else if (this.currentIndex == -1) {
+                                this.currentIndex = null;
+                                this.searchInput = this.searchInputOriginal;
+                                e.preventDefault();
+                            }
+                        }
+                        break;
+                    case 13: // Enter
+                        e.preventDefault();
+                        if (keyCode === 229) {
+                            // https://github.com/moroshko/react-autosuggest/pull/388
+                            break;
+                        }
+                        this.$nextTick(() => {
+                            if (this.getSize() > 0 && this.currentIndex >= 0) {
+                                this.setChangeItem(
+                                    this.getItemByIndex(this.currentIndex)
+                                );
+                                this.didSelectFromOptions = true;
+                            }
+                            this.loading = true;
+                            this.$nextTick(() => {
+                                this.onSelected(this.didSelectFromOptions);
+                            });
+                        });
+                        break;
+                    case 27: // Escape
+                        if (this.isOpen) {
+                            /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
+                            this.loading = true;
                             this.currentIndex = null;
                             this.searchInput = this.searchInputOriginal;
                             e.preventDefault();
                         }
-                    }
-                    break;
-                case 13: // Enter
-                    e.preventDefault();
-                    if (keyCode === 229) {
-                        // https://github.com/moroshko/react-autosuggest/pull/388
                         break;
-                    }
-                    this.$nextTick(() => {
-                        if (this.getSize() > 0 && this.currentIndex >= 0) {
-                            this.setChangeItem(
-                                this.getItemByIndex(this.currentIndex)
-                            );
-                            this.didSelectFromOptions = true;
-                        }
-                        this.loading = true;
-                        this.$nextTick(() => {
-                            this.onSelected(this.didSelectFromOptions);
-                        });
-                    });
-                    break;
-                case 27: // Escape
-                    if (this.isOpen) {
-                        /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
-                        this.loading = true;
-                        this.currentIndex = null;
-                        this.searchInput = this.searchInputOriginal;
-                        e.preventDefault();
-                    }
-                    break;
-            }
-        },
-        setChangeItem(item) {
-            if (this.currentIndex === null) {
-                this.currentItem = null;
-            } else if (item) {
-                this.searchInput = item.label;
-                this.currentItem = item;
-            }
-        },
-        updateCurrentIndex(index) {
-            this.currentIndex = index;
-        },
-        onDocumentMouseUp() {
-            /** Clicks outside of dropdown to exit */
-            if (this.currentIndex === null) {
-                this.loading = this.shouldRenderSuggestions();
-                return;
-            }
+                }
+            },
+            setChangeItem(item) {
+                if (this.currentIndex === null) {
+                    this.currentItem = null;
+                } else if (item) {
+                    this.searchInput = item.label;
+                    this.currentItem = item;
+                }
+            },
+            updateCurrentIndex(index) {
+                this.currentIndex = index;
+            },
+            onDocumentMouseUp() {
+                /** Clicks outside of dropdown to exit */
+                if (this.currentIndex === null) {
+                    this.loading = this.shouldRenderSuggestions();
+                    return;
+                }
 
-            /** Selects an item in the dropdown */
+                /** Selects an item in the dropdown */
+                this.loading = true;
+                this.didSelectFromOptions = true;
+                this.setChangeItem(this.getItemByIndex(this.currentIndex));
+                this.$nextTick(() => {
+                    this.onSelected(true);
+                });
+            },
+            setCurrentIndex(newIndex, limit = -1, direction) {
+                let adjustedValue = newIndex;
+
+                // if we hit the lower limit then stop iterating the index
+                if (this.currentIndex === null) {
+                    adjustedValue = 0;
+                }
+
+                if (this.currentIndex < 0 && direction === 1) {
+                    adjustedValue = 0;
+                }
+                // if we hit the upper limit then just stop iterating the index
+                if (newIndex >= limit) {
+                    adjustedValue = 0;
+                }
+                this.currentIndex = adjustedValue;
+
+                const element = document.getElementById(
+                    `autosuggest__results_item-${this.currentIndex}`
+                );
+                const hoverClass = "autosuggest__results_item-highlighted";
+                if (document.querySelector(`.${hoverClass}`)) {
+                    this.removeClass(
+                        document.querySelector(`.${hoverClass}`),
+                        hoverClass
+                    );
+                }
+                if (element) {
+                    this.addClass(element, hoverClass);
+                }
+            },
+            onClick() {
+                this.loading = false;
+                this.inputProps.onClick();
+            },
+
+            /** DOM Utilities */
+            hasClass(el, className) {
+                if (el.classList) return el.classList.contains(className);
+                else
+                    return !!el.className.match(
+                        new RegExp("(\\s|^)" + className + "(\\s|$)")
+                    );
+            },
+            addClass(el, className) {
+                if (el.classList) el.classList.add(className);
+                else if (!this.hasClass(el, className))
+                    el.className += " " + className;
+            },
+            removeClass(el, className) {
+                if (el.classList) {
+                    el.classList.remove(className);
+                } else if (this.hasClass(el, className)) {
+                    var reg = new RegExp("(\\s|^)" + className + "(\\s|$)");
+                    el.className = el.className.replace(reg, " ");
+                }
+            },
+            getSectionName(section) {
+                if (!section.name) {
+                    section.name = "default";
+                }
+
+                return section.name;
+            }
+        },
+        mounted() {
+            document.addEventListener("mouseup", this.onDocumentMouseUp);
+            this.searchInput = this.inputProps.initialValue; // set default query, e.g. loaded server side.
             this.loading = true;
-            this.didSelectFromOptions = true;
-            this.setChangeItem(this.getItemByIndex(this.currentIndex));
-            this.$nextTick(() => {
-                this.onSelected(true);
-            });
         },
-        setCurrentIndex(newIndex, limit = -1, direction) {
-            let adjustedValue = newIndex;
-
-            // if we hit the lower limit then stop iterating the index
-            if (this.currentIndex === null) {
-                adjustedValue = 0;
-            }
-
-            if (this.currentIndex < 0 && direction === 1) {
-                adjustedValue = 0;
-            }
-            // if we hit the upper limit then just stop iterating the index
-            if (newIndex >= limit) {
-                adjustedValue = 0;
-            }
-            this.currentIndex = adjustedValue;
-
-            const element = document.getElementById(
-                `autosuggest__results_item-${this.currentIndex}`
-            );
-            const hoverClass = "autosuggest__results_item-highlighted";
-            if (document.querySelector(`.${hoverClass}`)) {
-                this.removeClass(
-                    document.querySelector(`.${hoverClass}`),
-                    hoverClass
-                );
-            }
-            if (element) {
-                this.addClass(element, hoverClass);
-            }
-        },
-        onClick() {
-            this.loading = false;
-            this.inputProps.onClick();
-        },
-
-        /** DOM Utilities */
-        hasClass(el, className) {
-            if (el.classList) return el.classList.contains(className);
-            else
-                return !!el.className.match(
-                    new RegExp("(\\s|^)" + className + "(\\s|$)")
-                );
-        },
-        addClass(el, className) {
-            if (el.classList) el.classList.add(className);
-            else if (!this.hasClass(el, className))
-                el.className += " " + className;
-        },
-        removeClass(el, className) {
-            if (el.classList) {
-                el.classList.remove(className);
-            } else if (this.hasClass(el, className)) {
-                var reg = new RegExp("(\\s|^)" + className + "(\\s|$)");
-                el.className = el.className.replace(reg, " ");
-            }
-        },
-        getSectionName(section) {
-            if (!section.name) {
-                section.name = "default";
-            }
-
-            return section.name;
-        }
-    },
-    mounted() {
-        document.addEventListener("mouseup", this.onDocumentMouseUp);
-        this.searchInput = this.inputProps.initialValue; // set default query, e.g. loaded server side.
-        this.loading = true;
-    },
-    watch: {
-        searchInput(newValue) {
-            this.value = newValue;
-            if (!this.didSelectFromOptions) {
-                this.searchInputOriginal = this.value;
-                this.currentIndex = null;
-                this.inputProps.onInputChange(newValue);
-            }
-        },
-        suggestions: {
-            immediate: true,
-            handler() {
+        watch: {
+            searchInput(newValue) {
+                this.value = newValue;
+                if (!this.didSelectFromOptions) {
+                    this.searchInputOriginal = this.value;
+                    this.currentIndex = null;
+                    this.inputProps.onInputChange(newValue);
+                }
+            },
+            suggestions: {
+              immediate: true,
+              handler() {
                 this.computedSections = [];
                 this.computedSize = 0;
 
                 this.suggestions.forEach(section => {
                     if (!section.data) return;
 
-                    const name = this.getSectionName(section);
-
+                    const name = this.getSectionName(section);  
                     if (!this.sectionConfigs[name]) {
                         return;
                     }
 
-                    let { type, limit, label } = this.sectionConfigs[name];
-
+                    let { type, limit, label } = this.sectionConfigs[name];  
+                    
+                    /** Set defaults for section configs. */
                     type = type ? type : "default-section";
-                    limit = limit
-                        ? limit
-                        : section.data.length < Infinity
-                          ? section.data.length
-                          : Infinity;
-                    label = label ? label : section.label;
-
-                    let obj = {
+                    limit = limit ? limit : (section.data.length < Infinity ? section.data.length : Infinity);
+                    label = label ? label : section.label;  
+                    
+                    let computedSection = {
                         name,
                         label,
                         type,
@@ -370,12 +366,11 @@ export default {
                         start_index: this.computedSize,
                         end_index: this.computedSize + limit - 1
                     };
-
-                    this.computedSections.push(obj);
+                    this.computedSections.push(computedSection);
                     this.computedSize += limit;
-                }, this);
+               }, this);
+              }  
             }
         }
-    }
 };
 </script>
