@@ -3,7 +3,6 @@
         <li v-if="section.label" :class="className">{{section.label}}</li>
         <li v-for="(val, key) in list"
             role="option" 
-            class="autosuggest__results_item" 
             :key="getItemIndex(key)" 
             :class="{'autosuggest__results_item-highlighted' : getItemIndex(key) == currentIndex, 'autosuggest__results_item':true}" 
             :data-suggestion-index="getItemIndex(key)"

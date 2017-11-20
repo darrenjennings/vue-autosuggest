@@ -42,7 +42,6 @@ describe("Autosuggest", () => {
 
   const defaultProps = {
     suggestions: filteredOptions,
-    resultItemKey: "firstname",
     inputProps: {
       id,
       initialValue: "",
@@ -230,6 +229,45 @@ describe("Autosuggest", () => {
 
     expect(input.hasAttribute('aria-haspopup', 'true')).toBeTruthy();
     
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
+  });
+
+  it("can render simplest component with single onSelected", async () => {
+    const props = Object.assign({}, defaultProps);
+    props.inputProps = Object.assign({}, defaultProps.inputProps);
+    props.inputProps.class = "cool-class";
+    props.suggestions = filteredOptions;
+
+    delete props.suggestions[0].name; // ensure empty component name is OK
+    delete props.sectionConfigs; // ensure empty sectionConfigs is OK
+    delete props.inputProps.onClick; // ensure empty onCLick is OK
+
+    props.onSelected = () => {};
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+      attachToDocument: true
+    });
+
+    const input = wrapper.find("input");
+    input.trigger("click");
+    wrapper.setData({ searchInput: "G" });
+    
+    times(3)(() => {
+        input.trigger("keydown.down");
+    });
+  
+    input.trigger("keydown.enter");
+    wrapper.find('li').trigger("mouseover");
+    wrapper.find('li').trigger("mouseenter");
+    wrapper.find('li').trigger("mouseleave");
+
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) {

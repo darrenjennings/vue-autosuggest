@@ -22,8 +22,7 @@
                     aria-labelledby="autosuggest"
                     v-if="getSize() > 0 && !loading"
                     >
-                    <component v-for="(cs, key) in this.computedSections" 
-                        :is="cs.type" :section="cs" :ref="getSectionRef(key)" :key="getSectionRef(key)" :updateCurrentIndex="updateCurrentIndex" :searchInput="searchInput"></component>
+                    <component v-for="(cs, key) in this.computedSections" :is="cs.type" :section="cs" :ref="getSectionRef(key)" :key="getSectionRef(key)" :updateCurrentIndex="updateCurrentIndex" :searchInput="searchInput"></component>
                 </div>
         </div>
     </div>
@@ -49,10 +48,6 @@ export default {
                 initialValue: {
                     type: String,
                     default: ""
-                },
-                placeholder: {
-                    type: String,
-                    required: true
                 },
                 onClick: {
                     type: Function,
@@ -82,10 +77,15 @@ export default {
                 default: () => {
                     return {
                         default: {
-                            onSelected: () => {}
+                            onSelected: null
                         }
                     };
                 }
+            },
+            onSelected: {
+                type: Function,
+                required: false,
+                default: null
             }
         },
         data: () => ({
@@ -96,23 +96,7 @@ export default {
             loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */,
             didSelectFromOptions: false,
             computedSections: [],
-            computedSize: 0,
-            onSelected: function() {
-                if (
-                    this.currentItem &&
-                    this.sectionConfigs[this.currentItem.name]
-                ) {
-                    this.sectionConfigs[this.currentItem.name].onSelected(
-                        this.currentItem,
-                        this.searchInputOriginal
-                    );
-                } else {
-                    this.sectionConfigs["default"].onSelected(
-                        null,
-                        this.searchInputOriginal
-                    );
-                }
-            }
+            computedSize: 0
         }),
         computed: {
             isOpen() {
@@ -123,7 +107,31 @@ export default {
                 );
             }
         },
+        created(){
+            if(!this.inputProps.onClick){
+                this.inputProps.onClick = function(){};
+            }
+        },
         methods: {
+            _onSelected() {
+                if (
+                    this.currentItem &&
+                    this.sectionConfigs[this.currentItem.name] &&
+                    this.sectionConfigs[this.currentItem.name].onSelected
+                ) { 
+                    this.sectionConfigs[this.currentItem.name].onSelected(
+                        this.currentItem,
+                        this.searchInputOriginal
+                    );
+                } else if(this.sectionConfigs["default"].onSelected){
+                    this.sectionConfigs["default"].onSelected(
+                        null,
+                        this.searchInputOriginal
+                    );
+                } else {
+                    this.onSelected && this.onSelected(this.currentItem)
+                }
+            },
             getSectionRef(i) {
                 return "computed_section_" + i;
             },
@@ -216,7 +224,7 @@ export default {
                             }
                             this.loading = true;
                             this.$nextTick(() => {
-                                this.onSelected(this.didSelectFromOptions);
+                                this._onSelected(this.didSelectFromOptions);
                             });
                         });
                         break;
@@ -254,7 +262,7 @@ export default {
                 this.didSelectFromOptions = true;
                 this.setChangeItem(this.getItemByIndex(this.currentIndex));
                 this.$nextTick(() => {
-                    this.onSelected(true);
+                    this._onSelected(true);
                 });
             },
             setCurrentIndex(newIndex, limit = -1, direction) {
@@ -295,23 +303,17 @@ export default {
 
             /** DOM Utilities */
             hasClass(el, className) {
-                if (el.classList) return el.classList.contains(className);
-                else
-                    return !!el.className.match(
-                        new RegExp("(\\s|^)" + className + "(\\s|$)")
-                    );
+                return !!el.className.match(
+                    new RegExp("(\\s|^)" + className + "(\\s|$)")
+                );
             },
             addClass(el, className) {
-                if (el.classList) el.classList.add(className);
-                else if (!this.hasClass(el, className))
+                if (!this.hasClass(el, className))
                     el.className += " " + className;
             },
             removeClass(el, className) {
                 if (el.classList) {
                     el.classList.remove(className);
-                } else if (this.hasClass(el, className)) {
-                    var reg = new RegExp("(\\s|^)" + className + "(\\s|$)");
-                    el.className = el.className.replace(reg, " ");
                 }
             },
             getSectionName(section) {
@@ -344,18 +346,17 @@ export default {
 
                 this.suggestions.forEach(section => {
                     if (!section.data) return;
-
-                    const name = this.getSectionName(section);  
-                    if (!this.sectionConfigs[name]) {
-                        return;
-                    }
-
-                    let { type, limit, label } = this.sectionConfigs[name];  
+                    
+                    const name = this.getSectionName(section);
+                    let { type, limit, label } = this.sectionConfigs[name];
                     
                     /** Set defaults for section configs. */
                     type = type ? type : "default-section";
-                    limit = limit ? limit : (section.data.length < Infinity ? section.data.length : Infinity);
-                    label = label ? label : section.label;  
+                    
+                    limit = limit ? limit : Infinity;
+                    limit = (section.data.length < limit) ? section.data.length : limit;
+                    
+                    label = label ? label : section.label;
                     
                     let computedSection = {
                         name,

@@ -44,28 +44,23 @@ storiesOf("Vue-Autosuggest", module)
     .add("simplest", () => ({
         components: { Autosuggest },
         template: `<div>
-                    <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected {{selected}}</span></div>
+                    <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected '{{selected}}'</span></div>
                     <div>
-                        <autosuggest :suggestions="filteredOptions" :inputProps="inputProps"/>
+                        <autosuggest :suggestions="filteredOptions" :inputProps="inputProps" :onSelected="onSelected" />
                     </div>
                 </div>`,
         data() {
             return {
                 selected: "",
                 filteredOptions: [],
-                options: [
-                    {
-                        data: sharedData.options.slice(0, 10)
-                    }
-                ],
+                options: [{data:sharedData.options.slice(0, 10)}],
                 inputProps: {
                     id: "autosuggest__input",
-                    onInputChange: this.onInputChange,
-                    onClick: () => {
-                        action("clicked-it");
-                    },
-                    initialValue: ""
-                }
+                    onInputChange:this.onInputChange,
+                    initialValue: "",
+                    placeholder:"Type 'e'"
+                },
+                onSelected: (item) => {this.selected = item;}
             };
         },
         methods: sharedData.methods
@@ -75,11 +70,8 @@ storiesOf("Vue-Autosuggest", module)
         template: `<div>
                     <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected {{selected}}</span></div>
                     <div>
-                        <autosuggest 
-                        :suggestions="filteredOptions"
-                        :input-props="inputProps"
-                        :section-configs="sectionConfigs"
-                                />
+                        <autosuggest :suggestions="filteredOptions" :inputProps="inputProps" :sectionConfigs="sectionConfigs"
+                        />
                     </div>
                 </div>`,
         data() {
@@ -139,11 +131,7 @@ storiesOf("Vue-Autosuggest", module)
         template: `<div>
                     <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected {{selected}}</span></div>
                     <div>
-                        <autosuggest 
-                        :suggestions="filteredOptions"
-                        :input-props="inputProps"
-                        :section-configs="sectionConfigs"
-                                />
+                        <autosuggest :suggestions="filteredOptions" :inputProps="inputProps" :sectionConfigs="sectionConfigs" />
                     </div>
                 </div>`,
         data() {

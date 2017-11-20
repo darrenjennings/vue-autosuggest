@@ -64,7 +64,7 @@ exports[`Autosuggest can display section header 1`] = `
             data-suggestion-index="0"
             data-section-name="default"
             id="autosuggest__results_item-0"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           clifford kits
         </li>
@@ -72,7 +72,7 @@ exports[`Autosuggest can display section header 1`] = `
             data-suggestion-index="1"
             data-section-name="default"
             id="autosuggest__results_item-1"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           friendly chemistry
         </li>
@@ -80,7 +80,7 @@ exports[`Autosuggest can display section header 1`] = `
             data-suggestion-index="2"
             data-section-name="default"
             id="autosuggest__results_item-2"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           phonics
         </li>
@@ -88,7 +88,7 @@ exports[`Autosuggest can display section header 1`] = `
             data-suggestion-index="3"
             data-section-name="default"
             id="autosuggest__results_item-3"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           life of fred
         </li>
@@ -96,7 +96,7 @@ exports[`Autosuggest can display section header 1`] = `
             data-suggestion-index="4"
             data-section-name="default"
             id="autosuggest__results_item-4"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           life of fred math
         </li>
@@ -130,6 +130,203 @@ exports[`Autosuggest can mount 1`] = `
   >
   <div class="autosuggest__results-container">
     <!---->
+  </div>
+</div>
+
+`;
+
+exports[`Autosuggest can render simplest component with single onSelected 1`] = `
+
+<div id="autosuggest"
+     data-server-rendered="true"
+>
+  <input name="q"
+         type="text"
+         maxlength="256"
+         autocomplete="off"
+         aria-autosuggest="list"
+         aria-owns="autosuggest__results"
+         aria-activedescendant
+         aria-haspopup="true"
+         id="autosuggest__input"
+         initialvalue
+         oninputchange="function onInputChange() {}"
+         placeholder="Type 'G'"
+         onclick="function () {}"
+         value="phonics"
+         class="form-control autosuggest__input-open cool-class"
+  >
+  <div class="autosuggest__results-container">
+    <div role="listbox"
+         aria-labelledby="autosuggest"
+         class="autosuggest__results"
+    >
+      <ul role="listbox"
+          aria-labelledby="autosuggest"
+      >
+        <!---->
+        <li role="option"
+            data-suggestion-index="0"
+            data-section-name="default"
+            id="autosuggest__results_item-0"
+            class="autosuggest__results_item"
+        >
+          clifford kits
+        </li>
+        <li role="option"
+            data-suggestion-index="1"
+            data-section-name="default"
+            id="autosuggest__results_item-1"
+            class="autosuggest__results_item"
+        >
+          friendly chemistry
+        </li>
+        <li role="option"
+            data-suggestion-index="2"
+            data-section-name="default"
+            id="autosuggest__results_item-2"
+            class="autosuggest__results_item"
+        >
+          phonics
+        </li>
+        <li role="option"
+            data-suggestion-index="3"
+            data-section-name="default"
+            id="autosuggest__results_item-3"
+            class="autosuggest__results_item"
+        >
+          life of fred
+        </li>
+        <li role="option"
+            data-suggestion-index="4"
+            data-section-name="default"
+            id="autosuggest__results_item-4"
+            class="autosuggest__results_item"
+        >
+          life of fred math
+        </li>
+        <li role="option"
+            data-suggestion-index="5"
+            data-section-name="default"
+            id="autosuggest__results_item-5"
+            class="autosuggest__results_item"
+        >
+          magic school bus
+        </li>
+        <li role="option"
+            data-suggestion-index="6"
+            data-section-name="default"
+            id="autosuggest__results_item-6"
+            class="autosuggest__results_item"
+        >
+          math mammoth light blue
+        </li>
+        <li role="option"
+            data-suggestion-index="7"
+            data-section-name="default"
+            id="autosuggest__results_item-7"
+            class="autosuggest__results_item"
+        >
+          handwriting
+        </li>
+        <li role="option"
+            data-suggestion-index="8"
+            data-section-name="default"
+            id="autosuggest__results_item-8"
+            class="autosuggest__results_item"
+        >
+          math
+        </li>
+        <li role="option"
+            data-suggestion-index="9"
+            data-section-name="default"
+            id="autosuggest__results_item-9"
+            class="autosuggest__results_item"
+        >
+          minecraft
+        </li>
+        <li role="option"
+            data-suggestion-index="10"
+            data-section-name="default"
+            id="autosuggest__results_item-10"
+            class="autosuggest__results_item"
+        >
+          free worksheets
+        </li>
+        <li role="option"
+            data-suggestion-index="11"
+            data-section-name="default"
+            id="autosuggest__results_item-11"
+            class="autosuggest__results_item"
+        >
+          4th grade
+        </li>
+        <li role="option"
+            data-suggestion-index="12"
+            data-section-name="default"
+            id="autosuggest__results_item-12"
+            class="autosuggest__results_item"
+        >
+          snap circuits
+        </li>
+        <li role="option"
+            data-suggestion-index="13"
+            data-section-name="default"
+            id="autosuggest__results_item-13"
+            class="autosuggest__results_item"
+        >
+          bath toys
+        </li>
+        <li role="option"
+            data-suggestion-index="14"
+            data-section-name="default"
+            id="autosuggest__results_item-14"
+            class="autosuggest__results_item"
+        >
+          channies
+        </li>
+        <li role="option"
+            data-suggestion-index="15"
+            data-section-name="default"
+            id="autosuggest__results_item-15"
+            class="autosuggest__results_item"
+        >
+          fred
+        </li>
+        <li role="option"
+            data-suggestion-index="16"
+            data-section-name="default"
+            id="autosuggest__results_item-16"
+            class="autosuggest__results_item"
+        >
+          lego
+        </li>
+        <li role="option"
+            data-suggestion-index="17"
+            data-section-name="default"
+            id="autosuggest__results_item-17"
+            class="autosuggest__results_item"
+        >
+          math life of fred
+        </li>
+        <li role="option"
+            data-suggestion-index="18"
+            data-section-name="default"
+            id="autosuggest__results_item-18"
+            class="autosuggest__results_item"
+        >
+          multiplication
+        </li>
+        <li role="option"
+            data-suggestion-index="19"
+            data-section-name="default"
+            id="autosuggest__results_item-19"
+            class="autosuggest__results_item"
+        >
+          thinking tree
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 
@@ -169,7 +366,7 @@ exports[`Autosuggest can render suggestions 1`] = `
             data-suggestion-index="0"
             data-section-name="default"
             id="autosuggest__results_item-0"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           clifford kits
         </li>
@@ -177,7 +374,7 @@ exports[`Autosuggest can render suggestions 1`] = `
             data-suggestion-index="1"
             data-section-name="default"
             id="autosuggest__results_item-1"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           friendly chemistry
         </li>
@@ -185,7 +382,7 @@ exports[`Autosuggest can render suggestions 1`] = `
             data-suggestion-index="2"
             data-section-name="default"
             id="autosuggest__results_item-2"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           phonics
         </li>
@@ -193,7 +390,7 @@ exports[`Autosuggest can render suggestions 1`] = `
             data-suggestion-index="3"
             data-section-name="default"
             id="autosuggest__results_item-3"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           life of fred
         </li>
@@ -201,7 +398,7 @@ exports[`Autosuggest can render suggestions 1`] = `
             data-suggestion-index="4"
             data-section-name="default"
             id="autosuggest__results_item-4"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           life of fred math
         </li>
@@ -302,7 +499,7 @@ exports[`Autosuggest is aria complete 1`] = `
             data-suggestion-index="0"
             data-section-name="default"
             id="autosuggest__results_item-0"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           clifford kits
         </li>
@@ -310,7 +507,7 @@ exports[`Autosuggest is aria complete 1`] = `
             data-suggestion-index="1"
             data-section-name="default"
             id="autosuggest__results_item-1"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           friendly chemistry
         </li>
@@ -318,7 +515,7 @@ exports[`Autosuggest is aria complete 1`] = `
             data-suggestion-index="2"
             data-section-name="default"
             id="autosuggest__results_item-2"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           phonics
         </li>
@@ -326,7 +523,7 @@ exports[`Autosuggest is aria complete 1`] = `
             data-suggestion-index="3"
             data-section-name="default"
             id="autosuggest__results_item-3"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           life of fred
         </li>
@@ -334,7 +531,7 @@ exports[`Autosuggest is aria complete 1`] = `
             data-suggestion-index="4"
             data-section-name="default"
             id="autosuggest__results_item-4"
-            class="autosuggest__results_item autosuggest__results_item"
+            class="autosuggest__results_item"
         >
           life of fred math
         </li>
