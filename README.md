@@ -36,7 +36,7 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Examples
-- <a href="">Demo</a> Landing page.
+- <a href="https://educents.github.io/vue-autosuggest">Demo</a>
 - <a href="https://educents.github.io/vue-autosuggest/storybook">Storybook</a> Helpful to see all variations of component's props.<br/>
 - <a href="https://jsfiddle.net/darrenjennings/dugbvezs/">JSFiddle</a> Helpful for playing around and sharing.
 
