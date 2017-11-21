@@ -15,7 +15,7 @@
     "deploy": "yarn build && npm publish",
     "test": "yarn jest",
     "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codecov",
-    "test:coverage": "yarn jest --coverage",
+    "test:coverage": "yarn jest -- --coverage",
     "test:update": "yarn test --updateSnapshot",
     "add-contributor": "kcd-scripts contributors add",
     "setup": "yarn install",
