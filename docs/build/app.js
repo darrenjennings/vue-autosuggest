@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -174,22 +174,75 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-// Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(8)(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
-});
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = function (it) {
-  return typeof it === 'object' ? it !== null : typeof it === 'function';
-};
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(3), __webpack_require__(7), __webpack_require__(10)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else if (typeof exports !== "undefined") {
+        factory(require('vue'), require('./UrlSection.vue'), require('./App.vue'));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(global.vue, global.UrlSection, global.App);
+        global.index = mod.exports;
+    }
+})(this, function (_vue, _UrlSection, _App) {
+    'use strict';
 
+    var _vue2 = _interopRequireDefault(_vue);
+
+    var _UrlSection2 = _interopRequireDefault(_UrlSection);
+
+    var _App2 = _interopRequireDefault(_App);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    _vue2.default.component('UrlSection', _UrlSection2.default);
+
+    new _vue2.default({
+        el: "#app",
+        components: {
+            App: _App2.default
+        },
+        template: "<App/>"
+    });
+});
 
 /***/ }),
 /* 3 */
@@ -10748,137 +10801,10 @@ return Vue$3;
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(10).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(4).setImmediate))
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-var core = module.exports = { version: '2.5.1' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var anObject = __webpack_require__(31);
-var IE8_DOM_DEFINE = __webpack_require__(32);
-var toPrimitive = __webpack_require__(34);
-var dP = Object.defineProperty;
-
-exports.f = __webpack_require__(1) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  anObject(O);
-  P = toPrimitive(P, true);
-  anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
-    return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
-  return O;
-};
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-module.exports = function (exec) {
-  try {
-    return !!exec();
-  } catch (e) {
-    return true;
-  }
-};
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(3), __webpack_require__(13), __webpack_require__(16)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else if (typeof exports !== "undefined") {
-        factory(require('vue'), require('./UrlSection.vue'), require('./App.vue'));
-    } else {
-        var mod = {
-            exports: {}
-        };
-        factory(global.vue, global.UrlSection, global.App);
-        global.index = mod.exports;
-    }
-})(this, function (_vue, _UrlSection, _App) {
-    'use strict';
-
-    var _vue2 = _interopRequireDefault(_vue);
-
-    var _UrlSection2 = _interopRequireDefault(_UrlSection);
-
-    var _App2 = _interopRequireDefault(_App);
-
-    function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : {
-            default: obj
-        };
-    }
-
-    _vue2.default.component('UrlSection', _UrlSection2.default);
-
-    new _vue2.default({
-        el: "#app",
-        components: {
-            App: _App2.default
-        },
-        template: "<App/>"
-    });
-});
-
-/***/ }),
-/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -10931,13 +10857,13 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(11);
+__webpack_require__(5);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 11 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -11127,10 +11053,10 @@ exports.clearImmediate = clearImmediate;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(12)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(6)))
 
 /***/ }),
-/* 12 */
+/* 6 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -11320,14 +11246,14 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 13 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_UrlSection_vue__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_UrlSection_vue__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_UrlSection_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_UrlSection_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_6c5d50cc_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_UrlSection_vue__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_6c5d50cc_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_UrlSection_vue__ = __webpack_require__(9);
 var normalizeComponent = __webpack_require__(0)
 /* script */
 
@@ -11354,72 +11280,72 @@ var Component = normalizeComponent(
 
 
 /***/ }),
-/* 14 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else if (typeof exports !== "undefined") {
-        factory(exports);
-    } else {
-        var mod = {
-            exports: {}
-        };
-        factory(mod.exports);
-        global.UrlSection = mod.exports;
-    }
-})(this, function (exports) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.default = {
-        name: 'url-section',
-        props: {
-            section: { type: Object, required: true },
-            currentIndex: { type: Number, required: false, default: Infinity },
-            updateCurrentIndex: { type: Function, required: true }
-        },
-        computed: {
-            list: function list() {
-                var l = this.section.limit;
-                if (this.section.data.length < l) {
-                    l = this.section.data.length;
-                }
-
-                return this.section.data.slice(0, l);
-            },
-            className: function className() {
-                return 'autosuggest__results_title ' + 'autosuggest__results_title_' + this.section.name;
-            }
-        },
-        methods: {
-            getItemIndex: function getItemIndex(i) {
-                return this.section.start_index + i;
-            },
-            getItemByIndex: function getItemByIndex(i) {
-                return this.section.data[i];
-            },
-            getLabelByIndex: function getLabelByIndex(i) {
-                return this.section.data[i].value;
-            },
-            onMouseEnter: function onMouseEnter(event) {
-                this.updateCurrentIndex(event.currentTarget.getAttribute('data-suggestion-index'));
-            },
-            onMouseLeave: function onMouseLeave(event) {
-                this.updateCurrentIndex(null);
-            }
-        }
+  } else if (typeof exports !== "undefined") {
+    factory(exports);
+  } else {
+    var mod = {
+      exports: {}
     };
+    factory(mod.exports);
+    global.UrlSection = mod.exports;
+  }
+})(this, function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
+    name: "url-section",
+    props: {
+      section: { type: Object, required: true },
+      currentIndex: { type: Number, required: false, default: Infinity },
+      updateCurrentIndex: { type: Function, required: true }
+    },
+    computed: {
+      list: function list() {
+        var l = this.section.limit;
+        if (this.section.data.length < l) {
+          l = this.section.data.length;
+        }
+
+        return this.section.data.slice(0, l);
+      },
+      className: function className() {
+        return "autosuggest__results_title " + "autosuggest__results_title_" + this.section.name;
+      }
+    },
+    methods: {
+      getItemIndex: function getItemIndex(i) {
+        return this.section.start_index + i;
+      },
+      getItemByIndex: function getItemByIndex(i) {
+        return this.section.data[i];
+      },
+      getLabelByIndex: function getLabelByIndex(i) {
+        return this.section.data[i].value;
+      },
+      onMouseEnter: function onMouseEnter(event) {
+        this.updateCurrentIndex(event.currentTarget.getAttribute("data-suggestion-index"));
+      },
+      onMouseLeave: function onMouseLeave() {
+        this.updateCurrentIndex(null);
+      }
+    }
+  };
 });
 
 /***/ }),
-/* 15 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11429,16 +11355,16 @@ var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
 
 /***/ }),
-/* 16 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9a15e98a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9a15e98a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(23);
 function injectStyle (ssrContext) {
-  __webpack_require__(17)
+  __webpack_require__(11)
 }
 var normalizeComponent = __webpack_require__(0)
 /* script */
@@ -11466,23 +11392,23 @@ var Component = normalizeComponent(
 
 
 /***/ }),
-/* 17 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(18);
+var content = __webpack_require__(12);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(20)("229471e5", content, true);
+var update = __webpack_require__(14)("229471e5", content, true);
 
 /***/ }),
-/* 18 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(19)(undefined);
+exports = module.exports = __webpack_require__(13)(undefined);
 // imports
 
 
@@ -11493,7 +11419,7 @@ exports.push([module.i, "body{max-width:800px;padding:20px;margin-left:auto!impo
 
 
 /***/ }),
-/* 19 */
+/* 13 */
 /***/ (function(module, exports) {
 
 /*
@@ -11575,7 +11501,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 20 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -11594,7 +11520,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(21)
+var listToStyles = __webpack_require__(15)
 
 /*
 type StyleObject = {
@@ -11796,7 +11722,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 21 */
+/* 15 */
 /***/ (function(module, exports) {
 
 /**
@@ -11829,34 +11755,30 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 22 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(23), __webpack_require__(3), __webpack_require__(36)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(17)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else if (typeof exports !== "undefined") {
-    factory(exports, require("babel-runtime/helpers/defineProperty"), require("vue"), require("../src/Autosuggest.vue"));
+    factory(exports, require("../src/Autosuggest.vue"));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.defineProperty, global.vue, global.Autosuggest);
+    factory(mod.exports, global.Autosuggest);
     global.App = mod.exports;
   }
-})(this, function (exports, _defineProperty2, _vue, _Autosuggest) {
+})(this, function (exports, _Autosuggest) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-
-  var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-  var _vue2 = _interopRequireDefault(_vue);
 
   var _Autosuggest2 = _interopRequireDefault(_Autosuggest);
 
@@ -11871,9 +11793,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       VueAutosuggest: _Autosuggest2.default
     },
     data: function data() {
-      var _ref;
-
-      return _ref = {
+      return {
         selected: "",
         limit: 10,
         filteredOptions: [],
@@ -11882,30 +11802,40 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }, {
           label: "Blog",
           name: "blog",
-          data: [{ url: "https://blog.educents.com/", value: "The Best Blog in the Entire World" }, { url: "https://blog.educents.com/best-educational-games-2017-inchimals/", value: "The Best Educational Games and Toys of 2017: Inchimals" }, { url: "https://blog.educents.com/reading-exploring-world-through-literature/", value: "Family Read-Alouds: Exploring the World Through Literature" }]
+          data: [{
+            url: "https://blog.educents.com/",
+            value: "The Best Blog in the Entire World"
+          }, {
+            url: "https://blog.educents.com/best-educational-games-2017-inchimals/",
+            value: "The Best Educational Games and Toys of 2017: Inchimals"
+          }, {
+            url: "https://blog.educents.com/reading-exploring-world-through-literature/",
+            value: "Family Read-Alouds: Exploring the World Through Literature"
+          }]
         }],
         sectionConfigs: {
           default: {
             limit: 6,
-            onSelected: function onSelected(item, originalInput) {
-              console.log("Selected \"" + item.item + "\"");
+            onSelected: function onSelected() {
+              // console.log(item, originalInput, `Selected "${item.item}"`);
             }
           },
           blog: {
             limit: 3,
             type: "url-section",
-            onSelected: function onSelected(item, originalInput) {
+            onSelected: function onSelected() {
               //alert("url: " + item.item.url);
             }
           }
+        },
+        inputProps: {
+          id: "autosuggest__input",
+          initialValue: "",
+          onClick: function onClick() {},
+          onInputChange: this.onInputChange,
+          placeholder: "Type 'g'"
         }
-      }, (0, _defineProperty3.default)(_ref, "filteredOptions", []), (0, _defineProperty3.default)(_ref, "inputProps", {
-        id: "autosuggest__input",
-        initialValue: "",
-        onClick: function onClick() {},
-        onInputChange: this.onInputChange,
-        placeholder: "Type 'g'"
-      }), _ref;
+      };
     },
 
     methods: {
@@ -11936,252 +11866,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-var _defineProperty = __webpack_require__(24);
-
-var _defineProperty2 = _interopRequireDefault(_defineProperty);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (obj, key, value) {
-  if (key in obj) {
-    (0, _defineProperty2.default)(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-};
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = { "default": __webpack_require__(25), __esModule: true };
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(26);
-var $Object = __webpack_require__(6).Object;
-module.exports = function defineProperty(it, key, desc) {
-  return $Object.defineProperty(it, key, desc);
-};
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export = __webpack_require__(27);
-// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !__webpack_require__(1), 'Object', { defineProperty: __webpack_require__(7).f });
-
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var global = __webpack_require__(5);
-var core = __webpack_require__(6);
-var ctx = __webpack_require__(28);
-var hide = __webpack_require__(30);
-var PROTOTYPE = 'prototype';
-
-var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var IS_WRAP = type & $export.W;
-  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-  var expProto = exports[PROTOTYPE];
-  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
-  var key, own, out;
-  if (IS_GLOBAL) source = name;
-  for (key in source) {
-    // contains in native
-    own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && key in exports) continue;
-    // export native or passed
-    out = own ? target[key] : source[key];
-    // prevent global pollution for namespaces
-    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
-    // bind timers to global for call from export context
-    : IS_BIND && own ? ctx(out, global)
-    // wrap global constructors for prevent change them in library
-    : IS_WRAP && target[key] == out ? (function (C) {
-      var F = function (a, b, c) {
-        if (this instanceof C) {
-          switch (arguments.length) {
-            case 0: return new C();
-            case 1: return new C(a);
-            case 2: return new C(a, b);
-          } return new C(a, b, c);
-        } return C.apply(this, arguments);
-      };
-      F[PROTOTYPE] = C[PROTOTYPE];
-      return F;
-    // make static versions for prototype methods
-    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-    if (IS_PROTO) {
-      (exports.virtual || (exports.virtual = {}))[key] = out;
-      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
-    }
-  }
-};
-// type bitmap
-$export.F = 1;   // forced
-$export.G = 2;   // global
-$export.S = 4;   // static
-$export.P = 8;   // proto
-$export.B = 16;  // bind
-$export.W = 32;  // wrap
-$export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
-module.exports = $export;
-
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// optional / simple context binding
-var aFunction = __webpack_require__(29);
-module.exports = function (fn, that, length) {
-  aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
-      return fn.call(that, a);
-    };
-    case 2: return function (a, b) {
-      return fn.call(that, a, b);
-    };
-    case 3: return function (a, b, c) {
-      return fn.call(that, a, b, c);
-    };
-  }
-  return function (/* ...args */) {
-    return fn.apply(that, arguments);
-  };
-};
-
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports) {
-
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
-  return it;
-};
-
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var dP = __webpack_require__(7);
-var createDesc = __webpack_require__(35);
-module.exports = __webpack_require__(1) ? function (object, key, value) {
-  return dP.f(object, key, createDesc(1, value));
-} : function (object, key, value) {
-  object[key] = value;
-  return object;
-};
-
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__(2);
-module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
-  return it;
-};
-
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = !__webpack_require__(1) && !__webpack_require__(8)(function () {
-  return Object.defineProperty(__webpack_require__(33)('div'), 'a', { get: function () { return 7; } }).a != 7;
-});
-
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__(2);
-var document = __webpack_require__(5).document;
-// typeof document.createElement is 'object' in old IE
-var is = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
-  return is ? document.createElement(it) : {};
-};
-
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __webpack_require__(2);
-// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-// and the second argument - flag - preferred type is a string
-module.exports = function (it, S) {
-  if (!isObject(it)) return it;
-  var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  throw TypeError("Can't convert object to primitive value");
-};
-
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports) {
-
-module.exports = function (bitmap, value) {
-  return {
-    enumerable: !(bitmap & 1),
-    configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
-  };
-};
-
-
-/***/ }),
-/* 36 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_60ffdade_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Autosuggest_vue__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_60ffdade_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Autosuggest_vue__ = __webpack_require__(22);
 var normalizeComponent = __webpack_require__(0)
 /* script */
 
@@ -12208,361 +11900,382 @@ var Component = normalizeComponent(
 
 
 /***/ }),
-/* 37 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(38)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(19)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else if (typeof exports !== "undefined") {
-        factory(exports, require('./parts/DefaultSection.vue'));
-    } else {
-        var mod = {
-            exports: {}
-        };
-        factory(mod.exports, global.DefaultSection);
-        global.Autosuggest = mod.exports;
-    }
-})(this, function (exports, _DefaultSection) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    var _DefaultSection2 = _interopRequireDefault(_DefaultSection);
-
-    function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : {
-            default: obj
-        };
-    }
-
-    exports.default = {
-        name: 'autosuggest',
-        components: {
-            DefaultSection: _DefaultSection2.default
-        },
-        props: {
-            inputProps: {
-                id: {
-                    type: String,
-                    default: 'autosuggest__input'
-                },
-                onInputChange: {
-                    type: Function,
-                    required: true
-                },
-                initialValue: {
-                    type: String,
-                    default: ""
-                },
-                placeholder: {
-                    type: String,
-                    required: true
-                },
-                onClick: {
-                    type: Function,
-                    required: false
-                }
-            },
-            limit: {
-                type: Number,
-                required: false,
-                default: Infinity
-            },
-            suggestions: {
-                type: Array,
-                required: true,
-                default: []
-            },
-            shouldRenderSuggestions: {
-                type: Function,
-                required: false,
-                default: function _default() {
-                    return true;
-                }
-            },
-            resultItemKey: {
-                type: String,
-                required: false
-            },
-            sectionConfigs: {
-                type: Object,
-                required: false
-            }
-        },
-        data: function data() {
-            return {
-                searchInput: '',
-                searchInputOriginal: '',
-                currentIndex: null,
-                currentItem: null,
-                loading: false, /** Helps with making sure the dropdown doesn't stay open after certain actions */
-                didSelectFromOptions: false,
-                computedSections: [],
-                computedSize: 0,
-                onSelected: function onSelected() {
-                    if (this.currentItem && this.sectionConfigs[this.currentItem.name]) {
-                        this.sectionConfigs[this.currentItem.name].onSelected(this.currentItem, this.searchInputOriginal);
-                    } else {
-                        this.sectionConfigs['default'].onSelected(null, this.searchInputOriginal);
-                    }
-                }
-            };
-        },
-        computed: {
-            isOpen: function isOpen() {
-                return this.shouldRenderSuggestions() && !this.loading;
-            }
-        },
-        methods: {
-            getSectionRef: function getSectionRef(i) {
-                return 'computed_section_' + i;
-            },
-            getSize: function getSize() {
-                return this.computedSize;
-            },
-            getItemByIndex: function getItemByIndex(index) {
-                var obj = false;
-                if (index === null) return obj;
-                for (var i = 0; i < this.computedSections.length; i++) {
-                    if (index >= this.computedSections[i].start_index && index <= this.computedSections[i].end_index) {
-                        var trueIndex = index - this.computedSections[i].start_index;
-                        var childSection = this.$refs['computed_section_' + i][0];
-                        if (childSection) {
-                            obj = {
-                                "name": this.computedSections[i].name,
-                                "type": this.computedSections[i].type,
-                                "label": childSection.getLabelByIndex(trueIndex),
-                                "item": childSection.getItemByIndex(trueIndex)
-                            };
-                            break;
-                        }
-                    }
-                }
-
-                return obj;
-            },
-            handleKeyStroke: function handleKeyStroke(e) {
-                var _this = this;
-
-                var keyCode = e.keyCode;
-
-                var ignoredKeyCodes = [91, 92, 9]; // Don't trigger on tab, os key etc. 
-                if (ignoredKeyCodes.indexOf(keyCode) > -1) {
-                    return;
-                }
-                this.loading = false;
-                this.didSelectFromOptions = false;
-                switch (keyCode) {
-                    case 40: // ArrowDown
-                    case 38:
-                        // ArrowUp
-                        e.preventDefault();
-                        if (this.isOpen) {
-                            if (keyCode === 38 && this.currentIndex === null) {
-                                break;
-                            }
-                            // Determine direction of arrow up/down and determine new currentIndex
-                            var direction = keyCode === 40 ? 1 : -1;
-                            var newIndex = this.currentIndex + direction;
-                            this.setCurrentIndex(newIndex, this.getSize(), direction);
-                            this.didSelectFromOptions = true;
-                            if (this.getSize() > 0 && this.currentIndex >= 0) {
-                                this.setChangeItem(this.getItemByIndex(this.currentIndex));
-                                this.didSelectFromOptions = true;
-                            } else if (this.currentIndex == -1) {
-                                this.currentIndex = null;
-                                this.searchInput = this.searchInputOriginal;
-                                e.preventDefault();
-                            }
-                        }
-                        break;
-                    case 13:
-                        // Enter
-                        e.preventDefault();
-                        if (keyCode === 229) {
-                            // https://github.com/moroshko/react-autosuggest/pull/388
-                            break;
-                        }
-                        this.$nextTick(function () {
-                            if (_this.getSize() > 0 && _this.currentIndex >= 0) {
-                                _this.setChangeItem(_this.getItemByIndex(_this.currentIndex));
-                                _this.didSelectFromOptions = true;
-                            }
-                            _this.loading = true;
-                            _this.$nextTick(function () {
-                                _this.onSelected(_this.didSelectFromOptions);
-                            });
-                        });
-                        break;
-                    case 27:
-                        // Escape
-                        if (this.isOpen) {
-                            /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
-                            this.loading = true;
-                            this.currentIndex = null;
-                            this.searchInput = this.searchInputOriginal;
-                            e.preventDefault();
-                        }
-                        break;
-                }
-            },
-            setChangeItem: function setChangeItem(item) {
-                if (this.currentIndex === null) {
-                    this.currentItem = null;
-                } else if (item) {
-                    this.searchInput = item.label;
-                    this.currentItem = item;
-                }
-            },
-            updateCurrentIndex: function updateCurrentIndex(index) {
-                this.currentIndex = index;
-            },
-            onDocumentMouseUp: function onDocumentMouseUp() {
-                var _this2 = this;
-
-                /** Clicks outside of dropdown to exit */
-                if (this.currentIndex === null) {
-                    this.loading = this.shouldRenderSuggestions();
-                    return;
-                }
-
-                /** Selects an item in the dropdown */
-                this.loading = true;
-                this.didSelectFromOptions = true;
-                this.setChangeItem(this.getItemByIndex(this.currentIndex));
-                this.$nextTick(function () {
-                    _this2.onSelected(true);
-                });
-            },
-            setCurrentIndex: function setCurrentIndex(newIndex) {
-                var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
-                var direction = arguments[2];
-
-                var adjustedValue = newIndex;
-
-                // if we hit the lower limit then stop iterating the index
-                if (this.currentIndex === null) {
-                    adjustedValue = 0;
-                }
-
-                if (this.currentIndex < 0 && direction === 1) {
-                    adjustedValue = 0;
-                }
-                // if we hit the upper limit then just stop iterating the index
-                if (newIndex >= limit) {
-                    adjustedValue = 0;
-                }
-                this.currentIndex = adjustedValue;
-
-                var element = document.getElementById('autosuggest__results_item-' + this.currentIndex);
-                var hoverClass = 'autosuggest__results_item-highlighted';
-                if (document.querySelector('.' + hoverClass)) {
-                    this.removeClass(document.querySelector('.' + hoverClass), hoverClass);
-                }
-                if (element) {
-                    this.addClass(element, hoverClass);
-                }
-            },
-            onClick: function onClick() {
-                this.loading = false;
-                this.inputProps.onClick();
-            },
-
-
-            /** DOM Utilities */
-            hasClass: function hasClass(el, className) {
-                if (el.classList) return el.classList.contains(className);else return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
-            },
-            addClass: function addClass(el, className) {
-                if (el.classList) el.classList.add(className);else if (!hasClass(el, className)) el.className += " " + className;
-            },
-            removeClass: function removeClass(el, className) {
-                if (el.classList) {
-                    el.classList.remove(className);
-                } else if (hasClass(el, className)) {
-                    var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
-                    el.className = el.className.replace(reg, ' ');
-                }
-            },
-            getSectionName: function getSectionName(section) {
-                if (!section.name) {
-                    section.name = 'default';
-                }
-
-                return section.name;
-            }
-        },
-        mounted: function mounted() {
-            document.addEventListener('mouseup', this.onDocumentMouseUp);
-            var input = document.getElementById(this.inputProps.id);
-            if (input) {
-                input.value = this.inputProps.initialValue; // set default query, e.g. loaded server side.
-            }
-        },
-
-        watch: {
-            searchInput: function searchInput(newValue, oldValue) {
-                this.value = newValue;
-                if (!this.didSelectFromOptions) {
-                    this.searchInputOriginal = this.value;
-                    this.currentIndex = null;
-                    this.inputProps.onInputChange(newValue);
-                }
-            },
-
-            suggestions: {
-                immediate: true,
-                handler: function handler(oldValue, newValue) {
-                    var _this3 = this;
-
-                    this.computedSections = [];
-                    this.computedSize = 0;
-
-                    this.suggestions.forEach(function (section) {
-                        if (!section.data) return;
-                        var n = _this3.getSectionName(section);
-                        var t;
-                        if (_this3.sectionConfigs[n] && _this3.sectionConfigs[n].type) {
-                            t = _this3.sectionConfigs[n].type;
-                        } else {
-                            t = 'default-section';
-                        }
-                        var lim = _this3.sectionConfigs[n].limit ? _this3.sectionConfigs[n].limit : Infinity;
-                        lim = section.data.length < lim ? section.data.length : lim;
-                        var lbl = _this3.sectionConfigs[n].label ? _this3.sectionConfigs[n].label : section.label;
-                        var obj = {
-                            limit: lim,
-                            name: n,
-                            data: section.data,
-                            label: lbl,
-                            start_index: _this3.computedSize,
-                            end_index: _this3.computedSize + lim - 1,
-                            type: t
-                        };
-                        _this3.computedSections.push(obj);
-                        _this3.computedSize += lim;
-                    }, this);
-                }
-            }
-        }
+  } else if (typeof exports !== "undefined") {
+    factory(exports, require("./parts/DefaultSection.vue"));
+  } else {
+    var mod = {
+      exports: {}
     };
+    factory(mod.exports, global.DefaultSection);
+    global.Autosuggest = mod.exports;
+  }
+})(this, function (exports, _DefaultSection) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  var _DefaultSection2 = _interopRequireDefault(_DefaultSection);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  exports.default = {
+    name: "autosuggest",
+    components: {
+      DefaultSection: _DefaultSection2.default
+    },
+    props: {
+      inputProps: {
+        id: {
+          type: String,
+          default: "autosuggest__input"
+        },
+        onInputChange: {
+          type: Function,
+          required: true
+        },
+        initialValue: {
+          type: String,
+          default: ""
+        },
+        placeholder: {
+          type: String,
+          required: true
+        },
+        onClick: {
+          type: Function,
+          required: false
+        }
+      },
+      limit: {
+        type: Number,
+        required: false,
+        default: Infinity
+      },
+      suggestions: {
+        type: Array,
+        required: true,
+        default: []
+      },
+      shouldRenderSuggestions: {
+        type: Function,
+        required: false,
+        default: function _default() {
+          return true;
+        }
+      },
+      resultItemKey: {
+        type: String,
+        required: false
+      },
+      sectionConfigs: {
+        type: Object,
+        required: false,
+        default: function _default() {
+          return {
+            default: {
+              onSelected: function onSelected() {}
+            }
+          };
+        }
+      }
+    },
+    data: function data() {
+      return {
+        searchInput: "",
+        searchInputOriginal: null,
+        currentIndex: null,
+        currentItem: null,
+        loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */
+        , didSelectFromOptions: false,
+        computedSections: [],
+        computedSize: 0,
+        onSelected: function onSelected() {
+          if (this.currentItem && this.sectionConfigs[this.currentItem.name]) {
+            this.sectionConfigs[this.currentItem.name].onSelected(this.currentItem, this.searchInputOriginal);
+          } else {
+            this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
+          }
+        }
+      };
+    },
+    computed: {
+      isOpen: function isOpen() {
+        return this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading || this.searchInputOriginal == null;
+      }
+    },
+    methods: {
+      getSectionRef: function getSectionRef(i) {
+        return "computed_section_" + i;
+      },
+      getSize: function getSize() {
+        return this.computedSize;
+      },
+      getItemByIndex: function getItemByIndex(index) {
+        var obj = false;
+        if (index === null) return obj;
+        for (var i = 0; i < this.computedSections.length; i++) {
+          if (index >= this.computedSections[i].start_index && index <= this.computedSections[i].end_index) {
+            var trueIndex = index - this.computedSections[i].start_index;
+            var childSection = this.$refs["computed_section_" + i][0];
+            if (childSection) {
+              obj = {
+                name: this.computedSections[i].name,
+                type: this.computedSections[i].type,
+                label: childSection.getLabelByIndex(trueIndex),
+                item: childSection.getItemByIndex(trueIndex)
+              };
+              break;
+            }
+          }
+        }
+
+        return obj;
+      },
+      handleKeyStroke: function handleKeyStroke(e) {
+        var _this = this;
+
+        var keyCode = e.keyCode;
+
+
+        var ignoredKeyCodes = [16, // Shift
+        9, // Tab
+        18, // alt/option
+        91, // OS Key
+        93 // Right OS Key
+        ];
+
+        if (ignoredKeyCodes.indexOf(keyCode) > -1) {
+          return;
+        }
+
+        this.loading = false;
+        this.didSelectFromOptions = false;
+        switch (keyCode) {
+          case 40: // ArrowDown
+          case 38:
+            // ArrowUp
+            e.preventDefault();
+            if (this.isOpen) {
+              if (keyCode === 38 && this.currentIndex === null) {
+                break;
+              }
+              // Determine direction of arrow up/down and determine new currentIndex
+              var direction = keyCode === 40 ? 1 : -1;
+              var newIndex = this.currentIndex + direction;
+              this.setCurrentIndex(newIndex, this.getSize(), direction);
+              this.didSelectFromOptions = true;
+              if (this.getSize() > 0 && this.currentIndex >= 0) {
+                this.setChangeItem(this.getItemByIndex(this.currentIndex));
+                this.didSelectFromOptions = true;
+              } else if (this.currentIndex == -1) {
+                this.currentIndex = null;
+                this.searchInput = this.searchInputOriginal;
+                e.preventDefault();
+              }
+            }
+            break;
+          case 13:
+            // Enter
+            e.preventDefault();
+            if (keyCode === 229) {
+              // https://github.com/moroshko/react-autosuggest/pull/388
+              break;
+            }
+            this.$nextTick(function () {
+              if (_this.getSize() > 0 && _this.currentIndex >= 0) {
+                _this.setChangeItem(_this.getItemByIndex(_this.currentIndex));
+                _this.didSelectFromOptions = true;
+              }
+              _this.loading = true;
+              _this.$nextTick(function () {
+                _this.onSelected(_this.didSelectFromOptions);
+              });
+            });
+            break;
+          case 27:
+            // Escape
+            if (this.isOpen) {
+              /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
+              this.loading = true;
+              this.currentIndex = null;
+              this.searchInput = this.searchInputOriginal;
+              e.preventDefault();
+            }
+            break;
+        }
+      },
+      setChangeItem: function setChangeItem(item) {
+        if (this.currentIndex === null) {
+          this.currentItem = null;
+        } else if (item) {
+          this.searchInput = item.label;
+          this.currentItem = item;
+        }
+      },
+      updateCurrentIndex: function updateCurrentIndex(index) {
+        this.currentIndex = index;
+      },
+      onDocumentMouseUp: function onDocumentMouseUp() {
+        var _this2 = this;
+
+        /** Clicks outside of dropdown to exit */
+        if (this.currentIndex === null) {
+          this.loading = this.shouldRenderSuggestions();
+          return;
+        }
+
+        /** Selects an item in the dropdown */
+        this.loading = true;
+        this.didSelectFromOptions = true;
+        this.setChangeItem(this.getItemByIndex(this.currentIndex));
+        this.$nextTick(function () {
+          _this2.onSelected(true);
+        });
+      },
+      setCurrentIndex: function setCurrentIndex(newIndex) {
+        var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
+        var direction = arguments[2];
+
+        var adjustedValue = newIndex;
+
+        // if we hit the lower limit then stop iterating the index
+        if (this.currentIndex === null) {
+          adjustedValue = 0;
+        }
+
+        if (this.currentIndex < 0 && direction === 1) {
+          adjustedValue = 0;
+        }
+        // if we hit the upper limit then just stop iterating the index
+        if (newIndex >= limit) {
+          adjustedValue = 0;
+        }
+        this.currentIndex = adjustedValue;
+
+        var element = document.getElementById("autosuggest__results_item-" + this.currentIndex);
+        var hoverClass = "autosuggest__results_item-highlighted";
+        if (document.querySelector("." + hoverClass)) {
+          this.removeClass(document.querySelector("." + hoverClass), hoverClass);
+        }
+        if (element) {
+          this.addClass(element, hoverClass);
+        }
+      },
+      onClick: function onClick() {
+        this.loading = false;
+        this.inputProps.onClick();
+      },
+
+
+      /** DOM Utilities */
+      hasClass: function hasClass(el, className) {
+        if (el.classList) return el.classList.contains(className);else return !!el.className.match(new RegExp("(\\s|^)" + className + "(\\s|$)"));
+      },
+      addClass: function addClass(el, className) {
+        if (el.classList) el.classList.add(className);else if (!this.hasClass(el, className)) el.className += " " + className;
+      },
+      removeClass: function removeClass(el, className) {
+        if (el.classList) {
+          el.classList.remove(className);
+        } else if (this.hasClass(el, className)) {
+          var reg = new RegExp("(\\s|^)" + className + "(\\s|$)");
+          el.className = el.className.replace(reg, " ");
+        }
+      },
+      getSectionName: function getSectionName(section) {
+        if (!section.name) {
+          section.name = "default";
+        }
+
+        return section.name;
+      }
+    },
+    mounted: function mounted() {
+      document.addEventListener("mouseup", this.onDocumentMouseUp);
+      this.searchInput = this.inputProps.initialValue; // set default query, e.g. loaded server side.
+      this.loading = true;
+    },
+
+    watch: {
+      searchInput: function searchInput(newValue) {
+        this.value = newValue;
+        if (!this.didSelectFromOptions) {
+          this.searchInputOriginal = this.value;
+          this.currentIndex = null;
+          this.inputProps.onInputChange(newValue);
+        }
+      },
+
+      suggestions: {
+        immediate: true,
+        handler: function handler() {
+          var _this3 = this;
+
+          this.computedSections = [];
+          this.computedSize = 0;
+
+          this.suggestions.forEach(function (section) {
+            if (!section.data) return;
+
+            var name = _this3.getSectionName(section);
+
+            if (!_this3.sectionConfigs[name]) {
+              return;
+            }
+
+            var _sectionConfigs$name = _this3.sectionConfigs[name],
+                type = _sectionConfigs$name.type,
+                limit = _sectionConfigs$name.limit,
+                label = _sectionConfigs$name.label;
+
+
+            type = type ? type : "default-section";
+            limit = limit ? limit : section.data.length < Infinity ? section.data.length : Infinity;
+            label = label ? label : section.label;
+
+            var obj = {
+              name: name,
+              label: label,
+              type: type,
+              limit: limit,
+              data: section.data,
+              start_index: _this3.computedSize,
+              end_index: _this3.computedSize + limit - 1
+            };
+
+            _this3.computedSections.push(obj);
+            _this3.computedSize += limit;
+          }, this);
+        }
+      }
+    }
+  };
 });
 
 /***/ }),
-/* 38 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_DefaultSection_vue__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_DefaultSection_vue__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_DefaultSection_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_DefaultSection_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_53027a87_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_DefaultSection_vue__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_53027a87_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_DefaultSection_vue__ = __webpack_require__(21);
 var normalizeComponent = __webpack_require__(0)
 /* script */
 
@@ -12589,82 +12302,81 @@ var Component = normalizeComponent(
 
 
 /***/ }),
-/* 39 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-    if (true) {
-        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    } else if (typeof exports !== "undefined") {
-        factory(exports);
-    } else {
-        var mod = {
-            exports: {}
-        };
-        factory(mod.exports);
-        global.DefaultSection = mod.exports;
-    }
-})(this, function (exports) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.default = {
-        name: 'default-section',
-        props: {
-            section: { type: Object, required: true },
-            currentIndex: { type: Number, required: false, default: Infinity },
-            updateCurrentIndex: { type: Function, required: true },
-            searchInput: { type: String, required: false, default: '' }
-        },
-        computed: {
-            list: function list() {
-                var l = this.section.limit;
-                if (this.section.data.length < l) {
-                    l = this.section.data.length;
-                }
-
-                return this.section.data.slice(0, l);
-            },
-            className: function className() {
-                return 'autosuggest__results_title autosuggest__results_title_' + this.section.name;
-            }
-        },
-        methods: {
-            styleItem: function styleItem(text) {
-                if (this.searchInput && typeof text === 'string' && this.searchInput !== text) {
-                    var value = this.searchInput.trim();
-                    var r = new RegExp('' + value, 'ig');
-                    return text.replace(r, '<b>' + value + '</b>');
-                }
-
-                return text;
-            },
-            getItemIndex: function getItemIndex(i) {
-                return this.section.start_index + i;
-            },
-            getItemByIndex: function getItemByIndex(i) {
-                return this.section.data[i];
-            },
-            getLabelByIndex: function getLabelByIndex(i) {
-                return this.section.data[i];
-            },
-            onMouseEnter: function onMouseEnter(event) {
-                this.updateCurrentIndex(event.currentTarget.getAttribute('data-suggestion-index'));
-            },
-            onMouseLeave: function onMouseLeave(event) {
-                this.updateCurrentIndex(null);
-            }
-        }
+  } else if (typeof exports !== "undefined") {
+    factory(exports);
+  } else {
+    var mod = {
+      exports: {}
     };
+    factory(mod.exports);
+    global.DefaultSection = mod.exports;
+  }
+})(this, function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
+    name: "default-section",
+    props: {
+      section: { type: Object, required: true },
+      currentIndex: { type: Number, required: false, default: Infinity },
+      updateCurrentIndex: { type: Function, required: true },
+      searchInput: { type: String, required: false, default: "" }
+    },
+    computed: {
+      list: function list() {
+        var l = this.section.limit;
+        if (this.section.data.length < l) {
+          l = this.section.data.length;
+        }
+        return this.section.data.slice(0, l);
+      },
+      className: function className() {
+        return "autosuggest__results_title autosuggest__results_title_" + this.section.name;
+      }
+    },
+    methods: {
+      styleItem: function styleItem(text) {
+        if (this.searchInput && typeof text === "string" && this.searchInput !== text) {
+          var value = this.searchInput.trim();
+          var r = new RegExp("" + value, "ig");
+          return text.replace(r, "<b>" + value + "</b>");
+        }
+
+        return text;
+      },
+      getItemIndex: function getItemIndex(i) {
+        return this.section.start_index + i;
+      },
+      getItemByIndex: function getItemByIndex(i) {
+        return this.section.data[i];
+      },
+      getLabelByIndex: function getLabelByIndex(i) {
+        return this.section.data[i];
+      },
+      onMouseEnter: function onMouseEnter(event) {
+        this.updateCurrentIndex(event.currentTarget.getAttribute("data-suggestion-index"));
+      },
+      onMouseLeave: function onMouseLeave() {
+        this.updateCurrentIndex(null);
+      }
+    }
+  };
 });
 
 /***/ }),
-/* 40 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12674,17 +12386,17 @@ var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
 
 /***/ }),
-/* 41 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"autosuggest"}},[_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"name":"q","type":"text","maxlength":"256","autocomplete":"off","aria-autosuggest":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen && _vm.currentIndex !== null ? ("autosuggest__results--item-" + _vm.currentIndex) : '',"aria-haspopup":_vm.isOpen},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"click":_vm.onClick,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value}}},'input',_vm.inputProps,false)),_vm._v(" "),_c('div',{staticClass:"autosuggest__results-container"},[(_vm.getSize() > 0 && !_vm.loading)?_c('div',{staticClass:"autosuggest__results",attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},_vm._l((this.computedSections),function(cs,key){return _c(cs.type,{key:_vm.getSectionRef(key),ref:_vm.getSectionRef(key),refInFor:true,tag:"component",attrs:{"section":cs,"updateCurrentIndex":_vm.updateCurrentIndex,"searchInput":_vm.searchInput}})})):_vm._e()])])}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"autosuggest"}},[_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"name":"q","type":"text","maxlength":"256","autocomplete":"off","aria-autosuggest":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen && _vm.currentIndex !== null ? ("autosuggest__results--item-" + _vm.currentIndex) : '',"aria-haspopup":_vm.isOpen ? 'true' : 'false'},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"click":_vm.onClick,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value}}},'input',_vm.inputProps,false)),_vm._v(" "),_c('div',{staticClass:"autosuggest__results-container"},[(_vm.getSize() > 0 && !_vm.loading)?_c('div',{staticClass:"autosuggest__results",attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},_vm._l((this.computedSections),function(cs,key){return _c(cs.type,{key:_vm.getSectionRef(key),ref:_vm.getSectionRef(key),refInFor:true,tag:"component",attrs:{"section":cs,"updateCurrentIndex":_vm.updateCurrentIndex,"searchInput":_vm.searchInput}})})):_vm._e()])])}
 var staticRenderFns = []
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
 
 /***/ }),
-/* 42 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

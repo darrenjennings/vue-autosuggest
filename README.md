@@ -1,7 +1,7 @@
 <div>
-<h1>⚠️ CURRENTLY UNDER DEVELOPMENT - Vue-autosuggest</h1>
+<h1>vue-autosuggest</h1>
 
-<p>🔍 Vue autosuggest component. <a href="https://educents.github.io/vue-autosuggest/">Demo</a></p>
+<p>🔍 Autosuggest component built for Vue.</a></p>
 </div>
 
 <hr />
@@ -25,16 +25,28 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION. It'll update automatically -->
 
+- [Examples](#examples)
+- [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Props](#props)
-- [Examples](#examples)
-- [FAQ](#faq)
 - [Inspiration](#inspiration)
-- [Other Solutions](#other-solutions)
 - [Contributors](#contributors)
 - [LICENSE](#license)
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Examples
+- <a href="https://educents.github.io/vue-autosuggest">Demo</a>
+- <a href="https://educents.github.io/vue-autosuggest/storybook">Storybook</a> Helpful to see all variations of component's props.<br/>
+- <a href="https://jsfiddle.net/darrenjennings/dugbvezs/">JSFiddle</a> Helpful for playing around and sharing.
+
+## Features
+* WAI-ARIA complete autosuggest component built with the power of Vue.
+* Full control over rendering with built in defaults or custom components for rendering.
+* Easily integrate AJAX data fetching for list presentation.
+* Supports multiple sections.
+* No opinions on CSS, full control over styling.
+* Rigorously tested.
 
 ## Installation
 
@@ -54,23 +66,61 @@ yarn add vue-autosuggest
 Basic usage:
 ```html
 <vue-autosuggest 
-    :suggestions="[{ firstname: "Frodo", lastname: "Baggins" }, { firstname: "Samwise", lastname: "Gamgee" }]" 
-    :on-selected="clickHandler"
-    :result-item-key="'firstname'"
-    :input-props="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?', initialValue: '' }"
+    :suggestions="{data:['Frodo', 'Samwise', 'Gandalf', 'Galadriel', 'Faramir', 'Éowyn']}"
+    :onSelected="clickHandler"
+    :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"
 />
 ```
 
-Examples
-https://jsfiddle.net/darrenjennings/dugbvezs/
+For more advanced usage, check out the examples below, and explore the <a href="#props">properties</a> you can use.
 
-// TODO more details...
 
-## Props
+## [Props](#props)
+| Prop | Type | Required | Description |
+| :--- | :--- | :---: | :--- |
+| [`suggestions`](#suggestionsProp) | Array | ✓ | Suggestions to be rendered. |
+| [`inputProps`](#inputPropsTable) | Object | ✓ | Add props to the `<input>`.|
+| [`sectionConfigs`](#sectionConfigsProp) | Object | | Define multiple sections `<input>`.|
+| [`onSelected`](#) | Function | ✓(*) | *If not using `sectionConfigs[index].onSelected()` then this will trigger. Must be implemented in either `sectionConfigs` prop or on root prop.|
 
-// TODO
+<a name="inputPropsTable"></a>
+### inputProps
+| Prop | Type | Required | Description |
+| :--- | :--- | :---: | :--- |
+| [`id`](#inputPropsTable) | String | ✓ | id attribute on `<input>`.|
+| [`onInputChange`](#) | Function | ✓ | Triggers everytime the `<input>` changes.|
+| [`onClick`](#) | Function |  | |
+| [`initialValue`](#) | String | | Set some initial value for the `<input>`.|
+| Any DOM Props | * |  | You can add any props to `<input>` as the component will `v-bind` inputProps. Similar to rest spread in JSX. See more details here: https://vuejs.org/v2/api/#v-bind |
 
-## Examples
+<a name="sectionConfigsProp"></a>
+### sectionConfigs
+Multiple sections can be defined in the `sectionConfigs` prop which defines the control behavior for each section. 
+
+| Prop | Type | Required | Description |
+| :--- | :--- | :---: | :--- |
+| `onSelected` | Function | ✓ | Determine behavior for what should happen when a suggestion is selected. e.g. Submit a form, open a link, update a vue model, tweet at Ken Wheeler etc.|
+| `type` | String |  | Vue component name for specifying which type to implement using Vue's `<component :is="componentName"></component>` functionality. See [DefaultSection.vue](https://github.com/Educents/vue-autosuggest/blob/master/src/parts/DefaultSection.vue) for scaffolding a new type. You must declare your component in the scope of the app using `Vue.component()`.|
+| `limit` | Number |  | Limit each section by some value. Default: `Infinity`|
+
+Below we have defined a `default` section and a `blog` section. The `blog` section has a component `type` of `url-section` which corresponds to which component the Autosuggest loads. When type is not defined, Vue-autosuggest will use a built in `DefaultSection.vue` component. 
+```js
+sectionConfigs: {
+    'default': {
+        limit: 6,
+        onSelected: function(item, originalInput) {
+            console.log(item, originalInput, `Selected "${item.item}"`);
+        }
+    },
+    'blog': {
+        limit: 3,
+        type: "url-section",
+        onSelected: function() {
+            console.log("url: " + item.item.url);
+        }
+    }
+}
+```
 
 
 ## Inspiration
@@ -83,7 +133,7 @@ https://jsfiddle.net/darrenjennings/dugbvezs/
 Thanks goes to these people ([emoji key][emojis]):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-| [<img src="https://avatars.githubusercontent.com/u/5770711?v=4" width="100px;"/><br /><sub><b>Darren Jennings</b></sub>](https://darrenjennings.github.io)<br />[💻](https://github.com/darrenjennings/vue-autosuggest/commits?author=darrenjennings "Code") [📖](https://github.com/darrenjennings/vue-autosuggest/commits?author=darrenjennings "Documentation") [🚇](#infra-darrenjennings "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/darrenjennings/vue-autosuggest/commits?author=darrenjennings "Tests") [🎨](#design-darrenjennings "Design") [💡](#example-darrenjennings "Examples") | [<img src="https://avatars2.githubusercontent.com/u/411772?v=4" width="100px;"/><br /><sub><b>Evgeniy Kulish</b></sub>](https://github.com/ekulish)<br />[💻](https://github.com/darrenjennings/vue-autosuggest/commits?author=ekulish "Code") [🎨](#design-ekulish "Design") [💡](#example-ekulish "Examples") [⚠️](https://github.com/darrenjennings/vue-autosuggest/commits?author=ekulish "Tests") |
+| [<img src="https://avatars.githubusercontent.com/u/5770711?v=4" width="100px;"/><br /><sub><b>Darren Jennings</b></sub>](https://darrenjennings.github.io)<br />[💻](https://github.com/Educents/vue-autosuggest/commits?author=darrenjennings "Code") [📖](https://github.com/Educents/vue-autosuggest/commits?author=darrenjennings "Documentation") [🚇](#infra-darrenjennings "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/Educents/vue-autosuggest/commits?author=darrenjennings "Tests") [🎨](#design-darrenjennings "Design") [💡](#example-darrenjennings "Examples") | [<img src="https://avatars2.githubusercontent.com/u/411772?v=4" width="100px;"/><br /><sub><b>Evgeniy Kulish</b></sub>](https://github.com/ekulish)<br />[💻](https://github.com/Educents/vue-autosuggest/commits?author=ekulish "Code") [🎨](#design-ekulish "Design") [💡](#example-ekulish "Examples") [⚠️](https://github.com/Educents/vue-autosuggest/commits?author=ekulish "Tests") |
 | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 

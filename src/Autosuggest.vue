@@ -13,7 +13,7 @@
                aria-autosuggest="list"
                aria-owns="autosuggest__results"
                :aria-activedescendant="isOpen && currentIndex !== null ? `autosuggest__results--item-${currentIndex}` : ''"
-               :aria-haspopup="isOpen"
+               :aria-haspopup="isOpen ? 'true' : 'false'"
         />
         <div class="autosuggest__results-container">
                 <div
@@ -22,19 +22,16 @@
                     aria-labelledby="autosuggest"
                     v-if="getSize() > 0 && !loading"
                     >
-                    <component v-for="(cs, key) in this.computedSections" 
-                        :is="cs.type" :section="cs" :ref="getSectionRef(key)" :key="getSectionRef(key)" :updateCurrentIndex="updateCurrentIndex" :searchInput="searchInput"></component>
+                    <component v-for="(cs, key) in this.computedSections" :is="cs.type" :section="cs" :ref="getSectionRef(key)" :key="getSectionRef(key)" :updateCurrentIndex="updateCurrentIndex" :searchInput="searchInput"></component>
                 </div>
         </div>
     </div>
 </template>
 
 <script>
-
-import DefaultSection from './parts/DefaultSection.vue';
-
+import DefaultSection from "./parts/DefaultSection.vue";
 export default {
-        name: 'autosuggest',
+        name: "autosuggest",
         components: {
             DefaultSection
         },
@@ -42,7 +39,7 @@ export default {
             inputProps: {
                 id: {
                     type: String,
-                    default: 'autosuggest__input'
+                    default: "autosuggest__input"
                 },
                 onInputChange: {
                     type: Function,
@@ -51,10 +48,6 @@ export default {
                 initialValue: {
                     type: String,
                     default: ""
-                },
-                placeholder: {
-                    type: String,
-                    required: true
                 },
                 onClick: {
                     type: Function,
@@ -78,40 +71,72 @@ export default {
                     return true;
                 }
             },
-            resultItemKey: {
-                type: String,
-                required: false
-            },
             sectionConfigs: {
                 type: Object,
-                required: false
+                required: false,
+                default: () => {
+                    return {
+                        default: {
+                            onSelected: null
+                        }
+                    };
+                }
+            },
+            onSelected: {
+                type: Function,
+                required: false,
+                default: null
             }
         },
         data: () => ({
-            searchInput: '',
-            searchInputOriginal: '',
+            searchInput: "",
+            searchInputOriginal: null,
             currentIndex: null,
             currentItem: null,
-            loading: false, /** Helps with making sure the dropdown doesn't stay open after certain actions */
+            loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */,
             didSelectFromOptions: false,
             computedSections: [],
-            computedSize: 0,
-            onSelected: function() {
-                if (this.currentItem && this.sectionConfigs[this.currentItem.name]) {
-                    this.sectionConfigs[this.currentItem.name].onSelected(this.currentItem, this.searchInputOriginal);
-                } else {
-                    this.sectionConfigs['default'].onSelected(null, this.searchInputOriginal);
-                }
-            }
+            computedSize: 0
         }),
         computed: {
             isOpen() {
-                return this.shouldRenderSuggestions() && !this.loading;
+                return (
+                    (this.getSize() > 0 &&
+                        this.shouldRenderSuggestions() &&
+                        !this.loading) || this.searchInputOriginal == null
+                );
+            }
+        },
+        created(){
+            if(!this.inputProps.onClick){
+                this.inputProps.onClick = this._onClick;
             }
         },
         methods: {
+            _onClick(){
+                return this;
+            },
+            _onSelected() {
+                if (
+                    this.currentItem &&
+                    this.sectionConfigs[this.currentItem.name] &&
+                    this.sectionConfigs[this.currentItem.name].onSelected
+                ) { 
+                    this.sectionConfigs[this.currentItem.name].onSelected(
+                        this.currentItem,
+                        this.searchInputOriginal
+                    );
+                } else if(this.sectionConfigs["default"].onSelected){
+                    this.sectionConfigs["default"].onSelected(
+                        null,
+                        this.searchInputOriginal
+                    );
+                } else {
+                    this.onSelected && this.onSelected(this.currentItem)
+                }
+            },
             getSectionRef(i) {
-                return 'computed_section_' + i;
+                return "computed_section_" + i;
             },
             getSize() {
                 return this.computedSize;
@@ -120,15 +145,19 @@ export default {
                 let obj = false;
                 if (index === null) return obj;
                 for (var i = 0; i < this.computedSections.length; i++) {
-                    if (index >= this.computedSections[i].start_index && index <= this.computedSections[i].end_index) {
-                        let trueIndex = index - this.computedSections[i].start_index;
-                        let childSection = this.$refs['computed_section_' + i][0];
+                    if (
+                        index >= this.computedSections[i].start_index &&
+                        index <= this.computedSections[i].end_index
+                    ) {
+                        let trueIndex =
+                            index - this.computedSections[i].start_index;
+                        let childSection = this.$refs["computed_section_" + i][0];
                         if (childSection) {
                             obj = {
-                                "name": this.computedSections[i].name,
-                                "type": this.computedSections[i].type,
-                                "label": childSection.getLabelByIndex(trueIndex),
-                                "item": childSection.getItemByIndex(trueIndex)
+                                name: this.computedSections[i].name,
+                                type: this.computedSections[i].type,
+                                label: childSection.getLabelByIndex(trueIndex),
+                                item: childSection.getItemByIndex(trueIndex)
                             };
                             break;
                         }
@@ -138,11 +167,20 @@ export default {
                 return obj;
             },
             handleKeyStroke(e) {
-                const {keyCode} = e;
-                const ignoredKeyCodes = [91, 92, 9]; // Don't trigger on tab, os key etc. 
-                if(ignoredKeyCodes.indexOf(keyCode) > -1){
+                const { keyCode } = e;
+
+                const ignoredKeyCodes = [
+                    16, // Shift
+                    9, // Tab
+                    18, // alt/option
+                    91, // OS Key
+                    93 // Right OS Key
+                ];
+
+                if (ignoredKeyCodes.indexOf(keyCode) > -1) {
                     return;
                 }
+
                 this.loading = false;
                 this.didSelectFromOptions = false;
                 switch (keyCode) {
@@ -156,10 +194,16 @@ export default {
                             // Determine direction of arrow up/down and determine new currentIndex
                             const direction = keyCode === 40 ? 1 : -1;
                             const newIndex = this.currentIndex + direction;
-                            this.setCurrentIndex(newIndex, this.getSize(), direction);
+                            this.setCurrentIndex(
+                                newIndex,
+                                this.getSize(),
+                                direction
+                            );
                             this.didSelectFromOptions = true;
                             if (this.getSize() > 0 && this.currentIndex >= 0) {
-                                this.setChangeItem(this.getItemByIndex(this.currentIndex));
+                                this.setChangeItem(
+                                    this.getItemByIndex(this.currentIndex)
+                                );
                                 this.didSelectFromOptions = true;
                             } else if (this.currentIndex == -1) {
                                 this.currentIndex = null;
@@ -168,19 +212,22 @@ export default {
                             }
                         }
                         break;
-                    case 13:  // Enter
+                    case 13: // Enter
                         e.preventDefault();
-                        if (keyCode === 229) { // https://github.com/moroshko/react-autosuggest/pull/388
+                        if (keyCode === 229) {
+                            // https://github.com/moroshko/react-autosuggest/pull/388
                             break;
                         }
                         this.$nextTick(() => {
                             if (this.getSize() > 0 && this.currentIndex >= 0) {
-                                this.setChangeItem(this.getItemByIndex(this.currentIndex));
+                                this.setChangeItem(
+                                    this.getItemByIndex(this.currentIndex)
+                                );
                                 this.didSelectFromOptions = true;
                             }
                             this.loading = true;
                             this.$nextTick(() => {
-                                this.onSelected(this.didSelectFromOptions);
+                                this._onSelected(this.didSelectFromOptions);
                             });
                         });
                         break;
@@ -214,13 +261,12 @@ export default {
                 }
 
                 /** Selects an item in the dropdown */
-                this.loading = true;          
-                this.didSelectFromOptions = true;      
+                this.loading = true;
+                this.didSelectFromOptions = true;
                 this.setChangeItem(this.getItemByIndex(this.currentIndex));
                 this.$nextTick(() => {
-                    this.onSelected(true);
-                })
-                
+                    this._onSelected(true);
+                });
             },
             setCurrentIndex(newIndex, limit = -1, direction) {
                 let adjustedValue = newIndex;
@@ -238,13 +284,18 @@ export default {
                     adjustedValue = 0;
                 }
                 this.currentIndex = adjustedValue;
-                
-                const element = document.getElementById(`autosuggest__results_item-${this.currentIndex}`);
-                const hoverClass = 'autosuggest__results_item-highlighted';
-                if(document.querySelector(`.${hoverClass}`)){
-                    this.removeClass(document.querySelector(`.${hoverClass}`),hoverClass);
+
+                const element = document.getElementById(
+                    `autosuggest__results_item-${this.currentIndex}`
+                );
+                const hoverClass = "autosuggest__results_item-highlighted";
+                if (document.querySelector(`.${hoverClass}`)) {
+                    this.removeClass(
+                        document.querySelector(`.${hoverClass}`),
+                        hoverClass
+                    );
                 }
-                if(element){
+                if (element) {
                     this.addClass(element, hoverClass);
                 }
             },
@@ -252,48 +303,39 @@ export default {
                 this.loading = false;
                 this.inputProps.onClick();
             },
-            
+
             /** DOM Utilities */
             hasClass(el, className) {
-                if (el.classList)
-                    return el.classList.contains(className)
-                else
-                    return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'))
+                return !!el.className.match(
+                    new RegExp("(\\s|^)" + className + "(\\s|$)")
+                );
             },
             addClass(el, className) {
-                if (el.classList)
-                    el.classList.add(className)
-                else if (!hasClass(el, className)) el.className += " " + className
+                if (!this.hasClass(el, className))
+                    el.className += " " + className;
             },
             removeClass(el, className) {
-                if (el.classList){
-                    el.classList.remove(className)
-                }
-                else if (hasClass(el, className)) {
-                    var reg = new RegExp('(\\s|^)' + className + '(\\s|$)')
-                    el.className = el.className.replace(reg, ' ')
+                if (el.classList) {
+                    el.classList.remove(className);
                 }
             },
             getSectionName(section) {
                 if (!section.name) {
-                    section.name = 'default';
+                    section.name = "default";
                 }
 
                 return section.name;
             }
         },
         mounted() {
-            document.addEventListener('mouseup', this.onDocumentMouseUp);
-            const input = document.getElementById(this.inputProps.id);
-            if(input){
-                input.value = this.inputProps.initialValue; // set default query, e.g. loaded server side.
-            }
-        
+            document.addEventListener("mouseup", this.onDocumentMouseUp);
+            this.searchInput = this.inputProps.initialValue; // set default query, e.g. loaded server side.
+            this.loading = true;
         },
         watch: {
-            searchInput(newValue, oldValue) {
+            searchInput(newValue) {
                 this.value = newValue;
-                if(!this.didSelectFromOptions){
+                if (!this.didSelectFromOptions) {
                     this.searchInputOriginal = this.value;
                     this.currentIndex = null;
                     this.inputProps.onInputChange(newValue);
@@ -301,36 +343,38 @@ export default {
             },
             suggestions: {
               immediate: true,
-              handler(oldValue, newValue){
+              handler() {
                 this.computedSections = [];
                 this.computedSize = 0;
-                
+
                 this.suggestions.forEach(section => {
                     if (!section.data) return;
-                    const n = this.getSectionName(section);
-                    var t;
-                    if (this.sectionConfigs[n] && this.sectionConfigs[n].type) {
-                        t = this.sectionConfigs[n].type;
-                    } else {
-                        t = 'default-section';
-                    }
-                    var lim = this.sectionConfigs[n].limit ? this.sectionConfigs[n].limit : Infinity;
-                    lim = (section.data.length < lim) ? section.data.length : lim;
-                    var lbl = this.sectionConfigs[n].label ? this.sectionConfigs[n].label : section.label;
-                    var obj = {
-                        limit: lim,
-                        name: n,
+                    
+                    const name = this.getSectionName(section);
+                    let { type, limit, label } = this.sectionConfigs[name];
+                    
+                    /** Set defaults for section configs. */
+                    type = type ? type : "default-section";
+                    
+                    limit = limit ? limit : Infinity;
+                    limit = (section.data.length < limit) ? section.data.length : limit;
+                    
+                    label = label ? label : section.label;
+                    
+                    let computedSection = {
+                        name,
+                        label,
+                        type,
+                        limit,
                         data: section.data,
-                        label: lbl,
                         start_index: this.computedSize,
-                        end_index: this.computedSize + lim - 1,
-                        type: t
+                        end_index: this.computedSize + limit - 1
                     };
-                    this.computedSections.push(obj);
-                    this.computedSize += lim;
-                }, this);
-              }
+                    this.computedSections.push(computedSection);
+                    this.computedSize += limit;
+               }, this);
+              }  
             }
         }
-    }
+};
 </script>
