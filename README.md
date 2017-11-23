@@ -66,7 +66,7 @@ yarn add vue-autosuggest
 Basic usage:
 ```html
 <vue-autosuggest 
-    :suggestions="{data:['Frodo', 'Samwise', 'Gandalf', 'Galadriel', 'Faramir', 'Éowyn']}"
+    :suggestions="[{data:['Frodo', 'Samwise', 'Gandalf', 'Galadriel', 'Faramir', 'Éowyn']}]"
     :onSelected="clickHandler"
     :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"
 />

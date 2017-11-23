@@ -11904,367 +11904,370 @@ var Component = normalizeComponent(
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(19)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(19)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else if (typeof exports !== "undefined") {
-    factory(exports, require("./parts/DefaultSection.vue"));
-  } else {
-    var mod = {
-      exports: {}
-    };
-    factory(mod.exports, global.DefaultSection);
-    global.Autosuggest = mod.exports;
-  }
-})(this, function (exports, _DefaultSection) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  var _DefaultSection2 = _interopRequireDefault(_DefaultSection);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  exports.default = {
-    name: "autosuggest",
-    components: {
-      DefaultSection: _DefaultSection2.default
-    },
-    props: {
-      inputProps: {
-        id: {
-          type: String,
-          default: "autosuggest__input"
-        },
-        onInputChange: {
-          type: Function,
-          required: true
-        },
-        initialValue: {
-          type: String,
-          default: ""
-        },
-        placeholder: {
-          type: String,
-          required: true
-        },
-        onClick: {
-          type: Function,
-          required: false
-        }
-      },
-      limit: {
-        type: Number,
-        required: false,
-        default: Infinity
-      },
-      suggestions: {
-        type: Array,
-        required: true,
-        default: []
-      },
-      shouldRenderSuggestions: {
-        type: Function,
-        required: false,
-        default: function _default() {
-          return true;
-        }
-      },
-      resultItemKey: {
-        type: String,
-        required: false
-      },
-      sectionConfigs: {
-        type: Object,
-        required: false,
-        default: function _default() {
-          return {
-            default: {
-              onSelected: function onSelected() {}
-            }
-          };
-        }
-      }
-    },
-    data: function data() {
-      return {
-        searchInput: "",
-        searchInputOriginal: null,
-        currentIndex: null,
-        currentItem: null,
-        loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */
-        , didSelectFromOptions: false,
-        computedSections: [],
-        computedSize: 0,
-        onSelected: function onSelected() {
-          if (this.currentItem && this.sectionConfigs[this.currentItem.name]) {
-            this.sectionConfigs[this.currentItem.name].onSelected(this.currentItem, this.searchInputOriginal);
-          } else {
-            this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
-          }
-        }
-      };
-    },
-    computed: {
-      isOpen: function isOpen() {
-        return this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading || this.searchInputOriginal == null;
-      }
-    },
-    methods: {
-      getSectionRef: function getSectionRef(i) {
-        return "computed_section_" + i;
-      },
-      getSize: function getSize() {
-        return this.computedSize;
-      },
-      getItemByIndex: function getItemByIndex(index) {
-        var obj = false;
-        if (index === null) return obj;
-        for (var i = 0; i < this.computedSections.length; i++) {
-          if (index >= this.computedSections[i].start_index && index <= this.computedSections[i].end_index) {
-            var trueIndex = index - this.computedSections[i].start_index;
-            var childSection = this.$refs["computed_section_" + i][0];
-            if (childSection) {
-              obj = {
-                name: this.computedSections[i].name,
-                type: this.computedSections[i].type,
-                label: childSection.getLabelByIndex(trueIndex),
-                item: childSection.getItemByIndex(trueIndex)
-              };
-              break;
-            }
-          }
-        }
-
-        return obj;
-      },
-      handleKeyStroke: function handleKeyStroke(e) {
-        var _this = this;
-
-        var keyCode = e.keyCode;
-
-
-        var ignoredKeyCodes = [16, // Shift
-        9, // Tab
-        18, // alt/option
-        91, // OS Key
-        93 // Right OS Key
-        ];
-
-        if (ignoredKeyCodes.indexOf(keyCode) > -1) {
-          return;
-        }
-
-        this.loading = false;
-        this.didSelectFromOptions = false;
-        switch (keyCode) {
-          case 40: // ArrowDown
-          case 38:
-            // ArrowUp
-            e.preventDefault();
-            if (this.isOpen) {
-              if (keyCode === 38 && this.currentIndex === null) {
-                break;
-              }
-              // Determine direction of arrow up/down and determine new currentIndex
-              var direction = keyCode === 40 ? 1 : -1;
-              var newIndex = this.currentIndex + direction;
-              this.setCurrentIndex(newIndex, this.getSize(), direction);
-              this.didSelectFromOptions = true;
-              if (this.getSize() > 0 && this.currentIndex >= 0) {
-                this.setChangeItem(this.getItemByIndex(this.currentIndex));
-                this.didSelectFromOptions = true;
-              } else if (this.currentIndex == -1) {
-                this.currentIndex = null;
-                this.searchInput = this.searchInputOriginal;
-                e.preventDefault();
-              }
-            }
-            break;
-          case 13:
-            // Enter
-            e.preventDefault();
-            if (keyCode === 229) {
-              // https://github.com/moroshko/react-autosuggest/pull/388
-              break;
-            }
-            this.$nextTick(function () {
-              if (_this.getSize() > 0 && _this.currentIndex >= 0) {
-                _this.setChangeItem(_this.getItemByIndex(_this.currentIndex));
-                _this.didSelectFromOptions = true;
-              }
-              _this.loading = true;
-              _this.$nextTick(function () {
-                _this.onSelected(_this.didSelectFromOptions);
-              });
-            });
-            break;
-          case 27:
-            // Escape
-            if (this.isOpen) {
-              /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
-              this.loading = true;
-              this.currentIndex = null;
-              this.searchInput = this.searchInputOriginal;
-              e.preventDefault();
-            }
-            break;
-        }
-      },
-      setChangeItem: function setChangeItem(item) {
-        if (this.currentIndex === null) {
-          this.currentItem = null;
-        } else if (item) {
-          this.searchInput = item.label;
-          this.currentItem = item;
-        }
-      },
-      updateCurrentIndex: function updateCurrentIndex(index) {
-        this.currentIndex = index;
-      },
-      onDocumentMouseUp: function onDocumentMouseUp() {
-        var _this2 = this;
-
-        /** Clicks outside of dropdown to exit */
-        if (this.currentIndex === null) {
-          this.loading = this.shouldRenderSuggestions();
-          return;
-        }
-
-        /** Selects an item in the dropdown */
-        this.loading = true;
-        this.didSelectFromOptions = true;
-        this.setChangeItem(this.getItemByIndex(this.currentIndex));
-        this.$nextTick(function () {
-          _this2.onSelected(true);
-        });
-      },
-      setCurrentIndex: function setCurrentIndex(newIndex) {
-        var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
-        var direction = arguments[2];
-
-        var adjustedValue = newIndex;
-
-        // if we hit the lower limit then stop iterating the index
-        if (this.currentIndex === null) {
-          adjustedValue = 0;
-        }
-
-        if (this.currentIndex < 0 && direction === 1) {
-          adjustedValue = 0;
-        }
-        // if we hit the upper limit then just stop iterating the index
-        if (newIndex >= limit) {
-          adjustedValue = 0;
-        }
-        this.currentIndex = adjustedValue;
-
-        var element = document.getElementById("autosuggest__results_item-" + this.currentIndex);
-        var hoverClass = "autosuggest__results_item-highlighted";
-        if (document.querySelector("." + hoverClass)) {
-          this.removeClass(document.querySelector("." + hoverClass), hoverClass);
-        }
-        if (element) {
-          this.addClass(element, hoverClass);
-        }
-      },
-      onClick: function onClick() {
-        this.loading = false;
-        this.inputProps.onClick();
-      },
-
-
-      /** DOM Utilities */
-      hasClass: function hasClass(el, className) {
-        if (el.classList) return el.classList.contains(className);else return !!el.className.match(new RegExp("(\\s|^)" + className + "(\\s|$)"));
-      },
-      addClass: function addClass(el, className) {
-        if (el.classList) el.classList.add(className);else if (!this.hasClass(el, className)) el.className += " " + className;
-      },
-      removeClass: function removeClass(el, className) {
-        if (el.classList) {
-          el.classList.remove(className);
-        } else if (this.hasClass(el, className)) {
-          var reg = new RegExp("(\\s|^)" + className + "(\\s|$)");
-          el.className = el.className.replace(reg, " ");
-        }
-      },
-      getSectionName: function getSectionName(section) {
-        if (!section.name) {
-          section.name = "default";
-        }
-
-        return section.name;
-      }
-    },
-    mounted: function mounted() {
-      document.addEventListener("mouseup", this.onDocumentMouseUp);
-      this.searchInput = this.inputProps.initialValue; // set default query, e.g. loaded server side.
-      this.loading = true;
-    },
-
-    watch: {
-      searchInput: function searchInput(newValue) {
-        this.value = newValue;
-        if (!this.didSelectFromOptions) {
-          this.searchInputOriginal = this.value;
-          this.currentIndex = null;
-          this.inputProps.onInputChange(newValue);
-        }
-      },
-
-      suggestions: {
-        immediate: true,
-        handler: function handler() {
-          var _this3 = this;
-
-          this.computedSections = [];
-          this.computedSize = 0;
-
-          this.suggestions.forEach(function (section) {
-            if (!section.data) return;
-
-            var name = _this3.getSectionName(section);
-
-            if (!_this3.sectionConfigs[name]) {
-              return;
-            }
-
-            var _sectionConfigs$name = _this3.sectionConfigs[name],
-                type = _sectionConfigs$name.type,
-                limit = _sectionConfigs$name.limit,
-                label = _sectionConfigs$name.label;
-
-
-            type = type ? type : "default-section";
-            limit = limit ? limit : section.data.length < Infinity ? section.data.length : Infinity;
-            label = label ? label : section.label;
-
-            var obj = {
-              name: name,
-              label: label,
-              type: type,
-              limit: limit,
-              data: section.data,
-              start_index: _this3.computedSize,
-              end_index: _this3.computedSize + limit - 1
-            };
-
-            _this3.computedSections.push(obj);
-            _this3.computedSize += limit;
-          }, this);
-        }
-      }
+    } else if (typeof exports !== "undefined") {
+        factory(exports, require("./parts/DefaultSection.vue"));
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, global.DefaultSection);
+        global.Autosuggest = mod.exports;
     }
-  };
+})(this, function (exports, _DefaultSection) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    var _DefaultSection2 = _interopRequireDefault(_DefaultSection);
+
+    function _interopRequireDefault(obj) {
+        return obj && obj.__esModule ? obj : {
+            default: obj
+        };
+    }
+
+    exports.default = {
+        name: "autosuggest",
+        components: {
+            DefaultSection: _DefaultSection2.default
+        },
+        props: {
+            inputProps: {
+                id: {
+                    type: String,
+                    default: "autosuggest__input"
+                },
+                onInputChange: {
+                    type: Function,
+                    required: true
+                },
+                initialValue: {
+                    type: String,
+                    default: ""
+                },
+                onClick: {
+                    type: Function,
+                    required: false
+                }
+            },
+            limit: {
+                type: Number,
+                required: false,
+                default: Infinity
+            },
+            suggestions: {
+                type: Array,
+                required: true,
+                default: []
+            },
+            shouldRenderSuggestions: {
+                type: Function,
+                required: false,
+                default: function _default() {
+                    return true;
+                }
+            },
+            sectionConfigs: {
+                type: Object,
+                required: false,
+                default: function _default() {
+                    return {
+                        default: {
+                            onSelected: null
+                        }
+                    };
+                }
+            },
+            onSelected: {
+                type: Function,
+                required: false,
+                default: null
+            }
+        },
+        data: function data() {
+            return {
+                searchInput: "",
+                searchInputOriginal: null,
+                currentIndex: null,
+                currentItem: null,
+                loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */
+                , didSelectFromOptions: false,
+                computedSections: [],
+                computedSize: 0
+            };
+        },
+        computed: {
+            isOpen: function isOpen() {
+                return this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading || this.searchInputOriginal == null;
+            }
+        },
+        created: function created() {
+            if (!this.inputProps.onClick) {
+                this.inputProps.onClick = this._onClick;
+            }
+        },
+
+        methods: {
+            _onClick: function _onClick() {
+                return this;
+            },
+            _onSelected: function _onSelected() {
+                if (this.currentItem && this.sectionConfigs[this.currentItem.name] && this.sectionConfigs[this.currentItem.name].onSelected) {
+                    this.sectionConfigs[this.currentItem.name].onSelected(this.currentItem, this.searchInputOriginal);
+                } else if (this.sectionConfigs["default"].onSelected) {
+                    this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
+                } else {
+                    this.onSelected && this.onSelected(this.currentItem);
+                }
+            },
+            getSectionRef: function getSectionRef(i) {
+                return "computed_section_" + i;
+            },
+            getSize: function getSize() {
+                return this.computedSize;
+            },
+            getItemByIndex: function getItemByIndex(index) {
+                var obj = false;
+                if (index === null) return obj;
+                for (var i = 0; i < this.computedSections.length; i++) {
+                    if (index >= this.computedSections[i].start_index && index <= this.computedSections[i].end_index) {
+                        var trueIndex = index - this.computedSections[i].start_index;
+                        var childSection = this.$refs["computed_section_" + i][0];
+                        if (childSection) {
+                            obj = {
+                                name: this.computedSections[i].name,
+                                type: this.computedSections[i].type,
+                                label: childSection.getLabelByIndex(trueIndex),
+                                item: childSection.getItemByIndex(trueIndex)
+                            };
+                            break;
+                        }
+                    }
+                }
+
+                return obj;
+            },
+            handleKeyStroke: function handleKeyStroke(e) {
+                var _this = this;
+
+                var keyCode = e.keyCode;
+
+
+                var ignoredKeyCodes = [16, // Shift
+                9, // Tab
+                18, // alt/option
+                91, // OS Key
+                93 // Right OS Key
+                ];
+
+                if (ignoredKeyCodes.indexOf(keyCode) > -1) {
+                    return;
+                }
+
+                this.loading = false;
+                this.didSelectFromOptions = false;
+                switch (keyCode) {
+                    case 40: // ArrowDown
+                    case 38:
+                        // ArrowUp
+                        e.preventDefault();
+                        if (this.isOpen) {
+                            if (keyCode === 38 && this.currentIndex === null) {
+                                break;
+                            }
+                            // Determine direction of arrow up/down and determine new currentIndex
+                            var direction = keyCode === 40 ? 1 : -1;
+                            var newIndex = this.currentIndex + direction;
+                            this.setCurrentIndex(newIndex, this.getSize(), direction);
+                            this.didSelectFromOptions = true;
+                            if (this.getSize() > 0 && this.currentIndex >= 0) {
+                                this.setChangeItem(this.getItemByIndex(this.currentIndex));
+                                this.didSelectFromOptions = true;
+                            } else if (this.currentIndex == -1) {
+                                this.currentIndex = null;
+                                this.searchInput = this.searchInputOriginal;
+                                e.preventDefault();
+                            }
+                        }
+                        break;
+                    case 13:
+                        // Enter
+                        e.preventDefault();
+                        if (keyCode === 229) {
+                            // https://github.com/moroshko/react-autosuggest/pull/388
+                            break;
+                        }
+                        this.$nextTick(function () {
+                            if (_this.getSize() > 0 && _this.currentIndex >= 0) {
+                                _this.setChangeItem(_this.getItemByIndex(_this.currentIndex));
+                                _this.didSelectFromOptions = true;
+                            }
+                            _this.loading = true;
+                            _this.$nextTick(function () {
+                                _this._onSelected(_this.didSelectFromOptions);
+                            });
+                        });
+                        break;
+                    case 27:
+                        // Escape
+                        if (this.isOpen) {
+                            /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
+                            this.loading = true;
+                            this.currentIndex = null;
+                            this.searchInput = this.searchInputOriginal;
+                            e.preventDefault();
+                        }
+                        break;
+                }
+            },
+            setChangeItem: function setChangeItem(item) {
+                if (this.currentIndex === null) {
+                    this.currentItem = null;
+                } else if (item) {
+                    this.searchInput = item.label;
+                    this.currentItem = item;
+                }
+            },
+            updateCurrentIndex: function updateCurrentIndex(index) {
+                this.currentIndex = index;
+            },
+            onDocumentMouseUp: function onDocumentMouseUp() {
+                var _this2 = this;
+
+                /** Clicks outside of dropdown to exit */
+                if (this.currentIndex === null) {
+                    this.loading = this.shouldRenderSuggestions();
+                    return;
+                }
+
+                /** Selects an item in the dropdown */
+                this.loading = true;
+                this.didSelectFromOptions = true;
+                this.setChangeItem(this.getItemByIndex(this.currentIndex));
+                this.$nextTick(function () {
+                    _this2._onSelected(true);
+                });
+            },
+            setCurrentIndex: function setCurrentIndex(newIndex) {
+                var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
+                var direction = arguments[2];
+
+                var adjustedValue = newIndex;
+
+                // if we hit the lower limit then stop iterating the index
+                if (this.currentIndex === null) {
+                    adjustedValue = 0;
+                }
+
+                if (this.currentIndex < 0 && direction === 1) {
+                    adjustedValue = 0;
+                }
+                // if we hit the upper limit then just stop iterating the index
+                if (newIndex >= limit) {
+                    adjustedValue = 0;
+                }
+                this.currentIndex = adjustedValue;
+
+                var element = document.getElementById("autosuggest__results_item-" + this.currentIndex);
+                var hoverClass = "autosuggest__results_item-highlighted";
+                if (document.querySelector("." + hoverClass)) {
+                    this.removeClass(document.querySelector("." + hoverClass), hoverClass);
+                }
+                if (element) {
+                    this.addClass(element, hoverClass);
+                }
+            },
+            onClick: function onClick() {
+                this.loading = false;
+                this.inputProps.onClick();
+            },
+
+
+            /** DOM Utilities */
+            hasClass: function hasClass(el, className) {
+                return !!el.className.match(new RegExp("(\\s|^)" + className + "(\\s|$)"));
+            },
+            addClass: function addClass(el, className) {
+                if (!this.hasClass(el, className)) el.className += " " + className;
+            },
+            removeClass: function removeClass(el, className) {
+                if (el.classList) {
+                    el.classList.remove(className);
+                }
+            },
+            getSectionName: function getSectionName(section) {
+                if (!section.name) {
+                    section.name = "default";
+                }
+
+                return section.name;
+            }
+        },
+        mounted: function mounted() {
+            document.addEventListener("mouseup", this.onDocumentMouseUp);
+            this.searchInput = this.inputProps.initialValue; // set default query, e.g. loaded server side.
+            this.loading = true;
+        },
+
+        watch: {
+            searchInput: function searchInput(newValue) {
+                this.value = newValue;
+                if (!this.didSelectFromOptions) {
+                    this.searchInputOriginal = this.value;
+                    this.currentIndex = null;
+                    this.inputProps.onInputChange(newValue);
+                }
+            },
+
+            suggestions: {
+                immediate: true,
+                handler: function handler() {
+                    var _this3 = this;
+
+                    this.computedSections = [];
+                    this.computedSize = 0;
+
+                    this.suggestions.forEach(function (section) {
+                        if (!section.data) return;
+
+                        var name = _this3.getSectionName(section);
+                        var _sectionConfigs$name = _this3.sectionConfigs[name],
+                            type = _sectionConfigs$name.type,
+                            limit = _sectionConfigs$name.limit,
+                            label = _sectionConfigs$name.label;
+
+                        /** Set defaults for section configs. */
+
+                        type = type ? type : "default-section";
+
+                        limit = limit ? limit : Infinity;
+                        limit = section.data.length < limit ? section.data.length : limit;
+
+                        label = label ? label : section.label;
+
+                        var computedSection = {
+                            name: name,
+                            label: label,
+                            type: type,
+                            limit: limit,
+                            data: section.data,
+                            start_index: _this3.computedSize,
+                            end_index: _this3.computedSize + limit - 1
+                        };
+                        _this3.computedSections.push(computedSection);
+                        _this3.computedSize += limit;
+                    }, this);
+                }
+            }
+        }
+    };
 });
 
 /***/ }),
@@ -12306,73 +12309,73 @@ var Component = normalizeComponent(
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    if (true) {
+        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-  } else if (typeof exports !== "undefined") {
-    factory(exports);
-  } else {
-    var mod = {
-      exports: {}
-    };
-    factory(mod.exports);
-    global.DefaultSection = mod.exports;
-  }
-})(this, function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = {
-    name: "default-section",
-    props: {
-      section: { type: Object, required: true },
-      currentIndex: { type: Number, required: false, default: Infinity },
-      updateCurrentIndex: { type: Function, required: true },
-      searchInput: { type: String, required: false, default: "" }
-    },
-    computed: {
-      list: function list() {
-        var l = this.section.limit;
-        if (this.section.data.length < l) {
-          l = this.section.data.length;
-        }
-        return this.section.data.slice(0, l);
-      },
-      className: function className() {
-        return "autosuggest__results_title autosuggest__results_title_" + this.section.name;
-      }
-    },
-    methods: {
-      styleItem: function styleItem(text) {
-        if (this.searchInput && typeof text === "string" && this.searchInput !== text) {
-          var value = this.searchInput.trim();
-          var r = new RegExp("" + value, "ig");
-          return text.replace(r, "<b>" + value + "</b>");
-        }
-
-        return text;
-      },
-      getItemIndex: function getItemIndex(i) {
-        return this.section.start_index + i;
-      },
-      getItemByIndex: function getItemByIndex(i) {
-        return this.section.data[i];
-      },
-      getLabelByIndex: function getLabelByIndex(i) {
-        return this.section.data[i];
-      },
-      onMouseEnter: function onMouseEnter(event) {
-        this.updateCurrentIndex(event.currentTarget.getAttribute("data-suggestion-index"));
-      },
-      onMouseLeave: function onMouseLeave() {
-        this.updateCurrentIndex(null);
-      }
+    } else if (typeof exports !== "undefined") {
+        factory(exports);
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports);
+        global.DefaultSection = mod.exports;
     }
-  };
+})(this, function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.default = {
+        name: "default-section",
+        props: {
+            section: { type: Object, required: true },
+            currentIndex: { type: Number, required: false, default: Infinity },
+            updateCurrentIndex: { type: Function, required: true },
+            searchInput: { type: String, required: false, default: "" }
+        },
+        computed: {
+            list: function list() {
+                var l = this.section.limit;
+                if (this.section.data.length < l) {
+                    l = this.section.data.length;
+                }
+                return this.section.data.slice(0, l);
+            },
+            className: function className() {
+                return "autosuggest__results_title autosuggest__results_title_" + this.section.name;
+            }
+        },
+        methods: {
+            styleItem: function styleItem(text) {
+                if (this.searchInput && typeof text === "string" && this.searchInput !== text) {
+                    var value = this.searchInput.trim();
+                    var r = new RegExp("" + value, "ig");
+                    return text.replace(r, "<b>" + value + "</b>");
+                }
+
+                return text;
+            },
+            getItemIndex: function getItemIndex(i) {
+                return this.section.start_index + i;
+            },
+            getItemByIndex: function getItemByIndex(i) {
+                return this.section.data[i];
+            },
+            getLabelByIndex: function getLabelByIndex(i) {
+                return this.section.data[i];
+            },
+            onMouseEnter: function onMouseEnter(event) {
+                this.updateCurrentIndex(event.currentTarget.getAttribute("data-suggestion-index"));
+            },
+            onMouseLeave: function onMouseLeave() {
+                this.updateCurrentIndex(null);
+            }
+        }
+    };
 });
 
 /***/ }),
@@ -12380,7 +12383,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},[(_vm.section.label)?_c('li',{class:_vm.className},[_vm._v(_vm._s(_vm.section.label))]):_vm._e(),_vm._v(" "),_vm._l((_vm.list),function(val,key){return _c('li',{key:_vm.getItemIndex(key),staticClass:"autosuggest__results_item",class:{'autosuggest__results_item-highlighted' : _vm.getItemIndex(key) == _vm.currentIndex, 'autosuggest__results_item':true},attrs:{"role":"option","data-suggestion-index":_vm.getItemIndex(key),"data-section-name":_vm.section.name,"id":("autosuggest__results_item-" + (_vm.getItemIndex(key)))},domProps:{"innerHTML":_vm._s(_vm.styleItem(val))},on:{"mouseenter":_vm.onMouseEnter,"mouseleave":_vm.onMouseLeave}})})],2)}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('ul',{attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},[(_vm.section.label)?_c('li',{class:_vm.className},[_vm._v(_vm._s(_vm.section.label))]):_vm._e(),_vm._v(" "),_vm._l((_vm.list),function(val,key){return _c('li',{key:_vm.getItemIndex(key),class:{'autosuggest__results_item-highlighted' : _vm.getItemIndex(key) == _vm.currentIndex, 'autosuggest__results_item':true},attrs:{"role":"option","data-suggestion-index":_vm.getItemIndex(key),"data-section-name":_vm.section.name,"id":("autosuggest__results_item-" + (_vm.getItemIndex(key)))},domProps:{"innerHTML":_vm._s(_vm.styleItem(val))},on:{"mouseenter":_vm.onMouseEnter,"mouseleave":_vm.onMouseLeave}})})],2)}
 var staticRenderFns = []
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
