@@ -12106,7 +12106,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                         }
                         this.$nextTick(function () {
                             if (_this.getSize() > 0 && _this.currentIndex >= 0) {
-                                _this.setChangeItem(_this.getItemByIndex(_this.currentIndex));
+                                _this.setChangeItem(_this.getItemByIndex(_this.currentIndex), true);
                                 _this.didSelectFromOptions = true;
                             }
                             _this.loading = true;
@@ -12128,11 +12128,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 }
             },
             setChangeItem: function setChangeItem(item) {
+                var overrideOriginalInput = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
                 if (this.currentIndex === null) {
                     this.currentItem = null;
                 } else if (item) {
                     this.searchInput = item.label;
                     this.currentItem = item;
+                    if (overrideOriginalInput) {
+                        this.searchInputOriginal = item.label;
+                    }
                 }
             },
             updateCurrentIndex: function updateCurrentIndex(index) {
@@ -12142,7 +12147,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 var _this2 = this;
 
                 /** Clicks outside of dropdown to exit */
-                if (this.currentIndex === null) {
+                if (this.currentIndex === null || !this.isOpen) {
                     this.loading = this.shouldRenderSuggestions();
                     return;
                 }
@@ -12150,7 +12155,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 /** Selects an item in the dropdown */
                 this.loading = true;
                 this.didSelectFromOptions = true;
-                this.setChangeItem(this.getItemByIndex(this.currentIndex));
+                this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
                 this.$nextTick(function () {
                     _this2._onSelected(true);
                 });

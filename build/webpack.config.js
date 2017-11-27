@@ -9,7 +9,6 @@ module.exports = merge(require("./webpack.base"), {
     index: "../src/index.js",
     "index.min": "../src/index.js"
   },
-
   output: {
     path: path.resolve(__dirname, "../dist"),
     filename: "[name].js",
@@ -23,6 +22,7 @@ module.exports = merge(require("./webpack.base"), {
     new webpack.optimize.UglifyJsPlugin({
       include: /\.min\.js$/,
       minimize: true
-    })
+    }),
+    new webpack.optimize.ModuleConcatenationPlugin()
   ]
 });
