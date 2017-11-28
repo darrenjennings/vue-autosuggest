@@ -3,7 +3,6 @@
         <input class="form-control"
                name="q"
                type="text"
-               maxlength="256"
                autocomplete="off"
                v-model="searchInput"
                :class="[isOpen ? 'autosuggest__input-open' : '', inputProps['class']]"
