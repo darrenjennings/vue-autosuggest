@@ -116,14 +116,14 @@ exports[`Autosuggest can mount 1`] = `
          aria-autosuggest="list"
          aria-owns="autosuggest__results"
          aria-activedescendant
-         aria-haspopup="true"
+         aria-haspopup="false"
          id="autosuggest__input"
          initialvalue
          onclick="function onClick() {}"
          oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
          value
-         class="form-control autosuggest__input-open"
+         class="form-control"
   >
   <div class="autosuggest__results-container">
     <!---->

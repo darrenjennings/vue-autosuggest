@@ -102,7 +102,7 @@ export default {
                 return (
                     (this.getSize() > 0 &&
                         this.shouldRenderSuggestions() &&
-                        !this.loading) || this.searchInputOriginal == null
+                        !this.loading)
                 );
             }
         },
