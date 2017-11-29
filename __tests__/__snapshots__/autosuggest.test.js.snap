@@ -7,7 +7,6 @@ exports[`Autosuggest can click outside document to trigger close 1`] = `
 >
   <input name="q"
          type="text"
-         maxlength="256"
          autocomplete="off"
          aria-autosuggest="list"
          aria-owns="autosuggest__results"
@@ -35,7 +34,6 @@ exports[`Autosuggest can display section header 1`] = `
 >
   <input name="q"
          type="text"
-         maxlength="256"
          autocomplete="off"
          aria-autosuggest="list"
          aria-owns="autosuggest__results"
@@ -114,19 +112,18 @@ exports[`Autosuggest can mount 1`] = `
 >
   <input name="q"
          type="text"
-         maxlength="256"
          autocomplete="off"
          aria-autosuggest="list"
          aria-owns="autosuggest__results"
          aria-activedescendant
-         aria-haspopup="true"
+         aria-haspopup="false"
          id="autosuggest__input"
          initialvalue
          onclick="function onClick() {}"
          oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
          value
-         class="form-control autosuggest__input-open"
+         class="form-control"
   >
   <div class="autosuggest__results-container">
     <!---->
@@ -142,7 +139,6 @@ exports[`Autosuggest can render simplest component with single onSelected 1`] = 
 >
   <input name="q"
          type="text"
-         maxlength="256"
          autocomplete="off"
          aria-autosuggest="list"
          aria-owns="autosuggest__results"
@@ -346,7 +342,6 @@ exports[`Autosuggest can render suggestions 1`] = `
 >
   <input name="q"
          type="text"
-         maxlength="256"
          autocomplete="off"
          aria-autosuggest="list"
          aria-owns="autosuggest__results"
@@ -423,7 +418,6 @@ exports[`Autosuggest can select from suggestions using keystroke 1`] = `
 >
   <input name="q"
          type="text"
-         maxlength="256"
          autocomplete="off"
          aria-autosuggest="list"
          aria-owns="autosuggest__results"
@@ -451,7 +445,6 @@ exports[`Autosuggest can use escape key to exit 1`] = `
 >
   <input name="q"
          type="text"
-         maxlength="256"
          autocomplete="off"
          aria-autosuggest="list"
          aria-owns="autosuggest__results"
@@ -479,7 +472,6 @@ exports[`Autosuggest is aria complete 1`] = `
 >
   <input name="q"
          type="text"
-         maxlength="256"
          autocomplete="off"
          aria-autosuggest="list"
          aria-owns="autosuggest__results"

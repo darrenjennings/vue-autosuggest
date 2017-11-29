@@ -1,6 +1,6 @@
 {
   "name": "vue-autosuggest",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Vue autosuggest component.",
   "main": "dist/index.js",
   "engines": {
@@ -100,6 +100,10 @@
     "snapshotSerializers": [
       "<rootDir>/node_modules/jest-serializer-html"
     ],
-    "collectCoverageFrom" : ["src/**/*.{vue}", "!**/node_modules/**", "!**/.test.js"]
+    "collectCoverageFrom": [
+      "src/**/*.{vue}",
+      "!**/node_modules/**",
+      "!**/.test.js"
+    ]
   }
 }

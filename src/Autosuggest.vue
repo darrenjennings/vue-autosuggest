@@ -3,7 +3,6 @@
         <input class="form-control"
                name="q"
                type="text"
-               maxlength="256"
                autocomplete="off"
                v-model="searchInput"
                :class="[isOpen ? 'autosuggest__input-open' : '', inputProps['class']]"
@@ -103,7 +102,7 @@ export default {
                 return (
                     (this.getSize() > 0 &&
                         this.shouldRenderSuggestions() &&
-                        !this.loading) || this.searchInputOriginal == null
+                        !this.loading)
                 );
             }
         },
@@ -221,7 +220,7 @@ export default {
                         this.$nextTick(() => {
                             if (this.getSize() > 0 && this.currentIndex >= 0) {
                                 this.setChangeItem(
-                                    this.getItemByIndex(this.currentIndex)
+                                    this.getItemByIndex(this.currentIndex), true
                                 );
                                 this.didSelectFromOptions = true;
                             }
@@ -242,12 +241,15 @@ export default {
                         break;
                 }
             },
-            setChangeItem(item) {
+            setChangeItem(item, overrideOriginalInput = false) {
                 if (this.currentIndex === null) {
                     this.currentItem = null;
                 } else if (item) {
                     this.searchInput = item.label;
                     this.currentItem = item;
+                    if (overrideOriginalInput){
+                        this.searchInputOriginal = item.label;
+                    }
                 }
             },
             updateCurrentIndex(index) {
@@ -255,7 +257,7 @@ export default {
             },
             onDocumentMouseUp() {
                 /** Clicks outside of dropdown to exit */
-                if (this.currentIndex === null) {
+                if (this.currentIndex === null || !this.isOpen) {
                     this.loading = this.shouldRenderSuggestions();
                     return;
                 }
@@ -263,7 +265,7 @@ export default {
                 /** Selects an item in the dropdown */
                 this.loading = true;
                 this.didSelectFromOptions = true;
-                this.setChangeItem(this.getItemByIndex(this.currentIndex));
+                this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
                 this.$nextTick(() => {
                     this._onSelected(true);
                 });
