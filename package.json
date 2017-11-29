@@ -9,8 +9,9 @@
   "scripts": {
     "commit": "git-cz",
     "start": "webpack-dev-server --config docs/webpack.config.js",
+    "build":"yarn build:docs && yarn build:esm && yarn build:umd && yarn storybook:build",
     "build:docs": "NODE_ENV=production webpack --config docs/webpack.config.js",
-    "build": "rm -rf dist && NODE_ENV=production webpack --config build/webpack.config.js",
+    "build:esm": "rollup -c ./build/rollup.esm.config.js",
     "build:umd": "rollup -c ./build/rollup.umd.config.js",    
     "deploy": "yarn build && npm publish",
     "test": "yarn jest",
@@ -31,9 +32,6 @@
   "keywords": [],
   "author": "Darren Jennings <dmjenn02@gmail.com> (http://www.darrenjennings.com/)",
   "license": "MIT",
-  "eslintConfig": {
-    "extends": "./node_modules/kcd-scripts/eslint.js"
-  },
   "eslintIgnore": [
     "node_modules",
     "coverage",

@@ -8,7 +8,7 @@ import replace from 'rollup-plugin-replace';
 import json from 'rollup-plugin-json';
 
 export default {
-  entry: 'src/index.js',
+  entry: 'src/vue-autosuggest.js',
   moduleName: 'VueAutosuggest',
   exports: 'named',
   plugins: [

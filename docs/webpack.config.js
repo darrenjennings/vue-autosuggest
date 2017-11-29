@@ -1,25 +1,50 @@
 const path = require("path");
-const merge = require("webpack-merge");
+const eslintFriendlyFormatter = require("eslint-friendly-formatter");
 
-module.exports = merge(require("../build/webpack.base"), {
-  context: __dirname,
+module.exports = {
+    context: __dirname,
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                test: /\.(js|vue)$/,
+                loader: "eslint-loader",
+                enforce: "pre",
+                options: {
+                    formatter: eslintFriendlyFormatter
+                }
+            },
+            {
+                test: /\.js/,
+                loaders: ["babel-loader"],
+                exclude: /node_modules/
+            },
+            {
+                test: /\.vue$/,
+                loaders: ["vue-loader"],
+                exclude: /node_modules/
+            }
+        ]
+    },
 
-  entry: "./index.js",
+    resolve: {
+        extensions: [".js", ".vue"],
+        alias: {
+            vue: "vue/dist/vue.js"
+        }
+    },
 
-  output: {
-    path: path.resolve(__dirname, "build"),
-    filename: "app.js",
-    publicPath: "/build/"
-  },
+    entry: "./index.js",
 
-  resolve: {
-    alias: {
-      vue: "vue/dist/vue.js"
+    output: {
+        path: path.resolve(__dirname, "build"),
+        filename: "app.js",
+        publicPath: "/build/"
+    },
+
+    devServer: {
+        contentBase: __dirname,
+        port: 2000
     }
-  },
-
-  devServer: {
-    contentBase: __dirname,
-    port: 2000
-  }
-});
+};

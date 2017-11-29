@@ -4,7 +4,7 @@ import filesize from 'rollup-plugin-filesize';
 import json from 'rollup-plugin-json';
 
 export default {
-  entry: 'src/instantsearch.js',
+  entry: 'src/vue-autosuggest.js',
   plugins: [
     vue({ compileTemplate: true, css: false }),
     json(),
