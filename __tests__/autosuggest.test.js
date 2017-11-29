@@ -246,7 +246,7 @@ describe("Autosuggest", () => {
 
     delete props.suggestions[0].name; // ensure empty component name is OK
     delete props.sectionConfigs; // ensure empty sectionConfigs is OK
-    delete props.inputProps.onClick; // ensure empty onCLick is OK
+    delete props.inputProps.onClick; // ensure empty onClick is OK
 
     props.onSelected = () => {};
 
