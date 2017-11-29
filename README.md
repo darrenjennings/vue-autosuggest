@@ -89,7 +89,7 @@ For more advanced usage, check out the examples below, and explore the <a href="
 | :--- | :--- | :---: | :--- |
 | [`id`](#inputPropsTable) | String | ✓ | id attribute on `<input>`.|
 | [`onInputChange`](#) | Function | ✓ | Triggers everytime the `<input>` changes.|
-| [`onClick`](#) | Function |  | |
+| [`onClick`](#) | Function |  | Triggers everytime the `<input>` is clicked.|
 | [`initialValue`](#) | String | | Set some initial value for the `<input>`.|
 | Any DOM Props | * |  | You can add any props to `<input>` as the component will `v-bind` inputProps. Similar to rest spread in JSX. See more details here: https://vuejs.org/v2/api/#v-bind |
 

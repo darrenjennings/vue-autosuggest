@@ -87,7 +87,7 @@ storiesOf("Vue-Autosuggest", module)
                 sectionConfigs: {
                     default: {
                         limit: 6,
-                        onSelected: (item, originalInput) => {
+                        onSelected: (item) => {
                             console.log(`Selected "${item.item}"`);
                         }
                     }
@@ -95,7 +95,7 @@ storiesOf("Vue-Autosuggest", module)
                 inputProps: {
                     id: "autosuggest__input",
                     initialValue: "",
-                    onClick: () => {},
+                    onClick: (item) => {console.log("hold my beer", item);},
                     onInputChange: this.onInputChange,
                     placeholder: "Type 'g'"
                 }
@@ -155,11 +155,33 @@ storiesOf("Vue-Autosuggest", module)
                 inputProps: {
                     id: "autosuggest__input",
                     initialValue: "math",
-                    onClick: () => {},
                     onInputChange: this.onInputChange,
                     placeholder: "Type 'g'"
                 }
             };
         },
         methods: sharedData.methods
+    })).add("simple no filtering", () => ({
+        components: { Autosuggest },
+        template: `<div>
+                    <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected '{{selected}}'</span></div>
+                    <div>
+                        <autosuggest 
+                            :suggestions="[{data:['Frodo', 'Samwise', 'Gandalf', 'Galadriel', 'Faramir', 'Éowyn']}]"
+                            :onSelected="onSelected"
+                            :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"
+                        />
+                    </div>
+                </div>`,
+        data() {
+            return {
+                selected: "",
+                filteredOptions: [],
+                options: [{data:sharedData.options}]
+            };
+        },
+        methods: {
+            onInputChange(item) {console.log(item);},
+            onSelected(item){this.selected = item;}
+        }
     }));
