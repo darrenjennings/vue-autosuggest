@@ -63,7 +63,15 @@ yarn add vue-autosuggest
 ```
 
 ## Usage
-Basic usage:
+
+Load VueAutosuggest into your vue app.
+
+```js
+import VueAutosuggest from 'vue-autosuggest';
+Vue.use(VueAutosuggest);
+```
+
+Place the component into your app!
 ```html
 <vue-autosuggest 
     :suggestions="[{data:['Frodo', 'Samwise', 'Gandalf', 'Galadriel', 'Faramir', 'Éowyn']}]"
@@ -100,7 +108,7 @@ Multiple sections can be defined in the `sectionConfigs` prop which defines the 
 | Prop | Type | Required | Description |
 | :--- | :--- | :---: | :--- |
 | `onSelected` | Function | ✓ | Determine behavior for what should happen when a suggestion is selected. e.g. Submit a form, open a link, update a vue model, tweet at Ken Wheeler etc.|
-| `type` | String |  | Vue component name for specifying which type to implement using Vue's `<component :is="componentName"></component>` functionality. See [DefaultSection.vue](https://github.com/Educents/vue-autosuggest/blob/master/src/parts/DefaultSection.vue) for scaffolding a new type. You must declare your component in the scope of the app using `Vue.component()`.|
+| `type` | String |  | Vue component name for specifying which type to implement using Vue's `<component :is="componentName"></component>` functionality. See [DefaultSection.vue](https://github.com/Educents/vue-autosuggest/blob/master/src/parts/DefaultSection.vue) for scaffolding a new type. You must declare your component in the scope of the app using `Vue.component()`. You can extend DefaultSection using `extends`. See [UrlSection](https://github.com/Educents/vue-autosuggest/blob/master/docs/UrlSection.vue) for an example.|
 | `limit` | Number |  | Limit each section by some value. Default: `Infinity`|
 
 Below we have defined a `default` section and a `blog` section. The `blog` section has a component `type` of `url-section` which corresponds to which component the Autosuggest loads. When type is not defined, Vue-autosuggest will use a built in `DefaultSection.vue` component. 
