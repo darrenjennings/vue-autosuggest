@@ -64,11 +64,24 @@ yarn add vue-autosuggest
 
 ## Usage
 
-Load VueAutosuggest into your vue app.
+Load VueAutosuggest into your vue app globally.
 
 ```js
 import VueAutosuggest from 'vue-autosuggest';
 Vue.use(VueAutosuggest);
+```
+
+or locally inside a component:
+
+```js
+import { VueAutosuggest } from 'vue-autosuggest';
+export default {
+  ...
+  components: {
+      VueAutosuggest
+  }
+  ...
+};
 ```
 
 Place the component into your app!

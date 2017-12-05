@@ -1,16 +1,16 @@
-import Autosuggest from "./Autosuggest.vue";
+import VueAutosuggest from "./Autosuggest.vue";
 import DefaultSection from "./parts/DefaultSection.vue";
 
-const VueAutosuggest = {
+const VueAutosuggestPlugin = {
   install(Vue) {
     Vue.component("vue-autosuggest-default-section", DefaultSection);
-    Vue.component("vue-autosuggest", Autosuggest);
+    Vue.component("vue-autosuggest", VueAutosuggest);
   }
 };
 
-export default VueAutosuggest;
+export default VueAutosuggestPlugin;
 export { VueAutosuggest, DefaultSection };
 
 if (typeof window !== "undefined" && window.Vue) {
-  window.Vue.use(VueAutosuggest);
+  window.Vue.use(VueAutosuggestPlugin);
 }
