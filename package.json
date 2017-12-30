@@ -9,10 +9,10 @@
   "scripts": {
     "commit": "git-cz",
     "start": "webpack-dev-server --config docs/webpack.config.js",
-    "build":"yarn build:docs && yarn build:esm && yarn build:umd && yarn storybook:build",
+    "build": "yarn build:docs && yarn build:esm && yarn build:umd && yarn storybook:build",
     "build:docs": "NODE_ENV=production webpack --config docs/webpack.config.js",
     "build:esm": "rollup -c ./build/rollup.esm.config.js",
-    "build:umd": "rollup -c ./build/rollup.umd.config.js",    
+    "build:umd": "rollup -c ./build/rollup.umd.config.js",
     "deploy": "yarn build && npm publish",
     "test": "yarn jest",
     "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codecov",
@@ -21,7 +21,7 @@
     "add-contributor": "kcd-scripts contributors add",
     "setup": "yarn install",
     "precommit": "yarn test",
-    "storybook": "start-storybook -p 9001 -c .storybook",
+    "storybook": "start-storybook -p 9001 -c .storybook -s ./.storybook/public",
     "storybook:build": "build-storybook -c .storybook -o docs/storybook"
   },
   "files": [
@@ -59,6 +59,7 @@
     "babel-loader": "7.1.2",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-plugin-transform-runtime": "6.23.0",
+    "babel-plugin-transform-vue-jsx": "^3.5.0",
     "babel-preset-env": "1.6.0",
     "codecov": "2.3.1",
     "codecov.io": "0.1.6",
@@ -83,7 +84,7 @@
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-replace": "^1.1.1",
     "rollup-plugin-uglify": "^1.0.1",
-    "rollup-plugin-vue": "^2.3.1",
+    "rollup-plugin-vue": "3.0.0",
     "rollup-watch": "^3.2.2",
     "sinon": "4.1.2",
     "vue": "2.5.2",

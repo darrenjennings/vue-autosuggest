@@ -81,7 +81,9 @@ For more advanced usage, check out the examples below, and explore the <a href="
 | [`suggestions`](#suggestionsProp) | Array | ✓ | Suggestions to be rendered. |
 | [`inputProps`](#inputPropsTable) | Object | ✓ | Add props to the `<input>`.|
 | [`sectionConfigs`](#sectionConfigsProp) | Object | | Define multiple sections `<input>`.|
-| [`onSelected`](#) | Function | ✓(*) | *If not using `sectionConfigs[index].onSelected()` then this will trigger. Must be implemented in either `sectionConfigs` prop or on root prop.|
+| [`renderSuggestion`](#renderSuggestion) | Function |  | Tell vue-autosuggest how to render inside the `<li>` tag. |
+| [`getSuggestionValue`](#getSuggestionValue) | Function |  | Tells vue-autosuggest what to put in the `<input/>` value|
+
 
 <a name="inputPropsTable"></a>
 ### inputProps
@@ -122,6 +124,25 @@ sectionConfigs: {
 }
 ```
 
+<a name="renderSuggestion"></a>
+### renderSuggestion
+This function will tell vue-autosuggest how to render the html inside the `<li>` tag. If you're not using `babel-plugin-transform-vue-jsx` then this method won't be too beneficial, but if your data is a list of objects you can return a specific object.
+
+```jsx
+renderSuggestion(suggestion) {
+    return <div style={{ color: "red" }}>{suggestion.name}</div>;
+},
+```
+
+<a name="getSuggestionValue"></a>
+### getSuggestionValue
+This function will tell vue-autosuggest what to put in the `<input/>` as the value.
+
+```js
+getSuggestionValue(suggestion) {
+    return suggestion.name;
+},
+```
 
 ## Inspiration
 

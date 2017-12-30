@@ -159,7 +159,6 @@ exports[`Autosuggest can render simplest component with single onSelected 1`] = 
       <ul role="listbox"
           aria-labelledby="autosuggest"
       >
-        <!---->
         <li role="option"
             data-suggestion-index="0"
             data-section-name="default"
@@ -355,7 +354,6 @@ exports[`Autosuggest can render suggestions 1`] = `
       <ul role="listbox"
           aria-labelledby="autosuggest"
       >
-        <!---->
         <li role="option"
             data-suggestion-index="0"
             data-section-name="default"
@@ -485,7 +483,6 @@ exports[`Autosuggest is aria complete 1`] = `
       <ul role="listbox"
           aria-labelledby="autosuggest"
       >
-        <!---->
         <li role="option"
             data-suggestion-index="0"
             data-section-name="default"

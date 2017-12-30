@@ -4,7 +4,6 @@
     <div>
     <vue-autosuggest 
               :suggestions="filteredOptions"
-              :result-item-key="'firstname'"
               :input-props="inputProps"
               :section-configs="sectionConfigs"
           />

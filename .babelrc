@@ -1,18 +1,25 @@
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "browsers": ["last 2 versions", "safari >= 7"],
-        "uglify": true
-      },
-      "modules": "umd"
-    }]
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions", "safari >= 7"],
+          "uglify": true
+        },
+        "modules": "umd"
+      }
+    ]
   ],
   "plugins": [
     "transform-object-rest-spread",
-    ["transform-runtime", {
-      "polyfill": true,
-      "regenerator": true
-    }]
+    "transform-vue-jsx",
+    [
+      "transform-runtime",
+      {
+        "polyfill": true,
+        "regenerator": true
+      }
+    ]
   ]
 }
