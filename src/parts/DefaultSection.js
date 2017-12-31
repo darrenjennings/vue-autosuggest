@@ -41,34 +41,43 @@ const DefaultSection = {
   },
   // eslint-disable-next-line no-unused-vars
   render(h) {
-    return (
-      <ul role="listbox" aria-labelledby="autosuggest">
-        {this.section.label ? (
-          <li class={this.className}>{this.section.label}</li>
-        ) : (
-          ""
-        )}
-        {this.list.map((val, key) => {
-          return (
-            <li
-              role="option"
-              key={this.getItemIndex(key)}
-              class={{
+    let sectionTitle = this.section.label ? (
+      <li class={this.className}>{this.section.label}</li>
+    ) : (
+      ""
+    );
+    return h(
+      "ul",
+      {
+        attrs: { role: "listbox", "aria-labelledby": "autosuggest" }
+      },
+      [
+        sectionTitle,
+        this.list.map((val, key) => {
+          return h(
+            "li",
+            {
+              attrs: {
+                role: "option",
+                "data-suggestion-index": this.getItemIndex(key),
+                "data-section-name": this.section.name,
+                id: "autosuggest__results_item-" + this.getItemIndex(key)
+              },
+              key: this.getItemIndex(key),
+              class: {
                 "autosuggest__results_item-highlighted":
                   this.getItemIndex(key) == this.currentIndex,
                 autosuggest__results_item: true
-              }}
-              data-suggestion-index={this.getItemIndex(key)}
-              data-section-name={this.section.name}
-              onMouseenter={this.onMouseEnter}
-              onMouseleave={this.onMouseLeave}
-              id={"autosuggest__results_item-" + this.getItemIndex(key)}
-            >
-              {this.renderSuggestion(val)}
-            </li>
+              },
+              on: {
+                mouseenter: this.onMouseEnter,
+                mouseleave: this.onMouseLeave
+              }
+            },
+            [this.renderSuggestion(val)]
           );
-        })}
-      </ul>
+        })
+      ]
     );
   }
 };

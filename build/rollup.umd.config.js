@@ -22,7 +22,8 @@ export default {
       transforms: {
         dangerousForOf: true
       },
-      objectAssign: "Object.assign"
+      objectAssign: "Object.assign",
+      jsx: "h"
     }),
     commonjs(),
     replace({
@@ -30,8 +31,8 @@ export default {
         NODE_ENV: "production"
       })
     }),
-    uglify(),
-    filesize()
+    /* uglify(),
+    filesize() */
   ],
   targets: [{ dest: `dist/vue-autosuggest.js`, format: "umd" }]
 };

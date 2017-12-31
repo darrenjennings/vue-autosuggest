@@ -645,40 +645,32 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     render: function render(h) {
       var _this = this;
 
-      return h(
-        "ul",
-        {
-          attrs: { role: "listbox", "aria-labelledby": "autosuggest" }
-        },
-        [this.section.label ? h(
-          "li",
-          { "class": this.className },
-          [this.section.label]
-        ) : "", this.list.map(function (val, key) {
-          return h(
-            "li",
-            {
-              attrs: {
-                role: "option",
-
-                "data-suggestion-index": _this.getItemIndex(key),
-                "data-section-name": _this.section.name,
-
-                id: "autosuggest__results_item-" + _this.getItemIndex(key)
-              },
-              key: _this.getItemIndex(key),
-              "class": {
-                "autosuggest__results_item-highlighted": _this.getItemIndex(key) == _this.currentIndex,
-                autosuggest__results_item: true
-              }, on: {
-                "mouseenter": _this.onMouseEnter,
-                "mouseleave": _this.onMouseLeave
-              }
-            },
-            [_this.renderSuggestion(val)]
-          );
-        })]
-      );
+      var sectionTitle = this.section.label ? h(
+        "li",
+        { "class": this.className },
+        [this.section.label]
+      ) : "";
+      return h("ul", {
+        attrs: { role: "listbox", "aria-labelledby": "autosuggest" }
+      }, [sectionTitle, this.list.map(function (val, key) {
+        return h("li", {
+          attrs: {
+            role: "option",
+            "data-suggestion-index": _this.getItemIndex(key),
+            "data-section-name": _this.section.name,
+            id: "autosuggest__results_item-" + _this.getItemIndex(key)
+          },
+          key: _this.getItemIndex(key),
+          class: {
+            "autosuggest__results_item-highlighted": _this.getItemIndex(key) == _this.currentIndex,
+            autosuggest__results_item: true
+          },
+          on: {
+            mouseenter: _this.onMouseEnter,
+            mouseleave: _this.onMouseLeave
+          }
+        }, [_this.renderSuggestion(val)]);
+      })]);
     }
   };
 
