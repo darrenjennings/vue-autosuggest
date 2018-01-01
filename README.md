@@ -231,6 +231,14 @@ renderSuggestion(suggestion) {
 },
 ```
 
+or if you don't use babel or the JSX transform, you can just return the specified object property.
+
+```js
+renderSuggestion(suggestion) {
+    return suggestion.name;
+},
+```
+
 <a name="getSuggestionValue"></a>
 ### getSuggestionValue
 This function will tell vue-autosuggest what to put in the `<input/>` as the value.
@@ -240,6 +248,12 @@ getSuggestionValue(suggestion) {
     return suggestion.name;
 },
 ```
+
+## FAQ
+
+> How do I update the input programatically?
+
+- You can assign a ref to the component `<vue-autosuggest ref="myRefName" ... />` and then access the input value through `this.$refs.myRefName.searchInput`. This is useful mainly for clearing the input. ⚠️ Note, refs are more of an "escape hatch" as they call it, so it won't trigger the `onInputChange` method.
 
 ## Inspiration
 
