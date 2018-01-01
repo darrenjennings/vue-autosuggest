@@ -71,6 +71,103 @@ Basic usage:
     :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"
 />
 ```
+Advanced usage:
+<details><summary>Click to expand</summary><p>
+
+```html
+<template>
+<div>
+    <h1>Vue-autosuggest 🔮</h1>
+    <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected '{{JSON.stringify(selected,null,2)}}'</span></div>
+        <vue-autosuggest 
+            :suggestions="filteredOptions"
+            :onSelected="onSelected"
+            :renderSuggestion="renderSuggestion"
+            :getSuggestionValue="getSuggestionValue"
+            :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"/>
+</div>
+</template>
+       
+<script>
+import { VueAutosuggest } from "vue-autosuggest";
+
+export default {
+  components: {
+    VueAutosuggest
+  },
+  data() {
+    return {
+      selected: "",
+      filteredOptions: [],
+      suggestions: [
+        {
+          data: [
+            { id: 1, name: "Frodo", avatar: "./frodo.jpg" },
+            { id: 2, name: "Samwise", avatar: "./samwise.jpg" },
+            { id: 3, name: "Gandalf", avatar: "./gandalf.png" },
+            { id: 4, name: "Aragorn", avatar: "./aragorn.jpg" }
+          ]
+        }
+      ]
+    };
+  },
+  methods: {
+    onInputChange(text) {
+      if (text === null) {
+        /* Maybe the text is null but you wanna do 
+        * something else, but don't filter by null.
+        */
+        return;
+      }
+
+      // Full cusomizability over filtering
+      const filteredData = this.suggestions[0].data.filter(option => {
+        return option.name.toLowerCase().indexOf(text.toLowerCase()) > -1;
+      });
+
+      // Store data in one property, and filtered in another
+      this.filteredOptions = [{ data: filteredData }];
+    },
+    onSelected(item) {
+      this.selected = item;
+    },
+    renderSuggestion(suggestion) {
+      /* You will need babel-plugin-transform-vue-jsx for this kind of full customizable
+       * rendering. If you don't use babel or the jsx transform, then you can use this
+       * function to just `return suggestion['propertyName'];`
+       */ 
+      return (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center"
+          }}
+        >
+          <img
+            style={{
+              width: "25px",
+              height: "25px",
+              borderRadius: "15px",
+              marginRight: "10px"
+            }}
+            src={suggestion.avatar}
+          />{" "}
+          <span style={{ color: "navyblue" }}>{suggestion.name}</span>
+        </div>
+      );
+    },
+    /**
+     * This is what the <input/> value is set to when you are selecting a suggestion.
+     */
+    getSuggestionValue(suggestion) {
+      return suggestion.name;
+    }
+  }
+};
+</script>
+```
+
+</p></details>
 
 For more advanced usage, check out the examples below, and explore the <a href="#props">properties</a> you can use.
 

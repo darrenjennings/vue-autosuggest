@@ -12541,6 +12541,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         });
 
         this.filteredOptions = filtered;
+      },
+      getSuggestionValue: function getSuggestionValue(item) {
+        if (item.name == 'blog') {
+          return item.item.value;
+        } else {
+          return item.item;
+        }
       }
     }
   };
@@ -13809,7 +13816,7 @@ var esExports = { render: render, staticRenderFns: staticRenderFns }
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticStyle:{"padding-top":"10px","margin-bottom":"10px"}},[(_vm.selected)?_c('span',[_vm._v("You have selected "+_vm._s(_vm.selected))]):_vm._e()]),_vm._v(" "),_c('div',[_c('vue-autosuggest',{attrs:{"suggestions":_vm.filteredOptions,"input-props":_vm.inputProps,"section-configs":_vm.sectionConfigs}})],1)])}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticStyle:{"padding-top":"10px","margin-bottom":"10px"}},[(_vm.selected)?_c('span',[_vm._v("You have selected "+_vm._s(_vm.selected))]):_vm._e()]),_vm._v(" "),_c('div',[_c('vue-autosuggest',{attrs:{"suggestions":_vm.filteredOptions,"input-props":_vm.inputProps,"section-configs":_vm.sectionConfigs,"getSuggestionValue":_vm.getSuggestionValue}})],1)])}
 var staticRenderFns = []
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);

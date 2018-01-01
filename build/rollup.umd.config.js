@@ -31,8 +31,8 @@ export default {
         NODE_ENV: "production"
       })
     }),
-    /* uglify(),
-    filesize() */
+    uglify(),
+    filesize()
   ],
   targets: [{ dest: `dist/vue-autosuggest.js`, format: "umd" }]
 };
