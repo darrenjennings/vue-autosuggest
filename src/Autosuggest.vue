@@ -26,7 +26,7 @@
 
 <script>
 import DefaultSection from "./parts/DefaultSection.js";
-import { addClass, removeClass } from './utils';
+import { addClass, removeClass } from "./utils";
 export default {
   name: "autosuggest",
   components: {
@@ -112,7 +112,8 @@ export default {
   },
   data: () => ({
     component_attr_id_autosuggest: "autosuggest",
-    component_attr_class_autosuggest__results_container: "autosuggest__results-container",
+    component_attr_class_autosuggest__results_container:
+      "autosuggest__results-container",
     component_attr_class_autosuggest__results: "autosuggest__results",
     searchInput: "",
     searchInputOriginal: null,
@@ -217,7 +218,7 @@ export default {
             // Determine direction of arrow up/down and determine new currentIndex
             const direction = keyCode === 40 ? 1 : -1;
             const newIndex = parseInt(this.currentIndex) + direction;
-            
+
             this.setCurrentIndex(newIndex, this.getSize(), direction);
             this.didSelectFromOptions = true;
             if (this.getSize() > 0 && this.currentIndex >= 0) {
@@ -270,27 +271,39 @@ export default {
         this.ensureItemVisible(item, this.currentIndex);
       }
     },
-    ensureItemVisible(item, index){
-      if(!item || !index){
+    ensureItemVisible(item, index) {
+      if (!item || !index) {
         return;
       }
-      let {document} = window;
-      const resultsScrollElement = document.querySelector(`.${this.component_attr_class_autosuggest__results}`);
+      let { document } = window;
+      const resultsScrollElement = document.querySelector(
+        `.${this.component_attr_class_autosuggest__results}`
+      );
       const resultsScrollWindowHeight = resultsScrollElement.clientHeight;
       const resultsScrollScrollTop = resultsScrollElement.scrollTop;
-      
-      const itemElement = document.querySelector(`#autosuggest__results_item-${index}`);
+
+      const itemElement = document.querySelector(
+        `#autosuggest__results_item-${index}`
+      );
       const itemHeight = itemElement.clientHeight;
       const currentItemScrollOffset = itemElement.offsetTop;
-      
-      if(currentItemScrollOffset >= resultsScrollScrollTop + resultsScrollWindowHeight){
-        /** Current item goes below visible scroll window */
-        resultsScrollElement.scrollTo(0,itemHeight + currentItemScrollOffset - resultsScrollWindowHeight)
-      }else if(currentItemScrollOffset < resultsScrollScrollTop && resultsScrollScrollTop > 0){
-        /** Current item goes above visible scroll window */
-        resultsScrollElement.scrollTo(0,currentItemScrollOffset)
-      }
 
+      if (
+        currentItemScrollOffset >=
+        resultsScrollScrollTop + resultsScrollWindowHeight
+      ) {
+        /** Current item goes below visible scroll window */
+        resultsScrollElement.scrollTo(
+          0,
+          itemHeight + currentItemScrollOffset - resultsScrollWindowHeight
+        );
+      } else if (
+        currentItemScrollOffset < resultsScrollScrollTop &&
+        resultsScrollScrollTop > 0
+      ) {
+        /** Current item goes above visible scroll window */
+        resultsScrollElement.scrollTo(0, currentItemScrollOffset);
+      }
     },
     updateCurrentIndex(index) {
       this.currentIndex = index;

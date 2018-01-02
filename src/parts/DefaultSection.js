@@ -16,8 +16,7 @@ const DefaultSection = {
       return this.section.data.slice(0, l);
     },
     className: function() {
-      return `autosuggest__results_title autosuggest__results_title_${this
-        .section.name}`;
+      return `autosuggest__results_title autosuggest__results_title_${this.section.name}`;
     }
   },
   methods: {
@@ -31,9 +30,7 @@ const DefaultSection = {
       return this.section.data[i];
     },
     onMouseEnter(event) {
-      this.updateCurrentIndex(
-        event.currentTarget.getAttribute("data-suggestion-index")
-      );
+      this.updateCurrentIndex(event.currentTarget.getAttribute("data-suggestion-index"));
     },
     onMouseLeave() {
       this.updateCurrentIndex(null);
