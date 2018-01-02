@@ -39,7 +39,10 @@
 - <a href="https://educents.github.io/vue-autosuggest">Demo</a>
 - <a href="https://educents.github.io/vue-autosuggest/storybook">Storybook</a> Helpful to see all variations of component's props.<br/>
 - <a href="https://jsfiddle.net/darrenjennings/dugbvezs/">JSFiddle</a> Helpful for playing around and sharing.
-
+- Codesandbox Demos:
+  - [Deeply nested data objects as suggestions](https://codesandbox.io/s/627qlx66oz)
+  - [Api Fetching suggestions with Multiple sections](https://codesandbox.io/s/mjqrk7v2rx)
+  
 ## Features
 * WAI-ARIA complete autosuggest component built with the power of Vue.
 * Full control over rendering with built in defaults or custom components for rendering.
