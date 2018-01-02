@@ -12863,13 +12863,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }
       },
       ensureItemVisible: function ensureItemVisible(item, index) {
-        if (!item || !index && index !== 0) {
+        var resultsScrollElement = document.querySelector("." + this.component_attr_class_autosuggest__results);
+
+        if (!item || !index && index !== 0 || !resultsScrollElement) {
           return;
         }
-        var _window = window,
-            document = _window.document;
-
-        var resultsScrollElement = document.querySelector("." + this.component_attr_class_autosuggest__results);
         var resultsScrollWindowHeight = resultsScrollElement.clientHeight;
         var resultsScrollScrollTop = resultsScrollElement.scrollTop;
 
