@@ -112,8 +112,7 @@ export default {
   },
   data: () => ({
     component_attr_id_autosuggest: "autosuggest",
-    component_attr_class_autosuggest__results_container:
-      "autosuggest__results-container",
+    component_attr_class_autosuggest__results_container: "autosuggest__results-container",
     component_attr_class_autosuggest__results: "autosuggest__results",
     searchInput: "",
     searchInputOriginal: null,
@@ -135,9 +134,7 @@ export default {
   }),
   computed: {
     isOpen() {
-      return (
-        this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading
-      );
+      return this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading;
     }
   },
   methods: {
@@ -152,10 +149,7 @@ export default {
           this.searchInputOriginal
         );
       } else if (this.sectionConfigs["default"].onSelected) {
-        this.sectionConfigs["default"].onSelected(
-          null,
-          this.searchInputOriginal
-        );
+        this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
       } else {
         this.onSelected && this.onSelected(this.currentItem);
       }
@@ -271,25 +265,23 @@ export default {
         this.ensureItemVisible(item, this.currentIndex);
       }
     },
-    ensureItemVisible(item, index) {
-      if (!item || !index) {
-        return;
-      }
-      let { document } = window;
+    ensureItemVisible(item, index) {      
       const resultsScrollElement = document.querySelector(
         `.${this.component_attr_class_autosuggest__results}`
       );
+      
+      if (!item || (!index && index !== 0) || !resultsScrollElement) {
+        return;
+      }
       const resultsScrollWindowHeight = resultsScrollElement.clientHeight;
       const resultsScrollScrollTop = resultsScrollElement.scrollTop;
 
-      const itemElement = document.querySelector(
-        `#autosuggest__results_item-${index}`
-      );
+      const itemElement = document.querySelector(`#autosuggest__results_item-${index}`);
       const itemHeight = itemElement.clientHeight;
       const currentItemScrollOffset = itemElement.offsetTop;
 
       if (
-        currentItemScrollOffset >=
+        itemHeight + currentItemScrollOffset >=
         resultsScrollScrollTop + resultsScrollWindowHeight
       ) {
         /** Current item goes below visible scroll window */
@@ -297,10 +289,7 @@ export default {
           0,
           itemHeight + currentItemScrollOffset - resultsScrollWindowHeight
         );
-      } else if (
-        currentItemScrollOffset < resultsScrollScrollTop &&
-        resultsScrollScrollTop > 0
-      ) {
+      } else if (currentItemScrollOffset < resultsScrollScrollTop && resultsScrollScrollTop > 0) {
         /** Current item goes above visible scroll window */
         resultsScrollElement.scrollTo(0, currentItemScrollOffset);
       }
@@ -342,9 +331,7 @@ export default {
 
       this.currentIndex = adjustedValue;
 
-      const element = document.getElementById(
-        `autosuggest__results_item-${this.currentIndex}`
-      );
+      const element = document.getElementById(`autosuggest__results_item-${this.currentIndex}`);
       const hoverClass = "autosuggest__results_item-highlighted";
       if (document.querySelector(`.${hoverClass}`)) {
         removeClass(document.querySelector(`.${hoverClass}`), hoverClass);
@@ -356,15 +343,15 @@ export default {
     onClick() {
       this.loading = false;
       this.internal_inputProps.onClick(this.currentItem);
+
+      this.$nextTick(() => {
+        this.ensureItemVisible(this.currentItem, this.currentIndex);
+      });
     }
   },
   mounted() {
     /** Take care of nested input props */
-    Object.assign(
-      this.internal_inputProps,
-      this.defaultInputProps,
-      this.inputProps
-    );
+    Object.assign(this.internal_inputProps, this.defaultInputProps, this.inputProps);
     Object.assign(this.sectionConfigs);
 
     document.addEventListener("mouseup", this.onDocumentMouseUp);
@@ -390,9 +377,7 @@ export default {
         this.suggestions.forEach(section => {
           if (!section.data) return;
 
-          const name = section.name
-            ? section.name
-            : this.defaultSectionConfig.name;
+          const name = section.name ? section.name : this.defaultSectionConfig.name;
 
           let { type, limit, label } = this.sectionConfigs[name];
 

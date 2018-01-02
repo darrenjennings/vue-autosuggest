@@ -206,7 +206,7 @@ storiesOf("Vue-Autosuggest", module)
         this.filteredOptions = [{ data: filteredData }];
       },
       onSelected(item) {
-        console.log(item);
+        console.log("Selected: ", item);
         this.selected = item;
       },
       renderSuggestion(suggestion) {
@@ -307,28 +307,32 @@ storiesOf("Vue-Autosuggest", module)
       return {
         selected: "",
         filteredOptions: [],
-        suggestions: []
+        suggestions: [],
+        timeout: null
       };
     },
-    created(){
-        let options = [];
-        for(let i=0; i < 1000; ++i){
-          options.push(String(i));
-        }
-        this.suggestions = [{data:options}];
+    created() {
+      let options = [];
+      for (let i = 0; i < 1000; ++i) {
+        options.push(String(i));
+      }
+      this.suggestions = [{ data: options }];
     },
     methods: {
       onInputChange(input) {
         if (input === null) {
           return;
         }
-        const filteredData = this.suggestions[0].data.filter(option => {
-          return option.indexOf(input) > -1;
-        });
-        this.filteredOptions = [{ data: filteredData }];
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          const filteredData = this.suggestions[0].data.filter(option => {
+            return option.indexOf(input) > -1;
+          });
+          this.filteredOptions = [{ data: filteredData }];
+        }, 100);
       },
       onSelected(item) {
-        console.log(item);
+        console.log("Selected:", item);
         this.selected = item;
       },
       renderSuggestion(suggestion) {

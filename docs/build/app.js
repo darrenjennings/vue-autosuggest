@@ -12863,7 +12863,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }
       },
       ensureItemVisible: function ensureItemVisible(item, index) {
-        if (!item || !index) {
+        if (!item || !index && index !== 0) {
           return;
         }
         var _window = window,
@@ -12877,7 +12877,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var itemHeight = itemElement.clientHeight;
         var currentItemScrollOffset = itemElement.offsetTop;
 
-        if (currentItemScrollOffset >= resultsScrollScrollTop + resultsScrollWindowHeight) {
+        if (itemHeight + currentItemScrollOffset >= resultsScrollScrollTop + resultsScrollWindowHeight) {
           /** Current item goes below visible scroll window */
           resultsScrollElement.scrollTo(0, itemHeight + currentItemScrollOffset - resultsScrollWindowHeight);
         } else if (currentItemScrollOffset < resultsScrollScrollTop && resultsScrollScrollTop > 0) {
@@ -12937,8 +12937,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }
       },
       onClick: function onClick() {
+        var _this3 = this;
+
         this.loading = false;
         this.internal_inputProps.onClick(this.currentItem);
+
+        this.$nextTick(function () {
+          _this3.ensureItemVisible(_this3.currentItem, _this3.currentIndex);
+        });
       }
     },
     mounted: function mounted() {
@@ -12965,7 +12971,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       suggestions: {
         immediate: true,
         handler: function handler() {
-          var _this3 = this;
+          var _this4 = this;
 
           this.computedSections = [];
           this.computedSize = 0;
@@ -12973,16 +12979,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           this.suggestions.forEach(function (section) {
             if (!section.data) return;
 
-            var name = section.name ? section.name : _this3.defaultSectionConfig.name;
+            var name = section.name ? section.name : _this4.defaultSectionConfig.name;
 
-            var _sectionConfigs$name = _this3.sectionConfigs[name],
+            var _sectionConfigs$name = _this4.sectionConfigs[name],
                 type = _sectionConfigs$name.type,
                 limit = _sectionConfigs$name.limit,
                 label = _sectionConfigs$name.label;
 
             /** Set defaults for section configs. */
 
-            type = type ? type : _this3.defaultSectionConfig.type;
+            type = type ? type : _this4.defaultSectionConfig.type;
 
             limit = limit ? limit : Infinity;
             limit = section.data.length < limit ? section.data.length : limit;
@@ -12995,11 +13001,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               type: type,
               limit: limit,
               data: section.data,
-              start_index: _this3.computedSize,
-              end_index: _this3.computedSize + limit - 1
+              start_index: _this4.computedSize,
+              end_index: _this4.computedSize + limit - 1
             };
-            _this3.computedSections.push(computedSection);
-            _this3.computedSize += limit;
+            _this4.computedSections.push(computedSection);
+            _this4.computedSize += limit;
           }, this);
         }
       }
