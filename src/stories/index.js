@@ -231,7 +231,7 @@ storiesOf("Vue-Autosuggest", module)
         );
       },
       getSuggestionValue(suggestion) {
-        return suggestion.name;
+        return suggestion.item.name;
       }
     }
   }))
@@ -289,6 +289,59 @@ storiesOf("Vue-Autosuggest", module)
         this.options[0].data.push(item);
         this.selected.splice(this.selected.indexOf(item), 1);
         this.onInputChange(item);
+      }
+    }
+  }))
+  .add("many many options", () => ({
+    components: { Autosuggest },
+    template: `<div>
+                    <div id="many-many-options">
+                        <autosuggest
+                            :suggestions="filteredOptions"
+                            :onSelected="onSelected"
+                            :renderSuggestion="renderSuggestion"
+                            :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"/>
+                    </div>
+                </div>`,
+    data() {
+      return {
+        selected: "",
+        filteredOptions: [],
+        suggestions: []
+      };
+    },
+    created(){
+        let options = [];
+        for(let i=0; i < 1000; ++i){
+          options.push(String(i));
+        }
+        this.suggestions = [{data:options}];
+    },
+    methods: {
+      onInputChange(input) {
+        if (input === null) {
+          return;
+        }
+        const filteredData = this.suggestions[0].data.filter(option => {
+          return option.indexOf(input) > -1;
+        });
+        this.filteredOptions = [{ data: filteredData }];
+      },
+      onSelected(item) {
+        console.log(item);
+        this.selected = item;
+      },
+      renderSuggestion(suggestion) {
+        return (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center"
+            }}
+          >
+            <span style={{ color: "navyblue" }}>{suggestion}</span>
+          </div>
+        );
       }
     }
   }));

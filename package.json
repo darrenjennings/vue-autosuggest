@@ -93,7 +93,7 @@
     "vue-server-renderer": "2.5.2",
     "vue-template-compiler": "2.5.2",
     "vue-template-es2015-compiler": "1.6.0",
-    "vue-test-utils": "1.0.0-beta.5",
+    "vue-test-utils": "1.0.0-beta.9",
     "webpack": "3.7.1",
     "webpack-dev-server": "2.9.2",
     "webpack-merge": "4.1.0"

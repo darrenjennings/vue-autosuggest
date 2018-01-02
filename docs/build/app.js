@@ -12043,7 +12043,7 @@ var esExports = { render: render, staticRenderFns: staticRenderFns }
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9a15e98a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9a15e98a_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(93);
 function injectStyle (ssrContext) {
   __webpack_require__(50)
 }
@@ -12561,7 +12561,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_60ffdade_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Autosuggest_vue__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_60ffdade_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Autosuggest_vue__ = __webpack_require__(92);
 var normalizeComponent = __webpack_require__(15)
 /* script */
 
@@ -12593,20 +12593,20 @@ var Component = normalizeComponent(
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(58), __webpack_require__(67), __webpack_require__(30)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(58), __webpack_require__(67), __webpack_require__(30), __webpack_require__(91)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else if (typeof exports !== "undefined") {
-    factory(exports, require("babel-runtime/core-js/object/assign"), require("babel-runtime/helpers/typeof"), require("./parts/DefaultSection.js"));
+    factory(exports, require("babel-runtime/core-js/object/assign"), require("babel-runtime/helpers/typeof"), require("./parts/DefaultSection.js"), require("./utils"));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.assign, global._typeof, global.DefaultSection);
+    factory(mod.exports, global.assign, global._typeof, global.DefaultSection, global.utils);
     global.Autosuggest = mod.exports;
   }
-})(this, function (exports, _assign, _typeof2, _DefaultSection) {
+})(this, function (exports, _assign, _typeof2, _DefaultSection, _utils) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
@@ -12710,6 +12710,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     },
     data: function data() {
       return {
+        component_attr_id_autosuggest: "autosuggest",
+        component_attr_class_autosuggest__results_container: "autosuggest__results-container",
+        component_attr_class_autosuggest__results: "autosuggest__results",
         searchInput: "",
         searchInputOriginal: null,
         currentIndex: null,
@@ -12801,7 +12804,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               }
               // Determine direction of arrow up/down and determine new currentIndex
               var direction = keyCode === 40 ? 1 : -1;
-              var newIndex = this.currentIndex + direction;
+              var newIndex = parseInt(this.currentIndex) + direction;
+
               this.setCurrentIndex(newIndex, this.getSize(), direction);
               this.didSelectFromOptions = true;
               if (this.getSize() > 0 && this.currentIndex >= 0) {
@@ -12853,8 +12857,32 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           this.searchInput = this.getSuggestionValue(item);
           this.currentItem = item;
           if (overrideOriginalInput) {
-            this.searchInputOriginal = this.getSuggestionValue(item.item);
+            this.searchInputOriginal = this.getSuggestionValue(item);
           }
+          this.ensureItemVisible(item, this.currentIndex);
+        }
+      },
+      ensureItemVisible: function ensureItemVisible(item, index) {
+        if (!item || !index) {
+          return;
+        }
+        var _window = window,
+            document = _window.document;
+
+        var resultsScrollElement = document.querySelector("." + this.component_attr_class_autosuggest__results);
+        var resultsScrollWindowHeight = resultsScrollElement.clientHeight;
+        var resultsScrollScrollTop = resultsScrollElement.scrollTop;
+
+        var itemElement = document.querySelector("#autosuggest__results_item-" + index);
+        var itemHeight = itemElement.clientHeight;
+        var currentItemScrollOffset = itemElement.offsetTop;
+
+        if (currentItemScrollOffset >= resultsScrollScrollTop + resultsScrollWindowHeight) {
+          /** Current item goes below visible scroll window */
+          resultsScrollElement.scrollTo(0, itemHeight + currentItemScrollOffset - resultsScrollWindowHeight);
+        } else if (currentItemScrollOffset < resultsScrollScrollTop && resultsScrollScrollTop > 0) {
+          /** Current item goes above visible scroll window */
+          resultsScrollElement.scrollTo(0, currentItemScrollOffset);
         }
       },
       updateCurrentIndex: function updateCurrentIndex(index) {
@@ -12902,29 +12930,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var element = document.getElementById("autosuggest__results_item-" + this.currentIndex);
         var hoverClass = "autosuggest__results_item-highlighted";
         if (document.querySelector("." + hoverClass)) {
-          this.removeClass(document.querySelector("." + hoverClass), hoverClass);
+          (0, _utils.removeClass)(document.querySelector("." + hoverClass), hoverClass);
         }
         if (element) {
-          this.addClass(element, hoverClass);
+          (0, _utils.addClass)(element, hoverClass);
         }
       },
       onClick: function onClick() {
         this.loading = false;
         this.internal_inputProps.onClick(this.currentItem);
-      },
-
-
-      /** DOM Utilities */
-      hasClass: function hasClass(el, className) {
-        return !!el.className.match(new RegExp("(\\s|^)" + className + "(\\s|$)"));
-      },
-      addClass: function addClass(el, className) {
-        if (!this.hasClass(el, className)) el.className += " " + className;
-      },
-      removeClass: function removeClass(el, className) {
-        if (el.classList) {
-          el.classList.remove(className);
-        }
       }
     },
     mounted: function mounted() {
@@ -13803,16 +13817,60 @@ __webpack_require__(28)('observable');
 
 /***/ }),
 /* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else if (typeof exports !== "undefined") {
+    factory(exports);
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod.exports);
+    global.utils = mod.exports;
+  }
+})(this, function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  /** DOM Utilities */
+  function hasClass(el, className) {
+    return !!el.className.match(new RegExp("(\\s|^)" + className + "(\\s|$)"));
+  }
+
+  function addClass(el, className) {
+    if (!hasClass(el, className)) el.className += " " + className;
+  }
+
+  function removeClass(el, className) {
+    if (el.classList) {
+      el.classList.remove(className);
+    }
+  }
+
+  exports.addClass = addClass;
+  exports.removeClass = removeClass;
+});
+
+/***/ }),
+/* 92 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":"autosuggest"}},[_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"name":"q","type":"text","autocomplete":"off","aria-autosuggest":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen && _vm.currentIndex !== null ? ("autosuggest__results--item-" + _vm.currentIndex) : '',"aria-haspopup":_vm.isOpen ? 'true' : 'false'},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"click":_vm.onClick,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value}}},'input',_vm.inputProps,false)),_vm._v(" "),_c('div',{staticClass:"autosuggest__results-container"},[(_vm.getSize() > 0 && !_vm.loading)?_c('div',{staticClass:"autosuggest__results",attrs:{"role":"listbox","aria-labelledby":"autosuggest"}},_vm._l((this.computedSections),function(cs,key){return _c(cs.type,{key:_vm.getSectionRef(key),ref:_vm.getSectionRef(key),refInFor:true,tag:"component",attrs:{"renderSuggestion":_vm.renderSuggestion,"section":cs,"updateCurrentIndex":_vm.updateCurrentIndex,"searchInput":_vm.searchInput}})})):_vm._e()])])}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":_vm.component_attr_id_autosuggest}},[_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"name":"q","type":"text","autocomplete":"off","aria-autosuggest":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen && _vm.currentIndex !== null ? ("autosuggest__results--item-" + _vm.currentIndex) : '',"aria-haspopup":_vm.isOpen ? 'true' : 'false'},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"click":_vm.onClick,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value}}},'input',_vm.inputProps,false)),_vm._v(" "),_c('div',{class:_vm.component_attr_class_autosuggest__results_container},[(_vm.getSize() > 0 && !_vm.loading)?_c('div',{class:_vm.component_attr_class_autosuggest__results,attrs:{"aria-labelledby":_vm.component_attr_id_autosuggest}},_vm._l((this.computedSections),function(cs,key){return _c(cs.type,{key:_vm.getSectionRef(key),ref:_vm.getSectionRef(key),refInFor:true,tag:"component",attrs:{"renderSuggestion":_vm.renderSuggestion,"section":cs,"updateCurrentIndex":_vm.updateCurrentIndex,"searchInput":_vm.searchInput}})})):_vm._e()])])}
 var staticRenderFns = []
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

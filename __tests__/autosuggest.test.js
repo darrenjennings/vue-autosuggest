@@ -3,6 +3,8 @@ import { createRenderer } from "vue-server-renderer";
 
 import Autosuggest from "../src/Autosuggest.vue";
 
+Element.prototype.scrollTo = () => {}  // https://github.com/vuejs/vue-test-utils/issues/319
+
 // Helper to call function x number of times
 const times = x => f => {
   if (x > 0) {
@@ -79,7 +81,7 @@ describe("Autosuggest", () => {
     });
 
     const input = wrapper.find("input");
-    expect(input.hasAttribute("id", defaultProps.inputProps.id)).toBeTruthy();
+    expect(input.attributes("id", defaultProps.inputProps.id)).toBeTruthy();
 
     input.trigger("click");
     wrapper.setData({ searchInput: "G" });
@@ -127,18 +129,19 @@ describe("Autosuggest", () => {
 
   it("can select from suggestions using keystroke", async () => {
     const wrapper = mount(Autosuggest, {
-      propsData: defaultProps
+      propsData: defaultProps,
+      attachToDocument: true
     });
 
     const input = wrapper.find("input");
     input.trigger("click");
     wrapper.setData({ searchInput: "G" });
 
-    times(15)(() => {
+    times(5)(() => {
       input.trigger("keydown.down");
     });
 
-    times(15)(() => {
+    times(5)(() => {
       input.trigger("keydown.up");
     });
 
@@ -218,16 +221,16 @@ describe("Autosuggest", () => {
     });
 
     const input = wrapper.find("input");
-    expect(input.hasAttribute('aria-autosuggest','list')).toBeTruthy();
-    expect(input.hasAttribute('aria-activedescendant', '')).toBeTruthy();
-    expect(input.hasAttribute('aria-owns', 'autosuggest__results')).toBeTruthy();   
+    expect(input.attributes('aria-autosuggest','list')).toBeTruthy();
+    expect(input.attributes('aria-activedescendant', '')).toBeTruthy();
+    expect(input.attributes('aria-owns', 'autosuggest__results')).toBeTruthy();   
     
     // TODO: Make sure aria-completeness is actually 2legit2quit.
     
     input.trigger("click");
     wrapper.setData({ searchInput: "G" });
 
-    expect(input.hasAttribute('aria-haspopup', 'true')).toBeTruthy();
+    expect(input.attributes('aria-haspopup', 'true')).toBeTruthy();
     
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {

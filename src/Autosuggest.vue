@@ -1,5 +1,5 @@
 <template>
-    <div id="autosuggest">
+    <div :id="component_attr_id_autosuggest">
         <input class="form-control"
                name="q"
                type="text"
@@ -14,13 +14,10 @@
                :aria-activedescendant="isOpen && currentIndex !== null ? `autosuggest__results--item-${currentIndex}` : ''"
                :aria-haspopup="isOpen ? 'true' : 'false'"
         />
-        <div class="autosuggest__results-container">
-                <div
-                    role="listbox" 
-                    class="autosuggest__results" 
-                    aria-labelledby="autosuggest"
-                    v-if="getSize() > 0 && !loading"
-                    >
+        <div :class="component_attr_class_autosuggest__results_container">
+                <div :class="component_attr_class_autosuggest__results" 
+                    :aria-labelledby="component_attr_id_autosuggest"
+                    v-if="getSize() > 0 && !loading">
                     <component :renderSuggestion="renderSuggestion" v-for="(cs, key) in this.computedSections" :is="cs.type" :section="cs" :ref="getSectionRef(key)" :key="getSectionRef(key)" :updateCurrentIndex="updateCurrentIndex" :searchInput="searchInput" />
                 </div>
         </div>
@@ -29,6 +26,7 @@
 
 <script>
 import DefaultSection from "./parts/DefaultSection.js";
+import { addClass, removeClass } from './utils';
 export default {
   name: "autosuggest",
   components: {
@@ -113,6 +111,9 @@ export default {
     }
   },
   data: () => ({
+    component_attr_id_autosuggest: "autosuggest",
+    component_attr_class_autosuggest__results_container: "autosuggest__results-container",
+    component_attr_class_autosuggest__results: "autosuggest__results",
     searchInput: "",
     searchInputOriginal: null,
     currentIndex: null,
@@ -215,7 +216,8 @@ export default {
             }
             // Determine direction of arrow up/down and determine new currentIndex
             const direction = keyCode === 40 ? 1 : -1;
-            const newIndex = this.currentIndex + direction;
+            const newIndex = parseInt(this.currentIndex) + direction;
+            
             this.setCurrentIndex(newIndex, this.getSize(), direction);
             this.didSelectFromOptions = true;
             if (this.getSize() > 0 && this.currentIndex >= 0) {
@@ -263,9 +265,32 @@ export default {
         this.searchInput = this.getSuggestionValue(item);
         this.currentItem = item;
         if (overrideOriginalInput) {
-          this.searchInputOriginal = this.getSuggestionValue(item.item);
+          this.searchInputOriginal = this.getSuggestionValue(item);
         }
+        this.ensureItemVisible(item, this.currentIndex);
       }
+    },
+    ensureItemVisible(item, index){
+      if(!item || !index){
+        return;
+      }
+      let {document} = window;
+      const resultsScrollElement = document.querySelector(`.${this.component_attr_class_autosuggest__results}`);
+      const resultsScrollWindowHeight = resultsScrollElement.clientHeight;
+      const resultsScrollScrollTop = resultsScrollElement.scrollTop;
+      
+      const itemElement = document.querySelector(`#autosuggest__results_item-${index}`);
+      const itemHeight = itemElement.clientHeight;
+      const currentItemScrollOffset = itemElement.offsetTop;
+      
+      if(currentItemScrollOffset >= resultsScrollScrollTop + resultsScrollWindowHeight){
+        /** Current item goes below visible scroll window */
+        resultsScrollElement.scrollTo(0,itemHeight + currentItemScrollOffset - resultsScrollWindowHeight)
+      }else if(currentItemScrollOffset < resultsScrollScrollTop && resultsScrollScrollTop > 0){
+        /** Current item goes above visible scroll window */
+        resultsScrollElement.scrollTo(0,currentItemScrollOffset)
+      }
+
     },
     updateCurrentIndex(index) {
       this.currentIndex = index;
@@ -309,30 +334,15 @@ export default {
       );
       const hoverClass = "autosuggest__results_item-highlighted";
       if (document.querySelector(`.${hoverClass}`)) {
-        this.removeClass(document.querySelector(`.${hoverClass}`), hoverClass);
+        removeClass(document.querySelector(`.${hoverClass}`), hoverClass);
       }
       if (element) {
-        this.addClass(element, hoverClass);
+        addClass(element, hoverClass);
       }
     },
     onClick() {
       this.loading = false;
       this.internal_inputProps.onClick(this.currentItem);
-    },
-
-    /** DOM Utilities */
-    hasClass(el, className) {
-      return !!el.className.match(
-        new RegExp("(\\s|^)" + className + "(\\s|$)")
-      );
-    },
-    addClass(el, className) {
-      if (!this.hasClass(el, className)) el.className += " " + className;
-    },
-    removeClass(el, className) {
-      if (el.classList) {
-        el.classList.remove(className);
-      }
     }
   },
   mounted() {
