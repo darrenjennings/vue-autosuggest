@@ -611,15 +611,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       currentIndex: { type: Number, required: false, default: Infinity },
       updateCurrentIndex: { type: Function, required: true },
       searchInput: { type: String, required: false, default: "" },
-      renderSuggestion: { type: Function, required: true }
+      renderSuggestion: { type: Function, required: true },
+      normalizeItemFunction: { type: Function, required: true }
     },
     computed: {
       list: function list() {
-        var l = this.section.limit;
-        if (this.section.data.length < l) {
-          l = this.section.data.length;
+        var _section = this.section,
+            limit = _section.limit,
+            data = _section.data;
+
+        if (data.length < limit) {
+          limit = data.length;
         }
-        return this.section.data.slice(0, l);
+        return data.slice(0, limit);
       },
       className: function className() {
         return "autosuggest__results_title autosuggest__results_title_" + this.section.name;
@@ -653,6 +657,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       return h("ul", {
         attrs: { role: "listbox", "aria-labelledby": "autosuggest" }
       }, [sectionTitle, this.list.map(function (val, key) {
+        var item = _this.normalizeItemFunction(_this.section.name, _this.section.type, _this.getLabelByIndex(key), val);
         return h("li", {
           attrs: {
             role: "option",
@@ -669,7 +674,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             mouseenter: _this.onMouseEnter,
             mouseleave: _this.onMouseLeave
           }
-        }, [_this.renderSuggestion(val)]);
+        }, [_this.renderSuggestion(item)]);
       })]);
     }
   };
@@ -12669,7 +12674,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         type: Function,
         required: false,
         default: function _default(suggestion) {
-          return suggestion;
+          return suggestion.item;
         }
       },
       getSuggestionValue: {
@@ -12761,12 +12766,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             var trueIndex = index - this.computedSections[i].start_index;
             var childSection = this.$refs["computed_section_" + i][0];
             if (childSection) {
-              obj = {
-                name: this.computedSections[i].name,
-                type: this.computedSections[i].type,
-                label: childSection.getLabelByIndex(trueIndex),
-                item: childSection.getItemByIndex(trueIndex)
-              };
+              obj = this.normalizeItem(this.computedSections[i].name, this.computedSections[i].type, childSection.getLabelByIndex(trueIndex), childSection.getItemByIndex(trueIndex));
               break;
             }
           }
@@ -12862,16 +12862,29 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           this.ensureItemVisible(item, this.currentIndex);
         }
       },
+      normalizeItem: function normalizeItem(name, type, label, item) {
+        return {
+          name: name,
+          type: type,
+          label: label,
+          item: item
+        };
+      },
       ensureItemVisible: function ensureItemVisible(item, index) {
         var resultsScrollElement = document.querySelector("." + this.component_attr_class_autosuggest__results);
 
         if (!item || !index && index !== 0 || !resultsScrollElement) {
           return;
         }
+
+        var itemElement = document.querySelector("#autosuggest__results_item-" + index);
+        if (!itemElement) {
+          return;
+        }
+
         var resultsScrollWindowHeight = resultsScrollElement.clientHeight;
         var resultsScrollScrollTop = resultsScrollElement.scrollTop;
 
-        var itemElement = document.querySelector("#autosuggest__results_item-" + index);
         var itemHeight = itemElement.clientHeight;
         var currentItemScrollOffset = itemElement.offsetTop;
 
@@ -13868,7 +13881,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":_vm.component_attr_id_autosuggest}},[_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"name":"q","type":"text","autocomplete":"off","aria-autosuggest":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen && _vm.currentIndex !== null ? ("autosuggest__results--item-" + _vm.currentIndex) : '',"aria-haspopup":_vm.isOpen ? 'true' : 'false'},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"click":_vm.onClick,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value}}},'input',_vm.inputProps,false)),_vm._v(" "),_c('div',{class:_vm.component_attr_class_autosuggest__results_container},[(_vm.getSize() > 0 && !_vm.loading)?_c('div',{class:_vm.component_attr_class_autosuggest__results,attrs:{"aria-labelledby":_vm.component_attr_id_autosuggest}},_vm._l((this.computedSections),function(cs,key){return _c(cs.type,{key:_vm.getSectionRef(key),ref:_vm.getSectionRef(key),refInFor:true,tag:"component",attrs:{"renderSuggestion":_vm.renderSuggestion,"section":cs,"updateCurrentIndex":_vm.updateCurrentIndex,"searchInput":_vm.searchInput}})})):_vm._e()])])}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":_vm.component_attr_id_autosuggest}},[_c('input',_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"name":"q","type":"text","autocomplete":"off","aria-autosuggest":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen && _vm.currentIndex !== null ? ("autosuggest__results--item-" + _vm.currentIndex) : '',"aria-haspopup":_vm.isOpen ? 'true' : 'false'},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"click":_vm.onClick,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value}}},'input',_vm.inputProps,false)),_vm._v(" "),_c('div',{class:_vm.component_attr_class_autosuggest__results_container},[(_vm.getSize() > 0 && !_vm.loading)?_c('div',{class:_vm.component_attr_class_autosuggest__results,attrs:{"aria-labelledby":_vm.component_attr_id_autosuggest}},_vm._l((this.computedSections),function(cs,key){return _c(cs.type,{key:_vm.getSectionRef(key),ref:_vm.getSectionRef(key),refInFor:true,tag:"component",attrs:{"normalizeItemFunction":_vm.normalizeItem,"renderSuggestion":_vm.renderSuggestion,"section":cs,"updateCurrentIndex":_vm.updateCurrentIndex,"searchInput":_vm.searchInput}})})):_vm._e()])])}
 var staticRenderFns = []
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);

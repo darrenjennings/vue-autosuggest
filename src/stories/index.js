@@ -186,10 +186,10 @@ storiesOf("Vue-Autosuggest", module)
         suggestions: [
           {
             data: [
-              { id: 1, name: "Frodo", avatar: "./frodo.jpg" },
-              { id: 2, name: "Samwise", avatar: "./samwise.jpg" },
-              { id: 3, name: "Gandalf", avatar: "./gandalf.png" },
-              { id: 4, name: "Aragorn", avatar: "./aragorn.jpg" }
+              { id: 1, name: "Frodo", avatar: "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png" },
+              { id: 2, name: "Samwise", avatar: "https://pbs.twimg.com/media/Cdbyw8JUIAAXY8d.jpg" },
+              { id: 3, name: "Gandalf", avatar: "http://www.thelandofshadow.com/wp-content/uploads/2014/08/GandalfStaff2-200x200.jpg" },
+              { id: 4, name: "Aragorn", avatar: "https://i.pinimg.com/236x/78/75/40/7875409365d056d145dfb4c32e413aad--viggo-mortensen-aragorn-lord-of-the-rings.jpg" }
             ]
           }
         ]
@@ -210,6 +210,7 @@ storiesOf("Vue-Autosuggest", module)
         this.selected = item;
       },
       renderSuggestion(suggestion) {
+        const item = suggestion.item;
         return (
           <div
             style={{
@@ -224,9 +225,9 @@ storiesOf("Vue-Autosuggest", module)
                 borderRadius: "15px",
                 marginRight: "10px"
               }}
-              src={suggestion.avatar}
-            />{" "}
-            <span style={{ color: "navyblue" }}>{suggestion.name}</span>
+              src={item.avatar}
+            />
+            <span style={{ color: "navyblue" }}>{item.name}</span>
           </div>
         );
       },
@@ -343,7 +344,7 @@ storiesOf("Vue-Autosuggest", module)
               alignItems: "center"
             }}
           >
-            <span style={{ color: "navyblue" }}>{suggestion}</span>
+            <span style={{ color: "navyblue" }}>{suggestion.item}</span>
           </div>
         );
       }

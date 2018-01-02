@@ -15,10 +15,18 @@
                :aria-haspopup="isOpen ? 'true' : 'false'"
         />
         <div :class="component_attr_class_autosuggest__results_container">
-                <div :class="component_attr_class_autosuggest__results" 
+                <div :class="component_attr_class_autosuggest__results"
                     :aria-labelledby="component_attr_id_autosuggest"
                     v-if="getSize() > 0 && !loading">
-                    <component :renderSuggestion="renderSuggestion" v-for="(cs, key) in this.computedSections" :is="cs.type" :section="cs" :ref="getSectionRef(key)" :key="getSectionRef(key)" :updateCurrentIndex="updateCurrentIndex" :searchInput="searchInput" />
+                    <component :normalizeItemFunction="normalizeItem"
+                              :renderSuggestion="renderSuggestion"
+                              v-for="(cs, key) in this.computedSections"
+                              :is="cs.type"
+                              :section="cs"
+                              :ref="getSectionRef(key)"
+                              :key="getSectionRef(key)"
+                              :updateCurrentIndex="updateCurrentIndex"
+                              :searchInput="searchInput" />
                 </div>
         </div>
     </div>
@@ -71,7 +79,7 @@ export default {
       type: Function,
       required: false,
       default: suggestion => {
-        return suggestion;
+        return suggestion.item;
       }
     },
     getSuggestionValue: {
@@ -171,12 +179,7 @@ export default {
           let trueIndex = index - this.computedSections[i].start_index;
           let childSection = this.$refs["computed_section_" + i][0];
           if (childSection) {
-            obj = {
-              name: this.computedSections[i].name,
-              type: this.computedSections[i].type,
-              label: childSection.getLabelByIndex(trueIndex),
-              item: childSection.getItemByIndex(trueIndex)
-            };
+            obj = this.normalizeItem(this.computedSections[i].name, this.computedSections[i].type, childSection.getLabelByIndex(trueIndex), childSection.getItemByIndex(trueIndex));
             break;
           }
         }
@@ -265,18 +268,31 @@ export default {
         this.ensureItemVisible(item, this.currentIndex);
       }
     },
-    ensureItemVisible(item, index) {      
+    normalizeItem(name, type, label, item) {
+      return {
+        name,
+        type,
+        label,
+        item
+      };
+    },
+    ensureItemVisible(item, index) {
       const resultsScrollElement = document.querySelector(
         `.${this.component_attr_class_autosuggest__results}`
       );
-      
+
       if (!item || (!index && index !== 0) || !resultsScrollElement) {
         return;
       }
+
+      const itemElement = document.querySelector(`#autosuggest__results_item-${index}`);
+      if (!itemElement) {
+        return;
+      }
+
       const resultsScrollWindowHeight = resultsScrollElement.clientHeight;
       const resultsScrollScrollTop = resultsScrollElement.scrollTop;
 
-      const itemElement = document.querySelector(`#autosuggest__results_item-${index}`);
       const itemHeight = itemElement.clientHeight;
       const currentItemScrollOffset = itemElement.offsetTop;
 

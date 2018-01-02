@@ -5,15 +5,16 @@ const DefaultSection = {
     currentIndex: { type: Number, required: false, default: Infinity },
     updateCurrentIndex: { type: Function, required: true },
     searchInput: { type: String, required: false, default: "" },
-    renderSuggestion: { type: Function, required: true }
+    renderSuggestion: { type: Function, required: true },
+    normalizeItemFunction: { type: Function, required: true }
   },
   computed: {
     list: function() {
-      var l = this.section.limit;
-      if (this.section.data.length < l) {
-        l = this.section.data.length;
+      let { limit, data } = this.section;
+      if (data.length < limit) {
+        limit = data.length;
       }
-      return this.section.data.slice(0, l);
+      return data.slice(0, limit);
     },
     className: function() {
       return `autosuggest__results_title autosuggest__results_title_${this.section.name}`;
@@ -51,6 +52,7 @@ const DefaultSection = {
       [
         sectionTitle,
         this.list.map((val, key) => {
+          let item = this.normalizeItemFunction(this.section.name, this.section.type, this.getLabelByIndex(key), val)
           return h(
             "li",
             {
@@ -71,7 +73,7 @@ const DefaultSection = {
                 mouseleave: this.onMouseLeave
               }
             },
-            [this.renderSuggestion(val)]
+            [this.renderSuggestion(item)]
           );
         })
       ]

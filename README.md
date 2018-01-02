@@ -157,6 +157,7 @@ export default {
        * rendering. If you don't use babel or the jsx transform, then you can use this
        * function to just `return suggestion['propertyName'];`
        */ 
+      const character = suggestion.item;
       return (
         <div
           style={{
@@ -171,9 +172,9 @@ export default {
               borderRadius: "15px",
               marginRight: "10px"
             }}
-            src={suggestion.avatar}
+            src={character.avatar}
           />{" "}
-          <span style={{ color: "navyblue" }}>{suggestion.name}</span>
+          <span style={{ color: "navyblue" }}>{character.name}</span>
         </div>
       );
     },
@@ -181,7 +182,7 @@ export default {
      * This is what the <input/> value is set to when you are selecting a suggestion.
      */
     getSuggestionValue(suggestion) {
-      return suggestion.name;
+      return suggestion.item.name;
     }
   }
 };
