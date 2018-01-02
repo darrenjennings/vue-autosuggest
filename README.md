@@ -92,6 +92,103 @@ Place the component into your app!
     :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"
 />
 ```
+Advanced usage:
+<details><summary>Click to expand</summary><p>
+
+```html
+<template>
+<div>
+    <h1>Vue-autosuggest 🔮</h1>
+    <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected '{{JSON.stringify(selected,null,2)}}'</span></div>
+        <vue-autosuggest 
+            :suggestions="filteredOptions"
+            :onSelected="onSelected"
+            :renderSuggestion="renderSuggestion"
+            :getSuggestionValue="getSuggestionValue"
+            :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"/>
+</div>
+</template>
+       
+<script>
+import { VueAutosuggest } from "vue-autosuggest";
+
+export default {
+  components: {
+    VueAutosuggest
+  },
+  data() {
+    return {
+      selected: "",
+      filteredOptions: [],
+      suggestions: [
+        {
+          data: [
+            { id: 1, name: "Frodo", avatar: "./frodo.jpg" },
+            { id: 2, name: "Samwise", avatar: "./samwise.jpg" },
+            { id: 3, name: "Gandalf", avatar: "./gandalf.png" },
+            { id: 4, name: "Aragorn", avatar: "./aragorn.jpg" }
+          ]
+        }
+      ]
+    };
+  },
+  methods: {
+    onInputChange(text) {
+      if (text === null) {
+        /* Maybe the text is null but you wanna do 
+        * something else, but don't filter by null.
+        */
+        return;
+      }
+
+      // Full cusomizability over filtering
+      const filteredData = this.suggestions[0].data.filter(option => {
+        return option.name.toLowerCase().indexOf(text.toLowerCase()) > -1;
+      });
+
+      // Store data in one property, and filtered in another
+      this.filteredOptions = [{ data: filteredData }];
+    },
+    onSelected(item) {
+      this.selected = item;
+    },
+    renderSuggestion(suggestion) {
+      /* You will need babel-plugin-transform-vue-jsx for this kind of full customizable
+       * rendering. If you don't use babel or the jsx transform, then you can use this
+       * function to just `return suggestion['propertyName'];`
+       */ 
+      return (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center"
+          }}
+        >
+          <img
+            style={{
+              width: "25px",
+              height: "25px",
+              borderRadius: "15px",
+              marginRight: "10px"
+            }}
+            src={suggestion.avatar}
+          />{" "}
+          <span style={{ color: "navyblue" }}>{suggestion.name}</span>
+        </div>
+      );
+    },
+    /**
+     * This is what the <input/> value is set to when you are selecting a suggestion.
+     */
+    getSuggestionValue(suggestion) {
+      return suggestion.name;
+    }
+  }
+};
+</script>
+```
+
+</p></details>
 
 For more advanced usage, check out the examples below, and explore the <a href="#props">properties</a> you can use.
 
@@ -102,7 +199,9 @@ For more advanced usage, check out the examples below, and explore the <a href="
 | [`suggestions`](#suggestionsProp) | Array | ✓ | Suggestions to be rendered. |
 | [`inputProps`](#inputPropsTable) | Object | ✓ | Add props to the `<input>`.|
 | [`sectionConfigs`](#sectionConfigsProp) | Object | | Define multiple sections `<input>`.|
-| [`onSelected`](#) | Function | ✓(*) | *If not using `sectionConfigs[index].onSelected()` then this will trigger. Must be implemented in either `sectionConfigs` prop or on root prop.|
+| [`renderSuggestion`](#renderSuggestion) | Function |  | Tell vue-autosuggest how to render inside the `<li>` tag. |
+| [`getSuggestionValue`](#getSuggestionValue) | Function |  | Tells vue-autosuggest what to put in the `<input/>` value|
+
 
 <a name="inputPropsTable"></a>
 ### inputProps
@@ -143,6 +242,39 @@ sectionConfigs: {
 }
 ```
 
+<a name="renderSuggestion"></a>
+### renderSuggestion
+This function will tell vue-autosuggest how to render the html inside the `<li>` tag. If you're not using `babel-plugin-transform-vue-jsx` then this method won't be too beneficial, but if your data is a list of objects you can return a specific object.
+
+```jsx
+renderSuggestion(suggestion) {
+    return <div style={{ color: "red" }}>{suggestion.name}</div>;
+},
+```
+
+or if you don't use babel or the JSX transform, you can just return the specified object property.
+
+```js
+renderSuggestion(suggestion) {
+    return suggestion.name;
+},
+```
+
+<a name="getSuggestionValue"></a>
+### getSuggestionValue
+This function will tell vue-autosuggest what to put in the `<input/>` as the value.
+
+```js
+getSuggestionValue(suggestion) {
+    return suggestion.name;
+},
+```
+
+## FAQ
+
+> How do I update the input programatically?
+
+- You can assign a ref to the component `<vue-autosuggest ref="myRefName" ... />` and then access the input value through `this.$refs.myRefName.searchInput`. This is useful mainly for clearing the input. ⚠️ Note, refs are more of an "escape hatch" as they call it, so it won't trigger the `onInputChange` method.
 
 ## Inspiration
 

@@ -1,5 +1,5 @@
 import VueAutosuggest from "./Autosuggest.vue";
-import DefaultSection from "./parts/DefaultSection.vue";
+import DefaultSection from "./parts/DefaultSection.js";
 
 const VueAutosuggestPlugin = {
   install(Vue) {

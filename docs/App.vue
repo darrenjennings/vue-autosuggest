@@ -4,9 +4,9 @@
     <div>
     <vue-autosuggest 
               :suggestions="filteredOptions"
-              :result-item-key="'firstname'"
               :input-props="inputProps"
               :section-configs="sectionConfigs"
+              :getSuggestionValue="getSuggestionValue"
           />
     </div>
   </div>
@@ -119,6 +119,13 @@ export default {
         });
 
       this.filteredOptions = filtered;
+    },
+    getSuggestionValue(item){
+      if(item.name == 'blog'){
+        return item.item.value;
+      }else{
+        return item.item;
+      }
     }
   }
 };

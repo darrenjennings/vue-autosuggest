@@ -48,8 +48,7 @@ exports[`Autosuggest can display section header 1`] = `
          class="form-control autosuggest__input-open"
   >
   <div class="autosuggest__results-container">
-    <div role="listbox"
-         aria-labelledby="autosuggest"
+    <div aria-labelledby="autosuggest"
          class="autosuggest__results"
     >
       <ul role="listbox"
@@ -152,14 +151,12 @@ exports[`Autosuggest can render simplest component with single onSelected 1`] = 
          class="form-control autosuggest__input-open cool-class"
   >
   <div class="autosuggest__results-container">
-    <div role="listbox"
-         aria-labelledby="autosuggest"
+    <div aria-labelledby="autosuggest"
          class="autosuggest__results"
     >
       <ul role="listbox"
           aria-labelledby="autosuggest"
       >
-        <!---->
         <li role="option"
             data-suggestion-index="0"
             data-section-name="default"
@@ -348,14 +345,12 @@ exports[`Autosuggest can render suggestions 1`] = `
          class="form-control autosuggest__input-open"
   >
   <div class="autosuggest__results-container">
-    <div role="listbox"
-         aria-labelledby="autosuggest"
+    <div aria-labelledby="autosuggest"
          class="autosuggest__results"
     >
       <ul role="listbox"
           aria-labelledby="autosuggest"
       >
-        <!---->
         <li role="option"
             data-suggestion-index="0"
             data-section-name="default"
@@ -478,14 +473,12 @@ exports[`Autosuggest is aria complete 1`] = `
          class="form-control autosuggest__input-open"
   >
   <div class="autosuggest__results-container">
-    <div role="listbox"
-         aria-labelledby="autosuggest"
+    <div aria-labelledby="autosuggest"
          class="autosuggest__results"
     >
       <ul role="listbox"
           aria-labelledby="autosuggest"
       >
-        <!---->
         <li role="option"
             data-suggestion-index="0"
             data-section-name="default"

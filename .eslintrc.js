@@ -5,7 +5,8 @@ module.exports = {
   ],
   rules: {
     // override/add rules' settings here
-    "vue/valid-v-if": "error"
+    "vue/valid-v-if": "error",
+    "no-console": 1
   },
   parserOptions: {
     parser: "babel-eslint",

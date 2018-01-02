@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import DefaultSection from '../src/parts/DefaultSection.vue';
+import DefaultSection from "../src/parts/DefaultSection.js";
 export default {
   name: "url-section",
   extends: DefaultSection,

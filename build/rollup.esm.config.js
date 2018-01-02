@@ -1,19 +1,18 @@
-import vue from 'rollup-plugin-vue';
-import buble from 'rollup-plugin-buble';
-import filesize from 'rollup-plugin-filesize';
-import json from 'rollup-plugin-json';
+import vue from "rollup-plugin-vue";
+import buble from "rollup-plugin-buble";
+import filesize from "rollup-plugin-filesize";
+import json from "rollup-plugin-json";
 
 export default {
-  entry: 'src/vue-autosuggest.js',
+  entry: "src/vue-autosuggest.js",
   plugins: [
     vue({ compileTemplate: true, css: false }),
     json(),
     buble({
-      transforms: {
-        dangerousForOf: true,
-      },
+      objectAssign: "Object.assign",
+      jsx: "h"
     }),
-    filesize(),
+    filesize()
   ],
-  targets: [{ dest: `dist/vue-autosuggest.esm.js`, format: 'es' }],
+  targets: [{ dest: `dist/vue-autosuggest.esm.js`, format: "es" }]
 };
