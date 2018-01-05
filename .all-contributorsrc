@@ -32,6 +32,16 @@
         "example",
         "test"
       ]
+    },
+    {
+      "login": "karimsqualli",
+      "name": "Karim Squalli",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/18739677?v=4",
+      "profile": "https://github.com/karimsqualli",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ]
 }

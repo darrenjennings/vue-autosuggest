@@ -6,6 +6,7 @@
               :suggestions="filteredOptions"
               :input-props="inputProps"
               :section-configs="sectionConfigs"
+
               :getSuggestionValue="getSuggestionValue"
           />
     </div>

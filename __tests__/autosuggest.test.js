@@ -59,6 +59,7 @@ describe("Autosuggest", () => {
     }
   };
 
+
   it("can mount", () => {
     const props = Object.assign({}, defaultProps);
     props.inputProps = Object.assign({}, defaultProps.inputProps);
@@ -74,6 +75,33 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
+
+  
+  it("can be readonly", () => {
+    const wrapper = mount(Autosuggest, {
+      propsData: {
+        ...defaultProps,
+        readonly: true,
+      }
+    });
+
+    const input = wrapper.find("input");
+    expect(input.attributes().readonly).toBeTruthy();
+    
+  })
+
+  it("can be readonly", () => {
+    const wrapper = mount(Autosuggest, {
+      propsData: {
+        ...defaultProps,
+        readonly: false,
+      }
+    });
+
+    const input = wrapper.find("input");
+    expect(input.attributes().readonly).toBeFalsy();
+    
+  })
 
   it("can render suggestions", () => {
     const wrapper = mount(Autosuggest, {
