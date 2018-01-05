@@ -9,6 +9,7 @@
                @keydown="handleKeyStroke"
                @click="onClick"
                v-bind="inputProps"
+               :readonly="readonly"
                aria-autosuggest="list"
                aria-owns="autosuggest__results"
                :aria-activedescendant="isOpen && currentIndex !== null ? `autosuggest__results--item-${currentIndex}` : ''"
@@ -116,6 +117,12 @@ export default {
       type: Function,
       required: false,
       default: null
+    },
+
+    readonly: {
+      type: Boolean,
+      required: false,
+      default: true,
     }
   },
   data: () => ({
