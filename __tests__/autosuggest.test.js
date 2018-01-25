@@ -221,17 +221,28 @@ describe("Autosuggest", () => {
     });
 
     const input = wrapper.find("input");
-    expect(input.attributes('aria-autosuggest','list')).toBeTruthy();
-    expect(input.attributes('aria-activedescendant', '')).toBeTruthy();
-    expect(input.attributes('aria-owns', 'autosuggest__results')).toBeTruthy();   
+    expect(input.attributes()['role']).toBe('combobox');
+    expect(input.attributes()['aria-autocomplete']).toBe('list');
+    expect(input.attributes()['aria-activedescendant']).toBe('');
+    expect(input.attributes()['aria-owns']).toBe('autosuggest__results');
+    expect(input.attributes()['aria-owns']).toBe('autosuggest__results');    
     
     // TODO: Make sure aria-completeness is actually 2legit2quit.
     
     input.trigger("click");
     wrapper.setData({ searchInput: "G" });
 
-    expect(input.attributes('aria-haspopup', 'true')).toBeTruthy();
+    expect(input.attributes()['aria-haspopup']).toBe('true');
     
+    const mouseDownTimes = 3;
+    times(mouseDownTimes)(() => {
+      input.trigger("keydown.down");
+    });
+
+    const activeDescendentString = input.attributes()['aria-activedescendant'];
+    expect(parseInt(activeDescendentString[activeDescendentString.length -1])).toBe(mouseDownTimes - 1);
+    expect(input.element.value).toBe(filteredOptions[0].data[mouseDownTimes - 1]);
+
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) {
