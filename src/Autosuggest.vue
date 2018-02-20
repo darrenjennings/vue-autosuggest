@@ -36,7 +36,7 @@
 
 <script>
 import DefaultSection from "./parts/DefaultSection.js";
-import { addClass, removeClass } from "./utils";
+import { addClass, removeClass, isDescendant } from "./utils";
 export default {
   name: "autosuggest",
   components: {
@@ -315,7 +315,14 @@ export default {
     updateCurrentIndex(index) {
       this.currentIndex = index;
     },
-    onDocumentMouseUp() {
+    onDocumentMouseUp(e) {
+      
+      /** Do not re-render list on input click */
+      const isChild = isDescendant(this.$el, e.target);
+      if (isChild && e.target.tagName === 'INPUT') {
+        return;
+      }
+
       /** Clicks outside of dropdown to exit */
       if (this.currentIndex === null || !this.isOpen) {
         this.loading = this.shouldRenderSuggestions();
