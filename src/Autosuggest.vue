@@ -3,7 +3,7 @@
         <input class="form-control"
                name="q"
                type="text"
-               autocomplete="off"
+               :autocomplete="inputProps.autocomplete"
                role="combobox"
                v-model="searchInput"
                :class="[isOpen ? 'autosuggest__input-open' : '', inputProps['class']]"
@@ -135,7 +135,8 @@ export default {
     internal_inputProps: {}, // Nest default prop values don't work currently in Vue
     defaultInputProps: {
       initialValue: "",
-      onClick: () => {}
+      onClick: () => {},
+      autocomplete: 'off'
     },
     defaultSectionConfig: {
       name: "default",
@@ -367,14 +368,15 @@ export default {
       });
     }
   },
-  mounted() {
+  created(){
     /** Take care of nested input props */
-    Object.assign(this.internal_inputProps, this.defaultInputProps, this.inputProps);
-    Object.assign(this.sectionConfigs);
-
-    document.addEventListener("mouseup", this.onDocumentMouseUp);
-
+    this.internal_inputProps = {...this.defaultInputProps, ...this.inputProps};
+    
+    this.inputProps.autocomplete = this.internal_inputProps.autocomplete
     this.searchInput = this.internal_inputProps.initialValue; // set default query, e.g. loaded server side.
+  },
+  mounted() {
+    document.addEventListener("mouseup", this.onDocumentMouseUp);
     this.loading = true;
   },
   watch: {

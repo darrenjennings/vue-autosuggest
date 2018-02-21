@@ -88,7 +88,6 @@ export default {
       },
       inputProps: {
         id: "autosuggest__input",
-        initialValue: "",
         onClick: () => {},
         onInputChange: this.onInputChange,
         placeholder: "Type 'g'"
