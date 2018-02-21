@@ -380,12 +380,12 @@ export default {
     this.loading = true;
   },
   watch: {
-    searchInput(newValue) {
+    searchInput(newValue, oldValue) {
       this.value = newValue;
       if (!this.didSelectFromOptions) {
         this.searchInputOriginal = this.value;
         this.currentIndex = null;
-        this.internal_inputProps.onInputChange(newValue);
+        this.internal_inputProps.onInputChange(newValue, oldValue);
       }
     },
     suggestions: {

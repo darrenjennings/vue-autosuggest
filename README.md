@@ -136,7 +136,7 @@ export default {
     };
   },
   methods: {
-    onInputChange(text) {
+    onInputChange(text, oldText) {
       if (text === null) {
         /* Maybe the text is null but you wanna do 
         * something else, but don't filter by null.
@@ -212,7 +212,7 @@ For more advanced usage, check out the examples below, and explore the <a href="
 | Prop | Type | Required | Description |
 | :--- | :--- | :---: | :--- |
 | [`id`](#inputPropsTable) | String | ✓ | id attribute on `<input>`.|
-| [`onInputChange`](#) | Function | ✓ | Triggers everytime the `<input>` changes.|
+| [`onInputChange`](#) | Function | ✓ | Triggers everytime the `<input>` changes. This is triggered via a Vue watcher, so you have both current value, and previous value access e.g. onInputChange(text, oldText) |
 | [`onClick`](#) | Function |  | Triggers everytime the `<input>` is clicked.|
 | [`initialValue`](#) | String | | Set some initial value for the `<input>`.|
 | Any DOM Props | * |  | You can add any props to `<input>` as the component will `v-bind` inputProps. Similar to rest spread in JSX. See more details here: https://vuejs.org/v2/api/#v-bind |

@@ -7,6 +7,7 @@
               :input-props="inputProps"
               :section-configs="sectionConfigs"
               :getSuggestionValue="getSuggestionValue"
+              ref="autocomplete"
           />
     </div>
   </div>
@@ -97,6 +98,7 @@ export default {
   methods: {
     onInputChange(text) {
       let filtered = [];
+
       const suggestionsData = this.options[0].data.filter(item => {
         return item.toLowerCase().indexOf(text.toLowerCase()) > -1;
       });
