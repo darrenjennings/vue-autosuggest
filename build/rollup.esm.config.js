@@ -4,7 +4,7 @@ import filesize from "rollup-plugin-filesize";
 import json from "rollup-plugin-json";
 
 export default {
-  entry: "src/vue-autosuggest.js",
+  input: "src/vue-autosuggest.js",
   plugins: [
     vue({ compileTemplate: true, css: false }),
     json(),
@@ -14,5 +14,10 @@ export default {
     }),
     filesize()
   ],
-  targets: [{ dest: `dist/vue-autosuggest.esm.js`, format: "es" }]
+  output: [
+    {
+      file: `dist/vue-autosuggest.esm.js`,
+      format: "es"
+    }
+  ]
 };

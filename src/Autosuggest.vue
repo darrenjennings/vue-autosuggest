@@ -9,6 +9,8 @@
                :class="[isOpen ? 'autosuggest__input-open' : '', inputProps['class']]"
                @keydown="handleKeyStroke"
                @click="onClick"
+               @blur="onBlur"
+               @focus="onFocus"
                v-bind="inputProps"
                aria-autocomplete="list"
                aria-owns="autosuggest__results"
@@ -136,7 +138,7 @@ export default {
     defaultInputProps: {
       initialValue: "",
       onClick: () => {},
-      autocomplete: 'off'
+      autocomplete: "off"
     },
     defaultSectionConfig: {
       name: "default",
@@ -182,7 +184,12 @@ export default {
           let trueIndex = index - this.computedSections[i].start_index;
           let childSection = this.$refs["computed_section_" + i][0];
           if (childSection) {
-            obj = this.normalizeItem(this.computedSections[i].name, this.computedSections[i].type, childSection.getLabelByIndex(trueIndex), childSection.getItemByIndex(trueIndex));
+            obj = this.normalizeItem(
+              this.computedSections[i].name,
+              this.computedSections[i].type,
+              childSection.getLabelByIndex(trueIndex),
+              childSection.getItemByIndex(trueIndex)
+            );
             break;
           }
         }
@@ -366,13 +373,19 @@ export default {
       this.$nextTick(() => {
         this.ensureItemVisible(this.currentItem, this.currentIndex);
       });
+    },
+    onBlur(e) {
+      this.internal_inputProps.onBlur && this.internal_inputProps.onBlur(e);
+    },
+    onFocus(e) {
+      this.internal_inputProps.onFocus && this.internal_inputProps.onFocus(e);
     }
   },
-  created(){
+  created() {
     /** Take care of nested input props */
-    this.internal_inputProps = {...this.defaultInputProps, ...this.inputProps};
-    
-    this.inputProps.autocomplete = this.internal_inputProps.autocomplete
+    this.internal_inputProps = { ...this.defaultInputProps, ...this.inputProps };
+    this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
+
     this.searchInput = this.internal_inputProps.initialValue; // set default query, e.g. loaded server side.
   },
   mounted() {
