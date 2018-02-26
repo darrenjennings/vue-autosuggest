@@ -3,7 +3,7 @@ import { createRenderer } from "vue-server-renderer";
 
 import Autosuggest from "../src/Autosuggest.vue";
 
-Element.prototype.scrollTo = () => {}  // https://github.com/vuejs/vue-test-utils/issues/319
+Element.prototype.scrollTo = () => {}; // https://github.com/vuejs/vue-test-utils/issues/319
 
 // Helper to call function x number of times
 const times = x => f => {
@@ -221,26 +221,28 @@ describe("Autosuggest", () => {
     });
 
     const input = wrapper.find("input");
-    expect(input.attributes()['role']).toBe('combobox');
-    expect(input.attributes()['aria-autocomplete']).toBe('list');
-    expect(input.attributes()['aria-activedescendant']).toBe('');
-    expect(input.attributes()['aria-owns']).toBe('autosuggest__results');
-    expect(input.attributes()['aria-owns']).toBe('autosuggest__results');    
-    
+    expect(input.attributes()["role"]).toBe("combobox");
+    expect(input.attributes()["aria-autocomplete"]).toBe("list");
+    expect(input.attributes()["aria-activedescendant"]).toBe("");
+    expect(input.attributes()["aria-owns"]).toBe("autosuggest__results");
+    expect(input.attributes()["aria-owns"]).toBe("autosuggest__results");
+
     // TODO: Make sure aria-completeness is actually 2legit2quit.
-    
+
     input.trigger("click");
     wrapper.setData({ searchInput: "G" });
 
-    expect(input.attributes()['aria-haspopup']).toBe('true');
-    
+    expect(input.attributes()["aria-haspopup"]).toBe("true");
+
     const mouseDownTimes = 3;
     times(mouseDownTimes)(() => {
       input.trigger("keydown.down");
     });
 
-    const activeDescendentString = input.attributes()['aria-activedescendant'];
-    expect(parseInt(activeDescendentString[activeDescendentString.length -1])).toBe(mouseDownTimes - 1);
+    const activeDescendentString = input.attributes()["aria-activedescendant"];
+    expect(parseInt(activeDescendentString[activeDescendentString.length - 1])).toBe(
+      mouseDownTimes - 1
+    );
     expect(input.element.value).toBe(filteredOptions[0].data[mouseDownTimes - 1]);
 
     const renderer = createRenderer();
@@ -272,15 +274,15 @@ describe("Autosuggest", () => {
     const input = wrapper.find("input");
     input.trigger("click");
     wrapper.setData({ searchInput: "G" });
-    
+
     times(3)(() => {
-        input.trigger("keydown.down");
+      input.trigger("keydown.down");
     });
-  
+
     input.trigger("keydown.enter");
-    wrapper.find('li').trigger("mouseover");
-    wrapper.find('li').trigger("mouseenter");
-    wrapper.find('li').trigger("mouseleave");
+    wrapper.find("li").trigger("mouseover");
+    wrapper.find("li").trigger("mouseenter");
+    wrapper.find("li").trigger("mouseleave");
 
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
@@ -290,14 +292,37 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
-});
 
-/**
- * **Force** update until vue-test-utils is out of beta
- * @param {*} wrapper mounted Vue component
- */
-function runWatchers(wrapper) {
-  wrapper.vm._watchers.forEach(watcher => {
-    watcher.run();
+  it("onBlur and onFocus work as expected", async () => {
+    let props = Object.assign({}, defaultProps);
+    const mockFn = jest.fn();
+    const blurred = () => {mockFn()};
+    const focused = () => {mockFn()};
+
+    props.inputProps.onBlur = blurred;
+    props.inputProps.onFocus = focused;
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+      attachToDocument: true
+    });
+
+    const input = wrapper.find("input");
+
+    input.trigger("click");
+    wrapper.setData({ searchInput: "G" });
+    await wrapper.vm.$nextTick(() => {});
+
+    input.trigger("blur");
+    input.trigger("focus");
+
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
+    expect(mockFn).toHaveBeenCalledTimes(2);
   });
-}
+});

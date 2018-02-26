@@ -7,6 +7,7 @@
               :input-props="inputProps"
               :section-configs="sectionConfigs"
               :getSuggestionValue="getSuggestionValue"
+              ref="autocomplete"
           />
     </div>
   </div>
@@ -58,15 +59,12 @@ export default {
               value: "The Best Blog in the Entire World"
             },
             {
-              url:
-                "https://blog.educents.com/best-educational-games-2017-inchimals/",
+              url: "https://blog.educents.com/best-educational-games-2017-inchimals/",
               value: "The Best Educational Games and Toys of 2017: Inchimals"
             },
             {
-              url:
-                "https://blog.educents.com/reading-exploring-world-through-literature/",
-              value:
-                "Family Read-Alouds: Exploring the World Through Literature"
+              url: "https://blog.educents.com/reading-exploring-world-through-literature/",
+              value: "Family Read-Alouds: Exploring the World Through Literature"
             }
           ]
         }
@@ -88,16 +86,22 @@ export default {
       },
       inputProps: {
         id: "autosuggest__input",
-        initialValue: "",
         onClick: () => {},
         onInputChange: this.onInputChange,
-        placeholder: "Type 'g'"
+        placeholder: "Type 'g'",
+        onBlur: () => {
+          // console.log(e);
+        },
+        onFocus: () => {
+          // console.log(e);
+        }
       }
     };
   },
   methods: {
     onInputChange(text) {
       let filtered = [];
+
       const suggestionsData = this.options[0].data.filter(item => {
         return item.toLowerCase().indexOf(text.toLowerCase()) > -1;
       });
@@ -120,10 +124,10 @@ export default {
 
       this.filteredOptions = filtered;
     },
-    getSuggestionValue(item){
-      if(item.name == 'blog'){
+    getSuggestionValue(item) {
+      if (item.name == "blog") {
         return item.item.value;
-      }else{
+      } else {
         return item.item;
       }
     }
@@ -206,8 +210,7 @@ body {
 .autosuggest__results .autosuggest__results_item:active,
 .autosuggest__results .autosuggest__results_item:hover,
 .autosuggest__results .autosuggest__results_item:focus,
-.autosuggest__results
-  .autosuggest__results_item.autosuggest__results_item-highlighted {
+.autosuggest__results .autosuggest__results_item.autosuggest__results_item-highlighted {
   background-color: #ddd;
 }
 </style>

@@ -8,9 +8,7 @@ import replace from "rollup-plugin-replace";
 import json from "rollup-plugin-json";
 
 export default {
-  entry: "src/vue-autosuggest.js",
-  moduleName: "VueAutosuggest",
-  exports: "named",
+  input: "src/vue-autosuggest.js",
   plugins: [
     vue({ compileTemplate: true, css: false }),
     json(),
@@ -34,5 +32,12 @@ export default {
     uglify(),
     filesize()
   ],
-  targets: [{ dest: `dist/vue-autosuggest.js`, format: "umd" }]
+  output: [
+    {
+      name: "VueAutosuggest",
+      exports: "named",
+      file: `dist/vue-autosuggest.js`,
+      format: "umd"
+    }
+  ]
 };
