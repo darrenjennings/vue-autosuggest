@@ -557,8 +557,12 @@ exports[`Autosuggest onBlur and onFocus work as expected 1`] = `
          onclick="function onClick() {}"
          oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         onblur="function blurred() {mockFn();}"
-         onfocus="function focused() {mockFn();}"
+         onblur="function blurred() {
+                mockFn();
+              }"
+         onfocus="function focused() {
+                mockFn();
+              }"
          value="G"
          class="form-control autosuggest__input-open"
   >

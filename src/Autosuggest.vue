@@ -150,11 +150,15 @@ export default {
         ...this.$listeners,
         focus: e => {
           this.$listeners.focus && this.$listeners.focus(e);
-          this.internal_inputProps.onFocus && this.internal_inputProps.onFocus(e);
+          if (this.inputProps.onFocus) {
+            this.onFocus(e)
+          }
         },
         blur: e => {
           this.$listeners.blur && this.$listeners.blur(e);
-          this.internal_inputProps.onBlur && this.internal_inputProps.onBlur(e);
+          if (this.inputProps.onBlur) {
+            this.onBlur(e)
+          }
         }
       };
     },

@@ -295,9 +295,18 @@ describe("Autosuggest", () => {
 
   it("onBlur and onFocus work as expected", async () => {
     let props = Object.assign({}, defaultProps);
+
     const mockFn = jest.fn();
-    const blurred = () => {mockFn()};
-    const focused = () => {mockFn()};
+    const mockConsole = jest.fn();
+
+    console.warn = mockConsole;
+
+    const blurred = () => {
+      mockFn();
+    };
+    const focused = () => {
+      mockFn();
+    };
 
     props.inputProps.onBlur = blurred;
     props.inputProps.onFocus = focused;
@@ -323,6 +332,8 @@ describe("Autosuggest", () => {
       }
       expect(str).toMatchSnapshot();
     });
+
     expect(mockFn).toHaveBeenCalledTimes(2);
+    expect(mockConsole).toHaveBeenCalledTimes(2);
   });
 });
