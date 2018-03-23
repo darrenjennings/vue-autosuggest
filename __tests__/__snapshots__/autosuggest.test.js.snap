@@ -16,7 +16,6 @@ exports[`Autosuggest can click outside document to trigger close 1`] = `
          aria-expanded="false"
          id="autosuggest__input"
          initialvalue
-         onclick="function onClick() {}"
          oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
          value="G"
@@ -44,7 +43,6 @@ exports[`Autosuggest can display section header 1`] = `
          aria-expanded="true"
          id="autosuggest__input"
          initialvalue
-         onclick="function onClick() {}"
          oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
          value="G"
@@ -123,13 +121,61 @@ exports[`Autosuggest can mount 1`] = `
          aria-expanded="false"
          id="autosuggest__input"
          initialvalue
-         onclick="function onClick() {}"
          oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
          value
          class="form-control"
   >
   <div class="autosuggest__results-container">
+  </div>
+</div>
+
+`;
+
+exports[`Autosuggest can render default suggestion value by property name 1`] = `
+
+<div id="autosuggest"
+     data-server-rendered="true"
+>
+  <input name="q"
+         type="text"
+         autocomplete="off"
+         role="combobox"
+         aria-autocomplete="list"
+         aria-owns="autosuggest__results"
+         aria-activedescendant="autosuggest__results_item-0"
+         aria-haspopup="true"
+         aria-expanded="true"
+         id="autosuggest__input"
+         initialvalue
+         oninputchange="function onInputChange() {}"
+         placeholder="Type 'G'"
+         onblur="function blurred() {
+                mockFn();
+              }"
+         onfocus="function focused() {
+                mockFn();
+              }"
+         value="Frodo"
+         class="form-control autosuggest__input-open cool-class"
+  >
+  <div class="autosuggest__results-container">
+    <div aria-labelledby="autosuggest"
+         class="autosuggest__results"
+    >
+      <ul role="listbox"
+          aria-labelledby="autosuggest"
+      >
+        <li role="option"
+            data-suggestion-index="0"
+            data-section-name="default"
+            id="autosuggest__results_item-0"
+            class="autosuggest__results_item"
+        >
+          undefined
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 
@@ -346,9 +392,11 @@ exports[`Autosuggest can render suggestions 1`] = `
          aria-expanded="true"
          id="autosuggest__input"
          initialvalue
-         onclick="function onClick() {}"
          oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
+         onclick="function clicked() {
+        mockFn();
+      }"
          value="clifford kits"
          class="form-control autosuggest__input-open"
   >
@@ -422,7 +470,6 @@ exports[`Autosuggest can select from suggestions using keystroke 1`] = `
          aria-expanded="false"
          id="autosuggest__input"
          initialvalue
-         onclick="function onClick() {}"
          oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
          value="G"
@@ -450,7 +497,6 @@ exports[`Autosuggest can use escape key to exit 1`] = `
          aria-expanded="false"
          id="autosuggest__input"
          initialvalue
-         onclick="function onClick() {}"
          oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
          value="G"
@@ -478,7 +524,6 @@ exports[`Autosuggest is aria complete 1`] = `
          aria-expanded="true"
          id="autosuggest__input"
          initialvalue
-         onclick="function onClick() {}"
          oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
          value="phonics"
@@ -538,7 +583,7 @@ exports[`Autosuggest is aria complete 1`] = `
 
 `;
 
-exports[`Autosuggest onBlur and onFocus work as expected 1`] = `
+exports[`Autosuggest onBlur and onFocus work as expected, including deprecation warnings 1`] = `
 
 <div id="autosuggest"
      data-server-rendered="true"
@@ -554,7 +599,6 @@ exports[`Autosuggest onBlur and onFocus work as expected 1`] = `
          aria-expanded="true"
          id="autosuggest__input"
          initialvalue
-         onclick="function onClick() {}"
          oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
          onblur="function blurred() {

@@ -125,6 +125,9 @@ export default {
       } else {
         return item.item;
       }
+    },
+    focusMe(e){
+      // console.log(e)
     }
   }
 };

@@ -8,7 +8,6 @@
                v-model="searchInput"
                :class="[isOpen ? 'autosuggest__input-open' : '', inputProps['class']]"
                @keydown="handleKeyStroke"
-               @click="onClick"
                v-bind="inputProps"
                v-on="listeners"
                aria-autocomplete="list"
@@ -136,7 +135,6 @@ export default {
     internal_inputProps: {}, // Nest default prop values don't work currently in Vue
     defaultInputProps: {
       initialValue: "",
-      onClick: () => {},
       autocomplete: "off"
     },
     defaultSectionConfig: {
@@ -159,6 +157,17 @@ export default {
           if (this.inputProps.onBlur) {
             this.onBlur(e)
           }
+        },
+        click: () => {
+          this.loading = false;
+          this.$listeners.click && this.$listeners.click(this.currentItem);
+
+          if(this.inputProps.onClick){
+            this.onClick(this.currentItem);
+          }
+          this.$nextTick(() => {
+            this.ensureItemVisible(this.currentItem, this.currentIndex);
+          });
         }
       };
     },
@@ -382,13 +391,11 @@ export default {
         addClass(element, hoverClass);
       }
     },
-    onClick() {
-      this.loading = false;
-      this.internal_inputProps.onClick(this.currentItem);
-
-      this.$nextTick(() => {
-        this.ensureItemVisible(this.currentItem, this.currentIndex);
-      });
+    onClick(e) {
+      console.warn(
+        'inputProps.onClick is deprecated. Please use native click event listener \n\ne.g. <vue-autosuggest ... @click="clickMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
+      );
+      this.internal_inputProps.onClick && this.internal_inputProps.onClick(e);
     },
     onBlur(e) {
       console.warn(
