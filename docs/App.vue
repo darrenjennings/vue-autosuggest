@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>🔍 Vue-autosuggest</h1>
     <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected {{selected}}</span></div>
     <div>
     <vue-autosuggest 
@@ -7,14 +8,14 @@
               :input-props="inputProps"
               :section-configs="sectionConfigs"
               :getSuggestionValue="getSuggestionValue"
-              ref="autocomplete"
-          />
+              @focus="focusMe"
+              ref="autocomplete" />
     </div>
   </div>
 </template>
 
 <script>
-import VueAutosuggest from "../src/Autosuggest.vue";
+import VueAutosuggest from '../src/Autosuggest.vue'
 
 export default {
   components: {
@@ -22,49 +23,49 @@ export default {
   },
   data() {
     return {
-      selected: "",
+      selected: '',
       limit: 10,
       filteredOptions: [],
       options: [
         {
           data: [
-            "clifford kits",
-            "friendly chemistry",
-            "phonics",
-            "life of fred",
-            "life of fred math",
-            "magic school bus",
-            "math mammoth light blue",
-            "handwriting",
-            "math",
-            "minecraft",
-            "free worksheets",
-            "4th grade",
-            "snap circuits",
-            "bath toys",
-            "channies",
-            "fred",
-            "lego",
-            "math life of fred",
-            "multiplication",
-            "thinking tree"
+            'clifford kits',
+            'friendly chemistry',
+            'phonics',
+            'life of fred',
+            'life of fred math',
+            'magic school bus',
+            'math mammoth light blue',
+            'handwriting',
+            'math',
+            'minecraft',
+            'free worksheets',
+            '4th grade',
+            'snap circuits',
+            'bath toys',
+            'channies',
+            'fred',
+            'lego',
+            'math life of fred',
+            'multiplication',
+            'thinking tree'
           ]
         },
         {
-          label: "Blog",
-          name: "blog",
+          label: 'Blog',
+          name: 'blog',
           data: [
             {
-              url: "https://blog.educents.com/",
-              value: "The Best Blog in the Entire World"
+              url: 'https://blog.educents.com/',
+              value: 'The Best Blog in the Entire World'
             },
             {
-              url: "https://blog.educents.com/best-educational-games-2017-inchimals/",
-              value: "The Best Educational Games and Toys of 2017: Inchimals"
+              url: 'https://blog.educents.com/best-educational-games-2017-inchimals/',
+              value: 'The Best Educational Games and Toys of 2017: Inchimals'
             },
             {
-              url: "https://blog.educents.com/reading-exploring-world-through-literature/",
-              value: "Family Read-Alouds: Exploring the World Through Literature"
+              url: 'https://blog.educents.com/reading-exploring-world-through-literature/',
+              value: 'Family Read-Alouds: Exploring the World Through Literature'
             }
           ]
         }
@@ -78,61 +79,55 @@ export default {
         },
         blog: {
           limit: 3,
-          type: "url-section",
+          type: 'url-section',
           onSelected: function() {
             //alert("url: " + item.item.url);
           }
         }
       },
       inputProps: {
-        id: "autosuggest__input",
+        id: 'autosuggest__input',
         onClick: () => {},
         onInputChange: this.onInputChange,
-        placeholder: "Type 'g'",
-        onBlur: () => {
-          // console.log(e);
-        },
-        onFocus: () => {
-          // console.log(e);
-        }
+        placeholder: "Type 'g'"
       }
-    };
+    }
   },
   methods: {
     onInputChange(text) {
-      let filtered = [];
+      let filtered = []
 
       const suggestionsData = this.options[0].data.filter(item => {
-        return item.toLowerCase().indexOf(text.toLowerCase()) > -1;
-      });
+        return item.toLowerCase().indexOf(text.toLowerCase()) > -1
+      })
       const blogData = this.options[1].data.filter(item => {
-        return item.value.toLowerCase().indexOf(text.toLowerCase()) > -1;
-      });
+        return item.value.toLowerCase().indexOf(text.toLowerCase()) > -1
+      })
 
       suggestionsData.length > 0 &&
         filtered.push({
-          label: "Suggestions",
+          label: 'Suggestions',
           data: suggestionsData
-        });
+        })
 
       blogData.length > 0 &&
         filtered.push({
-          label: "Blog Resources",
-          name: "blog",
+          label: 'Blog Resources',
+          name: 'blog',
           data: blogData
-        });
+        })
 
-      this.filteredOptions = filtered;
+      this.filteredOptions = filtered
     },
     getSuggestionValue(item) {
-      if (item.name == "blog") {
-        return item.item.value;
+      if (item.name == 'blog') {
+        return item.item.value
       } else {
-        return item.item;
+        return item.item
       }
     }
   }
-};
+}
 </script>
 
 <style rel="stylesheet">

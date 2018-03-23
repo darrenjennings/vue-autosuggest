@@ -6,7 +6,7 @@ module.exports = {
   rules: {
     // override/add rules' settings here
     "vue/valid-v-if": "error",
-    "no-console": 1
+    "no-console": ["warn", { allow: ["warn", "error"] }]
   },
   parserOptions: {
     parser: "babel-eslint",
