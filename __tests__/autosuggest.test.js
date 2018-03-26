@@ -1,4 +1,4 @@
-import { mount, shallow } from "vue-test-utils";
+import { mount, shallow } from "@vue/test-utils";
 import { createRenderer } from "vue-server-renderer";
 
 import Autosuggest from "../src/Autosuggest.vue";
@@ -47,7 +47,6 @@ describe("Autosuggest", () => {
     inputProps: {
       id,
       initialValue: "",
-      onClick: () => {},
       onInputChange: () => {},
       placeholder: "Type 'G'"
     },
@@ -59,9 +58,14 @@ describe("Autosuggest", () => {
     }
   };
 
+  const defaultListeners = {
+    click: () => {}
+  };
+
   it("can mount", () => {
     const props = Object.assign({}, defaultProps);
     props.inputProps = Object.assign({}, defaultProps.inputProps);
+
     props.suggestions = [filteredOptions[0]];
 
     const wrapper = shallow(Autosuggest, {
@@ -76,8 +80,23 @@ describe("Autosuggest", () => {
   });
 
   it("can render suggestions", () => {
+    const props = Object.assign({}, defaultProps);
+    props.inputProps = Object.assign({}, defaultProps.inputProps);
+
+    // Testing deprecation of onClick
+    const mockFn = jest.fn();
+    const mockConsole = jest.fn();
+    console.warn = mockConsole;
+
+    const clicked = () => {
+      mockFn();
+    };
+
+    props.inputProps.onClick = clicked;
+
     const wrapper = mount(Autosuggest, {
-      propsData: defaultProps
+      propsData: props,
+      attachToDocument: true
     });
 
     const input = wrapper.find("input");
@@ -93,21 +112,41 @@ describe("Autosuggest", () => {
 
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
-      if (err) {
-        return false;
-      }
+      if (err) throw new Error(err);
       expect(str).toMatchSnapshot();
+      expect(mockFn).toHaveBeenCalledTimes(1); // deprecation warning
     });
   });
 
   it("can use escape key to exit", async () => {
     const wrapper = mount(Autosuggest, {
-      propsData: defaultProps
+      propsData: defaultProps,
+      listeners: defaultListeners
     });
 
     const input = wrapper.find("input");
     input.trigger("click");
     wrapper.setData({ searchInput: "G" });
+    
+    input.trigger("keydown.up"); // Check it doesn't offset the selection by going up first when nothing is selected.
+
+    // TODO: test these keys are actually returning early.
+    input.trigger("keydown", {
+      keyCode: 16 // Shift
+    });
+    input.trigger("keydown", {
+      keyCode: 9 // Tab
+    });
+    input.trigger("keydown", {
+      keyCode: 18 // alt/option
+    });
+    input.trigger("keydown", {
+      keyCode: 91 // OS Key
+    });
+    input.trigger("keydown", {
+      keyCode: 93 // Right OS Key
+    });
+
     input.trigger("keydown.down");
 
     expect(wrapper.findAll(`ul li`).length).toBeLessThanOrEqual(
@@ -163,6 +202,7 @@ describe("Autosuggest", () => {
 
     const wrapper = mount(Autosuggest, {
       propsData: props,
+      listeners: defaultListeners,
       attachToDocument: true
     });
 
@@ -194,6 +234,7 @@ describe("Autosuggest", () => {
     };
     const wrapper = mount(Autosuggest, {
       propsData: props,
+      listeners: defaultListeners,
       attachToDocument: true
     });
 
@@ -293,11 +334,20 @@ describe("Autosuggest", () => {
     });
   });
 
-  it("onBlur and onFocus work as expected", async () => {
+  it("onBlur and onFocus work as expected, including deprecation warnings", async () => {
     let props = Object.assign({}, defaultProps);
+
     const mockFn = jest.fn();
-    const blurred = () => {mockFn()};
-    const focused = () => {mockFn()};
+    const mockConsole = jest.fn();
+
+    console.warn = mockConsole;
+
+    const blurred = () => {
+      mockFn();
+    };
+    const focused = () => {
+      mockFn();
+    };
 
     props.inputProps.onBlur = blurred;
     props.inputProps.onFocus = focused;
@@ -323,6 +373,43 @@ describe("Autosuggest", () => {
       }
       expect(str).toMatchSnapshot();
     });
+
     expect(mockFn).toHaveBeenCalledTimes(2);
+    expect(mockConsole).toHaveBeenCalledTimes(2); // onBlur and onFocus deprecation warnings
+  });
+
+  it("can render default suggestion value by property name", async () => {
+    const props = Object.assign({}, defaultProps);
+    props.inputProps = Object.assign({}, defaultProps.inputProps);
+    props.inputProps.class = "cool-class";
+    props.suggestions = [
+      {
+        data: [
+          { id: 1, name: "Frodo", avatar: "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png" }
+        ]
+      }
+    ];
+
+    props.onSelected = () => {};
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+      attachToDocument: true
+    });
+
+    const input = wrapper.find("input");
+    input.trigger("click");
+    wrapper.setData({ searchInput: "F" });
+    
+    input.trigger("keydown.down");
+    input.trigger("keydown.enter");
+
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
   });
 });

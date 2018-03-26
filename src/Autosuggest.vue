@@ -8,10 +8,8 @@
                v-model="searchInput"
                :class="[isOpen ? 'autosuggest__input-open' : '', inputProps['class']]"
                @keydown="handleKeyStroke"
-               @click="onClick"
-               @blur="onBlur"
-               @focus="onFocus"
                v-bind="inputProps"
+               v-on="listeners"
                aria-autocomplete="list"
                aria-owns="autosuggest__results"
                :aria-activedescendant="isOpen && currentIndex !== null ? `autosuggest__results_item-${currentIndex}` : ''"
@@ -137,7 +135,6 @@ export default {
     internal_inputProps: {}, // Nest default prop values don't work currently in Vue
     defaultInputProps: {
       initialValue: "",
-      onClick: () => {},
       autocomplete: "off"
     },
     defaultSectionConfig: {
@@ -146,6 +143,34 @@ export default {
     }
   }),
   computed: {
+    listeners() {
+      return {
+        ...this.$listeners,
+        focus: e => {
+          this.$listeners.focus && this.$listeners.focus(e);
+          if (this.inputProps.onFocus) {
+            this.onFocus(e)
+          }
+        },
+        blur: e => {
+          this.$listeners.blur && this.$listeners.blur(e);
+          if (this.inputProps.onBlur) {
+            this.onBlur(e)
+          }
+        },
+        click: () => {
+          this.loading = false;
+          this.$listeners.click && this.$listeners.click(this.currentItem);
+
+          if(this.inputProps.onClick){
+            this.onClick(this.currentItem);
+          }
+          this.$nextTick(() => {
+            this.ensureItemVisible(this.currentItem, this.currentIndex);
+          });
+        }
+      };
+    },
     isOpen() {
       return this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading;
     }
@@ -366,18 +391,22 @@ export default {
         addClass(element, hoverClass);
       }
     },
-    onClick() {
-      this.loading = false;
-      this.internal_inputProps.onClick(this.currentItem);
-
-      this.$nextTick(() => {
-        this.ensureItemVisible(this.currentItem, this.currentIndex);
-      });
+    onClick(e) {
+      console.warn(
+        'inputProps.onClick is deprecated. Please use native click event listener \n\ne.g. <vue-autosuggest ... @click="clickMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
+      );
+      this.internal_inputProps.onClick && this.internal_inputProps.onClick(e);
     },
     onBlur(e) {
+      console.warn(
+        'inputProps.onBlur is deprecated. Please use native blur event listener \n\ne.g. <vue-autosuggest ... @blur="blurMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
+      );
       this.internal_inputProps.onBlur && this.internal_inputProps.onBlur(e);
     },
     onFocus(e) {
+      console.warn(
+        'inputProps.onFocus is deprecated. Please use native focus event listener \n\ne.g. <vue-autosuggest ... @focus="focusMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
+      );
       this.internal_inputProps.onFocus && this.internal_inputProps.onFocus(e);
     }
   },

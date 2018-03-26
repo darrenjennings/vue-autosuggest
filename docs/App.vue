@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>🔍 Vue-autosuggest</h1>
     <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected {{selected}}</span></div>
     <div>
     <vue-autosuggest 
@@ -7,8 +8,8 @@
               :input-props="inputProps"
               :section-configs="sectionConfigs"
               :getSuggestionValue="getSuggestionValue"
-              ref="autocomplete"
-          />
+              @focus="focusMe"
+              ref="autocomplete" />
     </div>
   </div>
 </template>
@@ -88,13 +89,7 @@ export default {
         id: "autosuggest__input",
         onClick: () => {},
         onInputChange: this.onInputChange,
-        placeholder: "Type 'g'",
-        onBlur: () => {
-          // console.log(e);
-        },
-        onFocus: () => {
-          // console.log(e);
-        }
+        placeholder: "Type 'g'"
       }
     };
   },
@@ -130,6 +125,9 @@ export default {
       } else {
         return item.item;
       }
+    },
+    focusMe(e){
+      // console.log(e)
     }
   }
 };
