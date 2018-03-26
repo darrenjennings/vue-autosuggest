@@ -348,10 +348,16 @@ export default {
     updateCurrentIndex(index) {
       this.currentIndex = index;
     },
-    onDocumentMouseUp() {
+    onDocumentMouseUp(e) {
       /** Clicks outside of dropdown to exit */
       if (this.currentIndex === null || !this.isOpen) {
         this.loading = this.shouldRenderSuggestions();
+        return;
+      }
+
+      /** Do not re-render list on input click  */
+      const isChild = this.$el.contains(e.target);
+      if (isChild && e.target.tagName === 'INPUT') {
         return;
       }
 
