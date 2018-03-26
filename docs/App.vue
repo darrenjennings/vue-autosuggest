@@ -126,7 +126,7 @@ export default {
         return item.item;
       }
     },
-    focusMe(e){
+    focusMe(/* e */){
       // console.log(e)
     }
   }
