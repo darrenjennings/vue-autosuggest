@@ -1,7 +1,6 @@
 <template>
     <div :id="component_attr_id_autosuggest">
         <input class="form-control"
-               name="q"
                type="text"
                :autocomplete="inputProps.autocomplete"
                role="combobox"
@@ -134,6 +133,7 @@ export default {
     computedSize: 0,
     internal_inputProps: {}, // Nest default prop values don't work currently in Vue
     defaultInputProps: {
+      name: "q", // TODO: 2.0 Deprecate default name value
       initialValue: "",
       autocomplete: "off"
     },
@@ -227,10 +227,10 @@ export default {
 
       const ignoredKeyCodes = [
         16, // Shift
-        9, // Tab
+        9,  // Tab
         18, // alt/option
         91, // OS Key
-        93 // Right OS Key
+        93  // Right OS Key
       ];
 
       if (ignoredKeyCodes.indexOf(keyCode) > -1) {
@@ -420,6 +420,7 @@ export default {
     /** Take care of nested input props */
     this.internal_inputProps = { ...this.defaultInputProps, ...this.inputProps };
     this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
+    this.inputProps.name = this.internal_inputProps.name; // TODO: 2.0 Deprecate default name value
 
     this.searchInput = this.internal_inputProps.initialValue; // set default query, e.g. loaded server side.
   },
