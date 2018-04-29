@@ -412,4 +412,16 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
+
+  it("changes input attributes", () => {
+    const props = { ...defaultProps };
+    props.inputProps = { ...defaultProps.inputProps, name: "my-input" };
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props
+    });
+
+    const input = wrapper.find("input");
+    expect(input.attributes()["name"]).toBe("my-input");
+  });
 });

@@ -233,7 +233,7 @@ For more advanced usage, check out the examples below, and explore the
 | ~~onBlur~~               | ~~Function~~</span> | Deprecated | ~~HTML onblur event on &lt;input> same as Vue @blur event binding~~. You can now use `@blur` which will map to the underlying `<input />`                                    |
 | ~~onFocus~~              | ~~Function~~        | Deprecated | ~~HTML onfocus event on &lt;input> same as Vue @focus event binding~~ You can now use `@focus` which will map to the underlying `<input />`                                  |
 | [`initialValue`](#)      | String              |            | Set some initial value for the `<input>`.                                                                                                                                    |
-| Any DOM Props            | \*                  |            | You can add any props to `<input>` as the component will `v-bind` inputProps. Similar to rest spread in JSX. See more details here: https://vuejs.org/v2/api/#v-bind         |
+| Any DOM Props            | \*                  |            | You can add any props to `<input>` as the component will `v-bind` inputProps. Similar to rest spread in JSX. See more details here: https://vuejs.org/v2/api/#v-bind. The `name` attribute is set to "`q`" by default.         |
 
 <a name="sectionConfigsProp"></a>
 
