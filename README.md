@@ -95,8 +95,8 @@ Place the component into your app!
 <vue-autosuggest
     :suggestions="[{data:['Frodo', 'Samwise', 'Gandalf', 'Galadriel', 'Faramir', 'Éowyn']}]"
     @click="clickHandler"
-    :onSelected="selectHandler"
-    :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"
+    :on-selected="selectHandler"
+    :input-props="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"
 />
 ```
 
@@ -113,10 +113,10 @@ Advanced usage:
             :suggestions="filteredOptions"
             @focus="focusMe"
             @click="clickHandler"
-            :onSelected="onSelected"
-            :renderSuggestion="renderSuggestion"
-            :getSuggestionValue="getSuggestionValue"
-            :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"/>
+            :on-selected="onSelected"
+            :render-suggestion="renderSuggestion"
+            :get-suggestion-value="getSuggestionValue"
+            :input-props="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"/>
 </div>
 </template>
 
@@ -216,10 +216,10 @@ For more advanced usage, check out the examples below, and explore the
 | Prop                                        | Type     | Required | Description                                               |
 | :------------------------------------------ | :------- | :------: | :-------------------------------------------------------- |
 | [`suggestions`](#suggestionsProp)           | Array    |    ✓     | Suggestions to be rendered.                               |
-| [`inputProps`](#inputPropsTable)            | Object   |    ✓     | Add props to the `<input>`.                               |
-| [`sectionConfigs`](#sectionConfigsProp)     | Object   |          | Define multiple sections `<input>`.                       |
-| [`renderSuggestion`](#renderSuggestion)     | Function |          | Tell vue-autosuggest how to render inside the `<li>` tag. |
-| [`getSuggestionValue`](#getSuggestionValue) | Function |          | Tells vue-autosuggest what to put in the `<input/>` value |
+| [`input-props`](#inputPropsTable)            | Object   |    ✓     | Add props to the `<input>`.                               |
+| [`section-configs`](#sectionConfigsProp)     | Object   |          | Define multiple sections `<input>`.                       |
+| [`render-suggestion`](#renderSuggestion)     | Function |          | Tell vue-autosuggest how to render inside the `<li>` tag. |
+| [`get-suggestion-value`](#getSuggestionValue) | Function |          | Tells vue-autosuggest what to put in the `<input/>` value |
 
 <a name="inputPropsTable"></a>
 
@@ -228,11 +228,11 @@ For more advanced usage, check out the examples below, and explore the
 | Prop                     | Type                |  Required  | Description                                                                                                                                                                  |
 | :----------------------- | :------------------ | :--------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`id`](#inputPropsTable) | String              |     ✓      | id attribute on `<input>`.                                                                                                                                                   |
-| [`onInputChange`](#)     | Function            |     ✓      | Triggers everytime the `<input>` changes. This is triggered via a Vue watcher, so you have both current value, and previous value access e.g. `onInputChange(text, oldText)` |
+| [`on-input-change`](#)     | Function            |     ✓      | Triggers everytime the `<input>` changes. This is triggered via a Vue watcher, so you have both current value, and previous value access e.g. `onInputChange(text, oldText)` |
 | ~~onClick~~              | ~~Function~~        | Deprecated | ~~Triggers everytime the &lt;input> is clicked.~~ You can now use `@click` which will map to the underlying `<input />`                                                      |
 | ~~onBlur~~               | ~~Function~~</span> | Deprecated | ~~HTML onblur event on &lt;input> same as Vue @blur event binding~~. You can now use `@blur` which will map to the underlying `<input />`                                    |
 | ~~onFocus~~              | ~~Function~~        | Deprecated | ~~HTML onfocus event on &lt;input> same as Vue @focus event binding~~ You can now use `@focus` which will map to the underlying `<input />`                                  |
-| [`initialValue`](#)      | String              |            | Set some initial value for the `<input>`.                                                                                                                                    |
+| [`initial-value`](#)      | String              |            | Set some initial value for the `<input>`.                                                                                                                                    |
 | Any DOM Props            | \*                  |            | You can add any props to `<input>` as the component will `v-bind` inputProps. Similar to rest spread in JSX. See more details here: https://vuejs.org/v2/api/#v-bind. The `name` attribute is set to "`q`" by default.         |
 
 <a name="sectionConfigsProp"></a>
@@ -244,7 +244,7 @@ each section.
 
 | Prop         | Type     | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | :----------- | :------- | :------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `onSelected` | Function |    ✓     | Determine behavior for what should happen when a suggestion is selected. e.g. Submit a form, open a link, update a vue model, tweet at Ken Wheeler etc.                                                                                                                                                                                                                                                                                                                                                                     |
+| `on-selected` | Function |    ✓     | Determine behavior for what should happen when a suggestion is selected. e.g. Submit a form, open a link, update a vue model, tweet at Ken Wheeler etc.                                                                                                                                                                                                                                                                                                                                                                     |
 | `type`       | String   |          | Vue component name for specifying which type to implement using Vue's `<component :is="componentName"></component>` functionality. See [DefaultSection.vue](https://github.com/Educents/vue-autosuggest/blob/master/src/parts/DefaultSection.vue) for scaffolding a new type. You must declare your component in the scope of the app using `Vue.component()`. You can extend DefaultSection using `extends`. See [UrlSection](https://github.com/Educents/vue-autosuggest/blob/master/docs/UrlSection.vue) for an example. |
 | `limit`      | Number   |          | Limit each section by some value. Default: `Infinity`                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
