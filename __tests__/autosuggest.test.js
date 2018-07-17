@@ -127,7 +127,7 @@ describe("Autosuggest", () => {
     const input = wrapper.find("input");
     input.trigger("click");
     wrapper.setData({ searchInput: "G" });
-    
+
     input.trigger("keydown.up"); // Check it doesn't offset the selection by going up first when nothing is selected.
 
     // TODO: test these keys are actually returning early.
@@ -385,7 +385,12 @@ describe("Autosuggest", () => {
     props.suggestions = [
       {
         data: [
-          { id: 1, name: "Frodo", avatar: "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png" }
+          {
+            id: 1,
+            name: "Frodo",
+            avatar:
+              "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png"
+          }
         ]
       }
     ];
@@ -400,7 +405,7 @@ describe("Autosuggest", () => {
     const input = wrapper.find("input");
     input.trigger("click");
     wrapper.setData({ searchInput: "F" });
-    
+
     input.trigger("keydown.down");
     input.trigger("keydown.enter");
 
@@ -423,5 +428,45 @@ describe("Autosuggest", () => {
 
     const input = wrapper.find("input");
     expect(input.attributes()["name"]).toBe("my-input");
+  });
+
+  it("search input prop type handles string and integers only", async () => {
+    let props = Object.assign({}, defaultProps);
+
+    const mockConsole = jest.fn();
+    console.error = mockConsole;
+
+    const blurred = () => {};
+    props.inputProps.onBlur = blurred;
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props
+    });
+
+    const input = wrapper.find("input");
+
+    // Integers
+    input.trigger("click");
+    wrapper.setData({ searchInput: 1 });
+    await wrapper.vm.$nextTick(() => {});
+    input.trigger("blur");
+
+    // Strings
+    input.trigger("click");
+    wrapper.setData({ searchInput: "Hello" });
+    await wrapper.vm.$nextTick(() => {});
+    input.trigger("blur");
+
+    // Should not throw any errors
+    expect(mockConsole).toHaveBeenCalledTimes(0);
+
+    // Functions
+    input.trigger("click");
+    wrapper.setData({ searchInput: () => { /* BAD */ } });
+    await wrapper.vm.$nextTick(() => {});
+    input.trigger("blur");
+    
+    // Should throw validation error
+    expect(mockConsole).toHaveBeenCalled();
   });
 });
