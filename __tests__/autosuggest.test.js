@@ -127,7 +127,7 @@ describe("Autosuggest", () => {
     const input = wrapper.find("input");
     input.trigger("click");
     wrapper.setData({ searchInput: "G" });
-    
+
     input.trigger("keydown.up"); // Check it doesn't offset the selection by going up first when nothing is selected.
 
     // TODO: test these keys are actually returning early.
@@ -385,7 +385,12 @@ describe("Autosuggest", () => {
     props.suggestions = [
       {
         data: [
-          { id: 1, name: "Frodo", avatar: "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png" }
+          {
+            id: 1,
+            name: "Frodo",
+            avatar:
+              "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png"
+          }
         ]
       }
     ];
@@ -400,7 +405,7 @@ describe("Autosuggest", () => {
     const input = wrapper.find("input");
     input.trigger("click");
     wrapper.setData({ searchInput: "F" });
-    
+
     input.trigger("keydown.down");
     input.trigger("keydown.enter");
 
