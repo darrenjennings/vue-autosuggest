@@ -429,4 +429,44 @@ describe("Autosuggest", () => {
     const input = wrapper.find("input");
     expect(input.attributes()["name"]).toBe("my-input");
   });
+
+  it("search input prop type handles string and integers only", async () => {
+    let props = Object.assign({}, defaultProps);
+
+    const mockConsole = jest.fn();
+    console.error = mockConsole;
+
+    const blurred = () => {};
+    props.inputProps.onBlur = blurred;
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props
+    });
+
+    const input = wrapper.find("input");
+
+    // Integers
+    input.trigger("click");
+    wrapper.setData({ searchInput: 1 });
+    await wrapper.vm.$nextTick(() => {});
+    input.trigger("blur");
+
+    // Strings
+    input.trigger("click");
+    wrapper.setData({ searchInput: "Hello" });
+    await wrapper.vm.$nextTick(() => {});
+    input.trigger("blur");
+
+    // Should not throw any errors
+    expect(mockConsole).toHaveBeenCalledTimes(0);
+
+    // Functions
+    input.trigger("click");
+    wrapper.setData({ searchInput: () => { /* BAD */ } });
+    await wrapper.vm.$nextTick(() => {});
+    input.trigger("blur");
+    
+    // Should throw validation error
+    expect(mockConsole).toHaveBeenCalled();
+  });
 });
