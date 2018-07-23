@@ -2,7 +2,7 @@
 
 exports[`Autosuggest can click outside document to trigger close 1`] = `
 
-<div id="autosuggest"
+<div id="autosuggest-9"
      data-server-rendered="true"
 >
   <input type="text"
@@ -29,7 +29,7 @@ exports[`Autosuggest can click outside document to trigger close 1`] = `
 
 exports[`Autosuggest can display section header 1`] = `
 
-<div id="autosuggest"
+<div id="autosuggest-12"
      data-server-rendered="true"
 >
   <input type="text"
@@ -49,7 +49,7 @@ exports[`Autosuggest can display section header 1`] = `
          class="form-control autosuggest__input-open"
   >
   <div class="autosuggest__results-container">
-    <div aria-labelledby="autosuggest"
+    <div aria-labelledby="autosuggest-12"
          class="autosuggest__results"
     >
       <ul role="listbox"
@@ -107,7 +107,7 @@ exports[`Autosuggest can display section header 1`] = `
 
 exports[`Autosuggest can mount 1`] = `
 
-<div id="autosuggest"
+<div id="autosuggest-0"
      data-server-rendered="true"
 >
   <input type="text"
@@ -134,7 +134,7 @@ exports[`Autosuggest can mount 1`] = `
 
 exports[`Autosuggest can render default suggestion value by property name 1`] = `
 
-<div id="autosuggest"
+<div id="autosuggest-25"
      data-server-rendered="true"
 >
   <input type="text"
@@ -160,7 +160,7 @@ exports[`Autosuggest can render default suggestion value by property name 1`] = 
          class="form-control autosuggest__input-open cool-class"
   >
   <div class="autosuggest__results-container">
-    <div aria-labelledby="autosuggest"
+    <div aria-labelledby="autosuggest-25"
          class="autosuggest__results"
     >
       <ul role="listbox"
@@ -183,7 +183,7 @@ exports[`Autosuggest can render default suggestion value by property name 1`] = 
 
 exports[`Autosuggest can render simplest component with single onSelected 1`] = `
 
-<div id="autosuggest"
+<div id="autosuggest-19"
      data-server-rendered="true"
 >
   <input type="text"
@@ -203,7 +203,7 @@ exports[`Autosuggest can render simplest component with single onSelected 1`] = 
          class="form-control autosuggest__input-open cool-class"
   >
   <div class="autosuggest__results-container">
-    <div aria-labelledby="autosuggest"
+    <div aria-labelledby="autosuggest-19"
          class="autosuggest__results"
     >
       <ul role="listbox"
@@ -378,7 +378,7 @@ exports[`Autosuggest can render simplest component with single onSelected 1`] = 
 
 exports[`Autosuggest can render suggestions 1`] = `
 
-<div id="autosuggest"
+<div id="autosuggest-2"
      data-server-rendered="true"
 >
   <input type="text"
@@ -401,7 +401,7 @@ exports[`Autosuggest can render suggestions 1`] = `
          class="form-control autosuggest__input-open"
   >
   <div class="autosuggest__results-container">
-    <div aria-labelledby="autosuggest"
+    <div aria-labelledby="autosuggest-2"
          class="autosuggest__results"
     >
       <ul role="listbox"
@@ -456,7 +456,7 @@ exports[`Autosuggest can render suggestions 1`] = `
 
 exports[`Autosuggest can select from suggestions using keystroke 1`] = `
 
-<div id="autosuggest"
+<div id="autosuggest-7"
      data-server-rendered="true"
 >
   <input type="text"
@@ -483,7 +483,7 @@ exports[`Autosuggest can select from suggestions using keystroke 1`] = `
 
 exports[`Autosuggest can use escape key to exit 1`] = `
 
-<div id="autosuggest"
+<div id="autosuggest-5"
      data-server-rendered="true"
 >
   <input type="text"
@@ -510,7 +510,7 @@ exports[`Autosuggest can use escape key to exit 1`] = `
 
 exports[`Autosuggest is aria complete 1`] = `
 
-<div id="autosuggest"
+<div id="autosuggest-16"
      data-server-rendered="true"
 >
   <input type="text"
@@ -530,7 +530,7 @@ exports[`Autosuggest is aria complete 1`] = `
          class="form-control autosuggest__input-open"
   >
   <div class="autosuggest__results-container">
-    <div aria-labelledby="autosuggest"
+    <div aria-labelledby="autosuggest-16"
          class="autosuggest__results"
     >
       <ul role="listbox"
@@ -585,7 +585,7 @@ exports[`Autosuggest is aria complete 1`] = `
 
 exports[`Autosuggest onBlur and onFocus work as expected, including deprecation warnings 1`] = `
 
-<div id="autosuggest"
+<div id="autosuggest-22"
      data-server-rendered="true"
 >
   <input type="text"
@@ -611,7 +611,7 @@ exports[`Autosuggest onBlur and onFocus work as expected, including deprecation 
          class="form-control autosuggest__input-open"
   >
   <div class="autosuggest__results-container">
-    <div aria-labelledby="autosuggest"
+    <div aria-labelledby="autosuggest-22"
          class="autosuggest__results"
     >
       <ul role="listbox"
