@@ -1,4 +1,4 @@
-<div>
+﻿<div>
 <h1>vue-autosuggest</h1>
 
 <p>🔍 Autosuggest component built for Vue.</a></p>
@@ -274,9 +274,17 @@ sectionConfigs: {
 
 ### renderSuggestion
 
-This function will tell vue-autosuggest how to render the html inside the `<li>` tag. If you're not
-using `babel-plugin-transform-vue-jsx` then this method won't be too beneficial, but if your data is
-a list of objects you can return a specific object.
+This function will tell vue-autosuggest how to render the html inside the `<li>` tag.
+
+In its most basic form it just returns an object property:
+
+```js
+renderSuggestion(suggestion) {
+    return suggestion.name;
+},
+```
+
+But usually it returns a JSX fragment, which is transformed into a virtual node description with babel-plugin-transform-vue-jsx:
 
 ```jsx
 renderSuggestion(suggestion) {
@@ -284,11 +292,11 @@ renderSuggestion(suggestion) {
 },
 ```
 
-or if you don't use babel or the JSX transform, you can just return the specified object property.
+If you're not using babel-plugin-transform-vue-jsx, you can create the virtual node description yourself:
 
 ```js
 renderSuggestion(suggestion) {
-    return suggestion.name;
+    return this.$createElement('div', { 'style': { color: 'red'} }, suggestion.name);
 },
 ```
 
