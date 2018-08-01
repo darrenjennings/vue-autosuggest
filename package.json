@@ -116,6 +116,7 @@
       "src/**/*.{vue}",
       "!**/node_modules/**",
       "!**/.test.js"
-    ]
+    ],
+    "testURL": "http://localhost"
   }
 }
