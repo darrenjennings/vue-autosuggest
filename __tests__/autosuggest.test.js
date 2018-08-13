@@ -1,4 +1,4 @@
-import { mount, shallow } from "@vue/test-utils";
+import { mount, shallowMount } from "@vue/test-utils";
 import { createRenderer } from "vue-server-renderer";
 
 import Autosuggest from "../src/Autosuggest.vue";
@@ -68,7 +68,7 @@ describe("Autosuggest", () => {
 
     props.suggestions = [filteredOptions[0]];
 
-    const wrapper = shallow(Autosuggest, {
+    const wrapper = shallowMount(Autosuggest, {
       propsData: props
     });
 
@@ -320,7 +320,6 @@ describe("Autosuggest", () => {
       input.trigger("keydown.down");
     });
 
-    input.trigger("keydown.enter");
     wrapper.find("li").trigger("mouseover");
     wrapper.find("li").trigger("mouseenter");
     wrapper.find("li").trigger("mouseleave");
@@ -409,6 +408,10 @@ describe("Autosuggest", () => {
     input.trigger("keydown.down");
     input.trigger("keydown.enter");
 
+    await wrapper.vm.$nextTick(() => {});
+
+    expect(input.element.value).toBe("Frodo");
+
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) {
@@ -468,5 +471,39 @@ describe("Autosuggest", () => {
     
     // Should throw validation error
     expect(mockConsole).toHaveBeenCalled();
+  });
+
+  it("can render slots", async () => {
+    const wrapper = mount(Autosuggest, {
+      propsData: defaultProps,
+      slots: {
+        header: '<div class="header-dude"></div>',
+        footer: '<div id="footer-dude"><span>1</span><span>2</span></div>'
+      },
+      scopedSlots: {
+        default: `
+          <h1 slot-scope="{suggestion}">{{ suggestion.item }}</h1>
+        `
+      },
+      attachToDocument: true
+    });
+
+    const input = wrapper.find("input");
+    input.trigger("click");
+    wrapper.setData({ searchInput: "G" });
+    
+    expect(wrapper.findAll('.header-dude').length).toEqual(1);
+    expect(wrapper.findAll('#footer-dude span').length).toEqual(2);
+    expect(wrapper.findAll('h1').length).toEqual(5);
+
+    await wrapper.vm.$nextTick(() => {});
+
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
   });
 });

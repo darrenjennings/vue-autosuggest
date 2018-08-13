@@ -349,4 +349,65 @@ storiesOf("Vue-Autosuggest", module)
         );
       }
     }
+  }))
+  .add("Slots - Header, Footer, Suggestion", () => ({
+    components: { Autosuggest },
+    template: `
+              <div>
+                <autosuggest 
+                  ref="autosuggest" 
+                  :suggestions="filteredOptions" 
+                  :inputProps="inputProps" 
+                  :sectionConfigs="sectionConfigs">
+                  <template slot="header">
+                    <h3 style="margin: 10px 10px 0; padding: 5px;">this is a header slot</h3>
+                  </template>
+                  <template slot-scope="{suggestion, index}">
+                    <div>{{suggestion.item}}, suggestion slot 
+                      <span :style="{color: colors[Math.floor(Math.random()*colors.length)]}">style</span> 
+                      <span :style="{color: colors[Math.floor(Math.random()*colors.length)]}">me</span> 
+                      <span :style="{color: colors[Math.floor(Math.random()*colors.length)]}">pretty</span> 
+                    </div>
+                  </template>
+                  <template slot="footer">
+                    <h3 style="margin: 10px 10px 0; padding: 5px;">this is a footer slot</h3>
+                  </template>
+                </autosuggest>
+              </div>
+              `,
+    data() {
+      return {
+        selected: [],
+        colors: [
+          '#1abc9c',
+          '#2ecc71',
+          '#3498db',
+          '#9b59b6',
+          '#34495e',
+          '#f1c40f',
+          '#e74c3c',
+          '#7f8c8d',
+          '#C4E538',
+          '#0652DD',
+          '#9980FA',
+          '#EA2027',
+        ],
+        limit: 10,
+        filteredOptions: [],
+        options: [
+          {
+            data: [...sharedData.options]
+          }
+        ],
+        inputProps: {
+          id: "autosuggest__input",
+          onInputChange: this.onInputChange,
+          onClick: this.onClick,
+          placeholder: "Type 'g'"
+        }
+      };
+    },
+    methods: {
+      onInputChange: sharedData.methods.onInputChange
+    }
   }));

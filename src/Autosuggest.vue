@@ -19,6 +19,7 @@
                 <div :class="component_attr_class_autosuggest__results"
                     :aria-labelledby="component_attr_id_autosuggest"
                     v-if="getSize() > 0 && !loading">
+                    <slot name="header"/>
                     <component :normalizeItemFunction="normalizeItem"
                               :renderSuggestion="renderSuggestion"
                               v-for="(cs, key) in this.computedSections"
@@ -27,7 +28,14 @@
                               :ref="getSectionRef(key)"
                               :key="getSectionRef(key)"
                               :updateCurrentIndex="updateCurrentIndex"
-                              :searchInput="searchInput" />
+                              :searchInput="searchInput">
+                      <template slot-scope="{ suggestion, key }">
+                        <slot :suggestion="suggestion" :index="key" >
+                          {{ suggestion.item }}
+                        </slot>
+                      </template>
+                    </component>
+                    <slot name="footer"/>
                 </div>
         </div>
     </div>
@@ -78,10 +86,7 @@ export default {
     },
     renderSuggestion: {
       type: Function,
-      required: false,
-      default: suggestion => {
-        return suggestion.item;
-      }
+      required: false
     },
     getSuggestionValue: {
       type: Function,
@@ -349,15 +354,15 @@ export default {
       this.currentIndex = index;
     },
     onDocumentMouseUp(e) {
-      /** Clicks outside of dropdown to exit */
-      if (this.currentIndex === null || !this.isOpen) {
-        this.loading = this.shouldRenderSuggestions();
-        return;
-      }
-
       /** Do not re-render list on input click  */
       const isChild = this.$el.contains(e.target);
       if (isChild && e.target.tagName === 'INPUT') {
+        return;
+      }
+      
+      /** Clicks outside of dropdown to exit */
+      if (this.currentIndex === null || !this.isOpen) {
+        this.loading = this.shouldRenderSuggestions();
         return;
       }
 

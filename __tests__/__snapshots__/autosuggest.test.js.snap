@@ -142,9 +142,9 @@ exports[`Autosuggest can render default suggestion value by property name 1`] = 
          role="combobox"
          aria-autocomplete="list"
          aria-owns="autosuggest__results"
-         aria-activedescendant="autosuggest__results_item-0"
-         aria-haspopup="true"
-         aria-expanded="true"
+         aria-activedescendant
+         aria-haspopup="false"
+         aria-expanded="false"
          id="autosuggest__input"
          initialvalue
          oninputchange="function onInputChange() {}"
@@ -157,25 +157,9 @@ exports[`Autosuggest can render default suggestion value by property name 1`] = 
                 mockFn();
               }"
          value="Frodo"
-         class="form-control autosuggest__input-open cool-class"
+         class="form-control cool-class"
   >
   <div class="autosuggest__results-container">
-    <div aria-labelledby="autosuggest"
-         class="autosuggest__results"
-    >
-      <ul role="listbox"
-          aria-labelledby="autosuggest"
-      >
-        <li role="option"
-            data-suggestion-index="0"
-            data-section-name="default"
-            id="autosuggest__results_item-0"
-            class="autosuggest__results_item"
-        >
-          undefined
-        </li>
-      </ul>
-    </div>
   </div>
 </div>
 
@@ -370,6 +354,105 @@ exports[`Autosuggest can render simplest component with single onSelected 1`] = 
           thinking tree
         </li>
       </ul>
+    </div>
+  </div>
+</div>
+
+`;
+
+exports[`Autosuggest can render slots 1`] = `
+
+<div id="autosuggest"
+     data-server-rendered="true"
+>
+  <input type="text"
+         autocomplete="off"
+         role="combobox"
+         aria-autocomplete="list"
+         aria-owns="autosuggest__results"
+         aria-activedescendant
+         aria-haspopup="true"
+         aria-expanded="true"
+         id="autosuggest__input"
+         initialvalue
+         oninputchange="function onInputChange() {}"
+         placeholder="Type 'G'"
+         name="q"
+         onblur="function blurred() {}"
+         onfocus="function focused() {
+                mockFn();
+              }"
+         value="G"
+         class="form-control autosuggest__input-open"
+  >
+  <div class="autosuggest__results-container">
+    <div aria-labelledby="autosuggest"
+         class="autosuggest__results"
+    >
+      <div class="header-dude">
+      </div>
+      <ul role="listbox"
+          aria-labelledby="autosuggest"
+      >
+        <li role="option"
+            data-suggestion-index="0"
+            data-section-name="default"
+            id="autosuggest__results_item-0"
+            class="autosuggest__results_item"
+        >
+          <h1>
+            clifford kits
+          </h1>
+        </li>
+        <li role="option"
+            data-suggestion-index="1"
+            data-section-name="default"
+            id="autosuggest__results_item-1"
+            class="autosuggest__results_item"
+        >
+          <h1>
+            friendly chemistry
+          </h1>
+        </li>
+        <li role="option"
+            data-suggestion-index="2"
+            data-section-name="default"
+            id="autosuggest__results_item-2"
+            class="autosuggest__results_item"
+        >
+          <h1>
+            phonics
+          </h1>
+        </li>
+        <li role="option"
+            data-suggestion-index="3"
+            data-section-name="default"
+            id="autosuggest__results_item-3"
+            class="autosuggest__results_item"
+        >
+          <h1>
+            life of fred
+          </h1>
+        </li>
+        <li role="option"
+            data-suggestion-index="4"
+            data-section-name="default"
+            id="autosuggest__results_item-4"
+            class="autosuggest__results_item"
+        >
+          <h1>
+            life of fred math
+          </h1>
+        </li>
+      </ul>
+      <div id="footer-dude">
+        <span>
+          1
+        </span>
+        <span>
+          2
+        </span>
+      </div>
     </div>
   </div>
 </div>
