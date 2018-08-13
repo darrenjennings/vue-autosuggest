@@ -356,6 +356,7 @@ storiesOf("Vue-Autosuggest", module)
               <div>
                 <autosuggest 
                   ref="autosuggest" 
+                  :renderSuggestion="renderSuggestion"
                   :suggestions="filteredOptions" 
                   :inputProps="inputProps" 
                   :sectionConfigs="sectionConfigs">
@@ -408,6 +409,19 @@ storiesOf("Vue-Autosuggest", module)
       };
     },
     methods: {
-      onInputChange: sharedData.methods.onInputChange
+      onInputChange: sharedData.methods.onInputChange,
+      renderSuggestion(suggestion) {
+        const item = suggestion.item;
+        return (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center"
+            }}
+          >
+            d - {item}
+          </div>
+        );
+      },
     }
   }));
