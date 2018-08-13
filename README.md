@@ -95,10 +95,15 @@ Place the component into your app!
 ```html
 <vue-autosuggest
     :suggestions="[{data:['Frodo', 'Samwise', 'Gandalf', 'Galadriel', 'Faramir', 'Éowyn']}]"
-    @click="clickHandler"
     :on-selected="selectHandler"
     :input-props="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"
-/>
+    @click="clickHandler"
+>  
+  <template slot-scope="{suggestion}">
+    <span class="my-suggestion-item">{{suggestion.item}}</span>
+  </template>
+</vue-autosuggest
+
 ```
 
 Advanced usage:
@@ -148,7 +153,7 @@ export default {
     onInputChange(text, oldText) {
       if (text === null) {
         /* Maybe the text is null but you wanna do
-        * something else, but don't filter by null.
+        *  something else, but don't filter by null.
         */
         return;
       }
@@ -161,16 +166,19 @@ export default {
       // Store data in one property, and filtered in another
       this.filteredOptions = [{ data: filteredData }];
     },
-    clickHandler(item){
+    clickHandler(item) {
       // items are selected by default on click, but you can add some more behavior here!
     },
     onSelected(item) {
       this.selected = item;
     },
+    /**
+     * renderSuggestion will override the default suggestion template slot.
+     */
     renderSuggestion(suggestion) {
-      /* You will need babel-plugin-transform-vue-jsx for this kind of full customizable
-       * rendering. If you don't use babel or the jsx transform, then you can use this
-       * function to just `return suggestion['propertyName'];`
+      /* You will need babel-plugin-transform-vue-jsx for this kind of syntax for
+       * rendering. If you don't use babel or the jsx transform, then you can create 
+       * the you can create the virtual node yourself using this.$createElement.
        */
       const character = suggestion.item;
       return (
@@ -212,6 +220,44 @@ export default {
 For more advanced usage, check out the examples below, and explore the
 <a href="#props">properties</a> you can use.
 
+## [Slots](#slots)
+
+### header/footer
+Slots for injecting content above all the results inside the results container.
+
+```html
+<vue-autosuggest ...>
+  <template slot="header">
+    <h1>header content goes here</h1>
+  </template>
+  <template slot="footer">
+    <h1>footer content goes here</h1>
+  </template>
+</vue-autosuggest>
+```
+
+### suggestion item (i.e. default slot)
+Used to style each suggestion inside the `<li>` tag. Using [scoped slots](https://vuejs.org/v2/guide/components-slots.html#Scoped-Slots) 
+you have access to the `suggestion` item inside the `v-for` suggestions loop. This gives you the power of Vue templating, since 
+vue-autosuggest does not have an opinion about how you render the items in your list.
+
+```vue
+<vue-autosuggest>
+  <template slot-scope="{suggestion}">
+    <!-- suggestion.name corresponds to which section the item is in -->
+    <div v-if="suggestion.name === 'blog'">
+      <!-- suggestion.item corresponds to the suggestion object -->
+      <a target="_blank" :href="suggestion.item.url">{{suggestion.item.value}}</a>
+    </div>
+    <div v-else>{{suggestion.item}}</div>
+  </template>
+</vue-autosuggest>
+```
+
+> This slot will be overridden when the [`render-suggestion`](#renderSuggestion) prop is used.
+
+
+
 ## [Props](#props)
 
 | Prop                                        | Type     | Required | Description                                               |
@@ -219,7 +265,7 @@ For more advanced usage, check out the examples below, and explore the
 | [`suggestions`](#suggestionsProp)           | Array    |    ✓     | Suggestions to be rendered.                               |
 | [`input-props`](#inputPropsTable)            | Object   |    ✓     | Add props to the `<input>`.                               |
 | [`section-configs`](#sectionConfigsProp)     | Object   |          | Define multiple sections `<input>`.                       |
-| [`render-suggestion`](#renderSuggestion)     | Function |          | Tell vue-autosuggest how to render inside the `<li>` tag. |
+| [`render-suggestion`](#renderSuggestion)     | Function |          | Tell vue-autosuggest how to render inside the `<li>` tag. Overrides what is inside the default suggestion template slot. |
 | [`get-suggestion-value`](#getSuggestionValue) | Function |          | Tells vue-autosuggest what to put in the `<input/>` value |
 
 <a name="inputPropsTable"></a>
@@ -275,7 +321,8 @@ sectionConfigs: {
 
 ### renderSuggestion
 
-This function will tell vue-autosuggest how to render the html inside the `<li>` tag.
+This function can be used to tell vue-autosuggest how to render the html inside the `<li>` tag when you do not want to use the 
+default template slot for suggestions but would rather have the power of javascript / jsx.
 
 In its most basic form it just returns an object property:
 

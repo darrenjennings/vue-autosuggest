@@ -5,7 +5,7 @@ const DefaultSection = {
     currentIndex: { type: Number, required: false, default: Infinity },
     updateCurrentIndex: { type: Function, required: true },
     searchInput: { type: [String, Number], required: false, default: "" },
-    renderSuggestion: { type: Function, required: true },
+    renderSuggestion: { type: Function, required: false },
     normalizeItemFunction: { type: Function, required: true }
   },
   computed: {
@@ -73,7 +73,11 @@ const DefaultSection = {
                 mouseleave: this.onMouseLeave
               }
             },
-            [this.renderSuggestion(item)]
+            [this.renderSuggestion ? this.renderSuggestion(item) 
+              : this.$scopedSlots.default && this.$scopedSlots.default({
+                key: key,
+                suggestion: item
+            })]
           );
         })
       ]

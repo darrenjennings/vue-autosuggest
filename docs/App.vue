@@ -9,7 +9,19 @@
               :section-configs="sectionConfigs"
               :getSuggestionValue="getSuggestionValue"
               @focus="focusMe"
-              ref="autocomplete" />
+              ref="autocomplete">
+      <!-- <template slot="header">
+        header
+      </template> -->
+      <template slot-scope="{suggestion}">
+        <div v-if="suggestion.name === 'blog'">
+          <a target="_blank" :href="suggestion.item.url">{{suggestion.item.value}}</a></div>
+        <div v-else>{{suggestion.item}}</div>
+      </template>
+      <!-- <template slot="footer">
+        footer
+      </template> -->
+    </vue-autosuggest>
     </div>
   </div>
 </template>
@@ -79,15 +91,13 @@ export default {
         },
         blog: {
           limit: 3,
-          type: "url-section",
           onSelected: function() {
-            //alert("url: " + item.item.url);
+            // alert("url: " + item.item.url);
           }
         }
       },
       inputProps: {
         id: "autosuggest__input",
-        onClick: () => {},
         onInputChange: this.onInputChange,
         placeholder: "Type 'g'"
       }

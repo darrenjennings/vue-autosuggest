@@ -1,6 +1,6 @@
 {
   "name": "vue-autosuggest",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "description": "Vue autosuggest component.",
   "engines": {
     "node": "> 4",
@@ -29,8 +29,21 @@
   ],
   "main": "dist/vue-autosuggest.js",
   "module": "dist/vue-autosuggest.esm.js",
-  "keywords": [],
-  "author": "Darren Jennings <dmjenn02@gmail.com> (http://www.darrenjennings.com/)",
+  "keywords": [
+    "vue", 
+    "autosuggest",
+    "autocomplete",
+    "enhanced input",
+    "typeahead",
+    "dropdown",
+    "select",
+    "combobox",
+    "accessibility",
+    "WAI-ARIA",
+    "multiselect",
+    "multiple selection"
+  ],
+  "author": "Darren Jennings <dmjenn02@gmail.com>",
   "license": "MIT",
   "eslintIgnore": [
     "node_modules",
@@ -53,7 +66,7 @@
   "devDependencies": {
     "@storybook/addon-actions": "^3.2.16",
     "@storybook/vue": "3.2.15",
-    "@vue/test-utils": "^1.0.0-beta.12",
+    "@vue/test-utils": "^1.0.0-beta.24",
     "babel-core": "6.26.0",
     "babel-eslint": "^8.0.2",
     "babel-jest": "22.4.0",
