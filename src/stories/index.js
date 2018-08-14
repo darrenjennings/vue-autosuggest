@@ -356,10 +356,8 @@ storiesOf("Vue-Autosuggest", module)
               <div>
                 <autosuggest 
                   ref="autosuggest" 
-                  :renderSuggestion="renderSuggestion"
                   :suggestions="filteredOptions" 
-                  :inputProps="inputProps" 
-                  :sectionConfigs="sectionConfigs">
+                  :inputProps="inputProps">
                   <template slot="header">
                     <h3 style="margin: 10px 10px 0; padding: 5px;">this is a header slot</h3>
                   </template>
@@ -409,19 +407,6 @@ storiesOf("Vue-Autosuggest", module)
       };
     },
     methods: {
-      onInputChange: sharedData.methods.onInputChange,
-      renderSuggestion(suggestion) {
-        const item = suggestion.item;
-        return (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center"
-            }}
-          >
-            d - {item}
-          </div>
-        );
-      },
+      onInputChange: sharedData.methods.onInputChange
     }
   }));
