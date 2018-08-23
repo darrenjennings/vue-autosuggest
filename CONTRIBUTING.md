@@ -3,7 +3,7 @@
 Thanks for being willing to contribute!
 
 **Working on your first Pull Request?** You can learn how from this *free* series
-[How to Contribute to an Open Source Project on GitHub][egghead]
+[How to Contribute to an Open Source Project on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github)
 
 ## Project setup
 
@@ -50,7 +50,7 @@ Make sure to include those changes (if they exist) in your commit.
 
 ## Help needed
 
-Please checkout the [the open issues][issues]
+Please checkout [the open issues][issues]
 
 Also, please watch the repo and respond to questions/bug reports/feature
 requests! Thanks!
