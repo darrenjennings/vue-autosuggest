@@ -102,7 +102,7 @@ Place the component into your app!
   <template slot-scope="{suggestion}">
     <span class="my-suggestion-item">{{suggestion.item}}</span>
   </template>
-</vue-autosuggest
+</vue-autosuggest>
 
 ```
 
