@@ -96,7 +96,7 @@ Place the component into your app!
 <vue-autosuggest
     :suggestions="[{data:['Frodo', 'Samwise', 'Gandalf', 'Galadriel', 'Faramir', 'Éowyn']}]"
     :on-selected="selectHandler"
-    :input-props="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"
+    :input-props="{id:'autosuggest__input', onInputChange: onInputChange, placeholder:'Do you feel lucky, punk?'}"
     @click="clickHandler"
 >  
   <template slot-scope="{suggestion}">
