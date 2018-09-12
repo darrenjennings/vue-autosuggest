@@ -262,7 +262,7 @@ vue-autosuggest does not have an opinion about how you render the items in your 
 
 | Prop                                        | Type     | Required | Description                                               |
 | :------------------------------------------ | :------- | :------: | :-------------------------------------------------------- |
-| [`suggestions`](#suggestionsProp)           | Array    |    ✓     | Suggestions to be rendered.                               |
+| [`suggestions`](#suggestionsProp)           | Array    |    ✓     | Suggestions to be rendered. e.g.`suggestions: [{data: ['harry','ron','hermione']}]`                               |
 | [`input-props`](#inputPropsTable)            | Object   |    ✓     | Add props to the `<input>`.                               |
 | [`section-configs`](#sectionConfigsProp)     | Object   |          | Define multiple sections `<input>`.                       |
 | [`render-suggestion`](#renderSuggestion)     | Function |          | Tell vue-autosuggest how to render inside the `<li>` tag. Overrides what is inside the default suggestion template slot. |
