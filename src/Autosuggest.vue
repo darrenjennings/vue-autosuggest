@@ -124,29 +124,31 @@ export default {
       default: null
     }
   },
-  data: () => ({
-    component_attr_id_autosuggest: "autosuggest",
-    component_attr_class_autosuggest__results_container: "autosuggest__results-container",
-    component_attr_class_autosuggest__results: "autosuggest__results",
-    searchInput: "",
-    searchInputOriginal: null,
-    currentIndex: null,
-    currentItem: null,
-    loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */,
-    didSelectFromOptions: false,
-    computedSections: [],
-    computedSize: 0,
-    internal_inputProps: {}, // Nest default prop values don't work currently in Vue
-    defaultInputProps: {
-      name: "q", // TODO: 2.0 Deprecate default name value
-      initialValue: "",
-      autocomplete: "off"
-    },
-    defaultSectionConfig: {
-      name: "default",
-      type: "default-section"
-    }
-  }),
+  data() {
+    return {
+      component_attr_id_autosuggest: "autosuggest",
+      component_attr_class_autosuggest__results_container: "autosuggest__results-container",
+      component_attr_class_autosuggest__results: "autosuggest__results",
+      searchInput: "",
+      searchInputOriginal: null,
+      currentIndex: null,
+      currentItem: null,
+      loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */,
+      didSelectFromOptions: false,
+      computedSections: [],
+      computedSize: 0,
+      internal_inputProps: {}, // Nest default prop values don't work currently in Vue
+      defaultInputProps: {
+        name: "q", // TODO: 2.0 Deprecate default name value
+        initialValue: "",
+        autocomplete: "off"
+      },
+      defaultSectionConfig: {
+        name: "default",
+        type: "default-section"
+      }
+    };
+  },
   computed: {
     listeners() {
       return {
