@@ -506,4 +506,31 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
+
+  it("can customize ids and classes for container divs", async () => {
+    const wrapper = mount(Autosuggest, {
+      propsData: {
+        ...defaultProps,
+        id: "automatischsuchen",
+        class: "containerz",
+        component_attr_class_autosuggest__results_container: 'resultz-containerz',
+        component_attr_class_autosuggest__results: 'resultz'
+      },
+      attachToDocument: true
+    });
+
+    expect(wrapper.find('#automatischsuchen').is('div')).toBe(true);
+    expect(wrapper.find('.containerz').is('div')).toBe(true);
+    expect(wrapper.find('.resultz-containerz').is('div')).toBe(true);
+    expect(wrapper.find('.resultz').is('div')).toBe(true);
+    expect(wrapper.find(`#${defaultProps.inputProps.id}`).is('input')).toBe(true);
+
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
+  });
 });

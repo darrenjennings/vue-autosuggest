@@ -27,6 +27,38 @@ exports[`Autosuggest can click outside document to trigger close 1`] = `
 
 `;
 
+exports[`Autosuggest can customize ids and classes for container divs 1`] = `
+
+<div id="automatischsuchen"
+     data-server-rendered="true"
+     class="containerz"
+>
+  <input type="text"
+         autocomplete="off"
+         role="combobox"
+         aria-autocomplete="list"
+         aria-owns="autosuggest__results"
+         aria-activedescendant
+         aria-haspopup="false"
+         aria-expanded="false"
+         id="autosuggest__input"
+         initialvalue
+         oninputchange="function onInputChange() {}"
+         placeholder="Type 'G'"
+         name="q"
+         onblur="function blurred() {}"
+         onfocus="function focused() {
+                mockFn();
+              }"
+         value
+         class="form-control"
+  >
+  <div class="resultz-containerz">
+  </div>
+</div>
+
+`;
+
 exports[`Autosuggest can display section header 1`] = `
 
 <div id="autosuggest"
