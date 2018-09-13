@@ -267,9 +267,9 @@ vue-autosuggest does not have an opinion about how you render the items in your 
 | [`section-configs`](#sectionConfigsProp)     | Object   |          | Define multiple sections `<input>`.                       |
 | [`render-suggestion`](#renderSuggestion)     | Function |          | Tell vue-autosuggest how to render inside the `<li>` tag. Overrides what is inside the default suggestion template slot. |
 | [`get-suggestion-value`](#getSuggestionValue) | Function |          | Tells vue-autosuggest what to put in the `<input/>` value |
-| `component_attr_id_autosuggest` | String |          | `id` of entire component |
-| `component_attr_class_autosuggest__results_container` | String |          | `class` of container of results container |
-| `component_attr_class_autosuggest__results` | String |          | `class` of results container |
+| `component-attr-id-autosuggest` | String |          | `id` of entire component |
+| `component-attr-class-autosuggest-results-container` | String |          | `class` of container of results container |
+| `component-attr-class-autosuggest-results` | String |          | `class` of results container |
 
 <a name="inputPropsTable"></a>
 

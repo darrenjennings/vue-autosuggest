@@ -1,5 +1,5 @@
 <template>
-    <div :id="component_attr_id_autosuggest" >
+    <div :id="componentAttrIdAutosuggest" >
         <input class="form-control"
                type="text"
                :autocomplete="inputProps.autocomplete"
@@ -15,9 +15,9 @@
                :aria-haspopup="isOpen ? 'true' : 'false'"
                :aria-expanded="isOpen ? 'true' : 'false'"
         />
-        <div :class="component_attr_class_autosuggest__results_container">
-                <div :class="component_attr_class_autosuggest__results"
-                    :aria-labelledby="component_attr_id_autosuggest"
+        <div :class="componentAttrClassAutosuggestResultsContainer">
+                <div :class="componentAttrClassAutosuggestResults"
+                    :aria-labelledby="componentAttrIdAutosuggest"
                     v-if="getSize() > 0 && !loading">
                     <slot name="header"/>
                     <component :normalizeItemFunction="normalizeItem"
@@ -123,17 +123,17 @@ export default {
       required: false,
       default: null
     },
-    component_attr_id_autosuggest: {
+    componentAttrIdAutosuggest: {
       type: String,
       required: false,
       default: "autosuggest"
     },
-    component_attr_class_autosuggest__results_container: {
+    componentAttrClassAutosuggestResultsContainer: {
       type: String,
       required: false,
       default: "autosuggest__results-container"
     },
-    component_attr_class_autosuggest__results: {
+    componentAttrClassAutosuggestResults: {
       type: String,
       required: false,
       default: "autosuggest__results"
@@ -332,7 +332,7 @@ export default {
     },
     ensureItemVisible(item, index) {
       const resultsScrollElement = document.querySelector(
-        `.${this.component_attr_class_autosuggest__results}`
+        `.${this.componentAttrClassAutosuggestResults}`
       );
 
       if (!item || (!index && index !== 0) || !resultsScrollElement) {
