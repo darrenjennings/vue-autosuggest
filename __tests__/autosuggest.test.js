@@ -511,8 +511,8 @@ describe("Autosuggest", () => {
     const wrapper = mount(Autosuggest, {
       propsData: {
         ...defaultProps,
-        component_attr_id_autosuggest: 'automatischsuchen',
-        component_attr_class_autosuggest__container: 'containerz',
+        id: "automatischsuchen",
+        class: "containerz",
         component_attr_class_autosuggest__results_container: 'resultz-containerz',
         component_attr_class_autosuggest__results: 'resultz'
       },

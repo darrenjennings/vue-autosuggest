@@ -1,7 +1,5 @@
 <template>
-    <div 
-      :id="component_attr_id_autosuggest" 
-      :class="component_attr_class_autosuggest__container">
+    <div :id="component_attr_id_autosuggest" >
         <input class="form-control"
                type="text"
                :autocomplete="inputProps.autocomplete"
@@ -129,11 +127,6 @@ export default {
       type: String,
       required: false,
       default: "autosuggest"
-    },
-    component_attr_class_autosuggest__container: {
-      type: String,
-      required: false,
-      default: ""
     },
     component_attr_class_autosuggest__results_container: {
       type: String,
