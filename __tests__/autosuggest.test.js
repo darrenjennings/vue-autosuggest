@@ -347,9 +347,14 @@ describe("Autosuggest", () => {
     const focused = () => {
       mockFn();
     };
+    const selected = () => {
+      mockFn();
+    };
 
     props.inputProps.onBlur = blurred;
     props.inputProps.onFocus = focused;
+    delete props['sectionConfigs'];
+    props.onSelected = selected;
 
     const wrapper = mount(Autosuggest, {
       propsData: props,
@@ -365,6 +370,10 @@ describe("Autosuggest", () => {
     input.trigger("blur");
     input.trigger("focus");
 
+    input.trigger("keydown.down");
+    input.trigger("keydown.down");
+    input.trigger("keydown.enter");
+
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) {
@@ -373,8 +382,8 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
 
-    expect(mockFn).toHaveBeenCalledTimes(2);
-    expect(mockConsole).toHaveBeenCalledTimes(2); // onBlur and onFocus deprecation warnings
+    expect(mockFn).toHaveBeenCalledTimes(3);
+    expect(mockConsole).toHaveBeenCalledTimes(3); // onBlur and onFocus deprecation warnings
   });
 
   it("can render default suggestion value by property name", async () => {
@@ -526,6 +535,53 @@ describe("Autosuggest", () => {
     expect(wrapper.find(`#${defaultProps.inputProps.id}`).is('input')).toBe(true);
 
     const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
+  });
+
+  it("@click and @selected listener events works as expected", async () => {
+    let props = Object.assign({}, defaultProps);
+
+    delete props['sectionConfigs']
+
+    const mockFn = jest.fn();
+    const mockConsole = jest.fn();
+
+    console.warn = mockConsole;
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+      listeners: {
+        click: e => {
+          mockFn(e);
+        },
+        selected: e => {
+          mockFn(e);
+        }
+      },
+      attachToDocument: true
+    });
+
+    await wrapper.vm.$nextTick(() => {});
+
+    const input = wrapper.find("input");
+    input.trigger("click");
+    wrapper.setData({ searchInput: "F" });
+
+    input.trigger("keydown.down");
+    input.trigger("keydown.enter");
+
+    expect(input.element.value).toBe("clifford kits");
+
+    expect(mockConsole).toHaveBeenCalledTimes(0);
+    expect(mockFn).toHaveBeenCalledTimes(2);
+
+    const renderer = createRenderer();
+
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) {
         return false;
