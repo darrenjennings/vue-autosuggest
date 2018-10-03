@@ -888,8 +888,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }
 
   exports.default = {
-    name: "autosuggest",
+    name: "Autosuggest",
     components: {
+      /* eslint-disable-next-line vue/no-unused-components */
       DefaultSection: _DefaultSection2.default
     },
     props: {
@@ -925,11 +926,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       suggestions: {
         type: Array,
         required: true,
-        default: []
+        default: function _default() {
+          return [];
+        }
       },
       renderSuggestion: {
         type: Function,
-        required: false
+        required: false,
+        default: null
       },
       getSuggestionValue: {
         type: Function,
@@ -1023,6 +1027,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             }
           },
           click: function click() {
+            /* eslint-disable-next-line vue/no-side-effects-in-computed-properties */
             _this.loading = false;
             _this.$listeners.click && _this.$listeners.click(_this.currentItem);
 
@@ -1032,6 +1037,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             _this.$nextTick(function () {
               _this.ensureItemVisible(_this.currentItem, _this.currentIndex);
             });
+          },
+          selected: function selected() {
+            if (_this.currentItem && _this.sectionConfigs[_this.currentItem.name] && _this.sectionConfigs[_this.currentItem.name].onSelected) {
+              _this.sectionConfigs[_this.currentItem.name].onSelected(_this.currentItem, _this.searchInputOriginal);
+            } else if (_this.sectionConfigs["default"].onSelected) {
+              _this.sectionConfigs["default"].onSelected(null, _this.searchInputOriginal);
+            } else if (_this.$listeners.selected) {
+              _this.$emit('selected', _this.currentItem);
+            } else if (_this.onSelected) {
+              // TODO: 2.0 deprecate old event listeners
+              _this._onSelected(_this.currentItem);
+            }
           }
         });
       },
@@ -1039,16 +1056,74 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading;
       }
     },
-    methods: {
-      _onSelected: function _onSelected() {
-        if (this.currentItem && this.sectionConfigs[this.currentItem.name] && this.sectionConfigs[this.currentItem.name].onSelected) {
-          this.sectionConfigs[this.currentItem.name].onSelected(this.currentItem, this.searchInputOriginal);
-        } else if (this.sectionConfigs["default"].onSelected) {
-          this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
-        } else {
-          this.onSelected && this.onSelected(this.currentItem);
+    watch: {
+      searchInput: function searchInput(newValue, oldValue) {
+        this.value = newValue;
+        if (!this.didSelectFromOptions) {
+          this.searchInputOriginal = this.value;
+          this.currentIndex = null;
+          this.internal_inputProps.onInputChange(newValue, oldValue);
         }
       },
+
+      suggestions: {
+        immediate: true,
+        handler: function handler() {
+          var _this2 = this;
+
+          this.computedSections = [];
+          this.computedSize = 0;
+
+          this.suggestions.forEach(function (section) {
+            if (!section.data) return;
+
+            var name = section.name ? section.name : _this2.defaultSectionConfig.name;
+
+            var _sectionConfigs$name = _this2.sectionConfigs[name],
+                type = _sectionConfigs$name.type,
+                limit = _sectionConfigs$name.limit,
+                label = _sectionConfigs$name.label;
+
+
+            limit = limit || _this2.limit;
+
+            /** Set defaults for section configs. */
+            type = type ? type : _this2.defaultSectionConfig.type;
+
+            limit = limit ? limit : Infinity;
+            limit = section.data.length < limit ? section.data.length : limit;
+
+            label = label ? label : section.label;
+
+            var computedSection = {
+              name: name,
+              label: label,
+              type: type,
+              limit: limit,
+              data: section.data,
+              start_index: _this2.computedSize,
+              end_index: _this2.computedSize + limit - 1
+            };
+            _this2.computedSections.push(computedSection);
+            _this2.computedSize += limit;
+          }, this);
+        }
+      }
+    },
+    created: function created() {
+      /** Take care of nested input props */
+      this.internal_inputProps = (0, _extends3.default)({}, this.defaultInputProps, this.inputProps);
+      this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
+      this.inputProps.name = this.internal_inputProps.name; // TODO: 2.0 Deprecate default name value
+
+      this.searchInput = this.internal_inputProps.initialValue; // set default query, e.g. loaded server side.
+    },
+    mounted: function mounted() {
+      document.addEventListener("mouseup", this.onDocumentMouseUp);
+      this.loading = true;
+    },
+
+    methods: {
       getSectionRef: function getSectionRef(i) {
         return "computed_section_" + i;
       },
@@ -1072,8 +1147,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return obj;
       },
       handleKeyStroke: function handleKeyStroke(e) {
-        var _this2 = this;
-
         var keyCode = e.keyCode;
 
 
@@ -1118,20 +1191,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           case 13:
             // Enter
             e.preventDefault();
+
             if (keyCode === 229) {
               // https://github.com/moroshko/react-autosuggest/pull/388
               break;
             }
-            this.$nextTick(function () {
-              if (_this2.getSize() > 0 && _this2.currentIndex >= 0) {
-                _this2.setChangeItem(_this2.getItemByIndex(_this2.currentIndex), true);
-                _this2.didSelectFromOptions = true;
-              }
-              _this2.loading = true;
-              _this2.$nextTick(function () {
-                _this2._onSelected(_this2.didSelectFromOptions);
-              });
-            });
+
+            if (this.getSize() > 0 && this.currentIndex >= 0) {
+              this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
+              this.didSelectFromOptions = true;
+            }
+
+            this.loading = true;
+            this.listeners.selected(this.didSelectFromOptions);
             break;
           case 27:
             // Escape
@@ -1216,7 +1288,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.didSelectFromOptions = true;
         this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
         this.$nextTick(function () {
-          _this3._onSelected(true);
+          _this3.listeners.selected(true);
         });
       },
       setCurrentIndex: function setCurrentIndex(newIndex) {
@@ -1250,6 +1322,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           (0, _utils.addClass)(element, hoverClass);
         }
       },
+      _onSelected: function _onSelected(e) {
+        console.warn('onSelected is deprecated. Please use click event listener \n\ne.g. <vue-autosuggest ... @selected="onSelectedMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand');
+        this.onSelected && this.onSelected(e);
+      },
       onClick: function onClick(e) {
         console.warn('inputProps.onClick is deprecated. Please use native click event listener \n\ne.g. <vue-autosuggest ... @click="clickMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand');
         this.internal_inputProps.onClick && this.internal_inputProps.onClick(e);
@@ -1261,71 +1337,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       onFocus: function onFocus(e) {
         console.warn('inputProps.onFocus is deprecated. Please use native focus event listener \n\ne.g. <vue-autosuggest ... @focus="focusMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand');
         this.internal_inputProps.onFocus && this.internal_inputProps.onFocus(e);
-      }
-    },
-    created: function created() {
-      /** Take care of nested input props */
-      this.internal_inputProps = (0, _extends3.default)({}, this.defaultInputProps, this.inputProps);
-      this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
-      this.inputProps.name = this.internal_inputProps.name; // TODO: 2.0 Deprecate default name value
-
-      this.searchInput = this.internal_inputProps.initialValue; // set default query, e.g. loaded server side.
-    },
-    mounted: function mounted() {
-      document.addEventListener("mouseup", this.onDocumentMouseUp);
-      this.loading = true;
-    },
-
-    watch: {
-      searchInput: function searchInput(newValue, oldValue) {
-        this.value = newValue;
-        if (!this.didSelectFromOptions) {
-          this.searchInputOriginal = this.value;
-          this.currentIndex = null;
-          this.internal_inputProps.onInputChange(newValue, oldValue);
-        }
-      },
-
-      suggestions: {
-        immediate: true,
-        handler: function handler() {
-          var _this4 = this;
-
-          this.computedSections = [];
-          this.computedSize = 0;
-
-          this.suggestions.forEach(function (section) {
-            if (!section.data) return;
-
-            var name = section.name ? section.name : _this4.defaultSectionConfig.name;
-
-            var _sectionConfigs$name = _this4.sectionConfigs[name],
-                type = _sectionConfigs$name.type,
-                limit = _sectionConfigs$name.limit,
-                label = _sectionConfigs$name.label;
-
-            /** Set defaults for section configs. */
-
-            type = type ? type : _this4.defaultSectionConfig.type;
-
-            limit = limit ? limit : Infinity;
-            limit = section.data.length < limit ? section.data.length : limit;
-
-            label = label ? label : section.label;
-
-            var computedSection = {
-              name: name,
-              label: label,
-              type: type,
-              limit: limit,
-              data: section.data,
-              start_index: _this4.computedSize,
-              end_index: _this4.computedSize + limit - 1
-            };
-            _this4.computedSections.push(computedSection);
-            _this4.computedSize += limit;
-          }, this);
-        }
       }
     }
   };
@@ -13471,7 +13482,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__);
 /* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_484dd5e5_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Autosuggest_vue__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_18563d14_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Autosuggest_vue__ = __webpack_require__(93);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(15);
 /* script */
 
@@ -13489,8 +13500,8 @@ var __vue_module_identifier__ = null
 
 var Component = Object(__WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__["a" /* default */])(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Autosuggest_vue___default.a,
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_484dd5e5_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Autosuggest_vue__["a" /* render */],
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_484dd5e5_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Autosuggest_vue__["b" /* staticRenderFns */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_18563d14_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Autosuggest_vue__["a" /* render */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_18563d14_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Autosuggest_vue__["b" /* staticRenderFns */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -14388,10 +14399,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":_vm.componentAttrIdAutosuggest}},[_c('input',_vm._g(_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"type":"text","autocomplete":_vm.inputProps.autocomplete,"role":"combobox","aria-autocomplete":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen && _vm.currentIndex !== null ? ("autosuggest__results_item-" + _vm.currentIndex) : '',"aria-haspopup":_vm.isOpen ? 'true' : 'false',"aria-expanded":_vm.isOpen ? 'true' : 'false'},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value}}},'input',_vm.inputProps,false),_vm.listeners)),_vm._v(" "),_c('div',{class:_vm.componentAttrClassAutosuggestResultsContainer},[(_vm.getSize() > 0 && !_vm.loading)?_c('div',{class:_vm.componentAttrClassAutosuggestResults,attrs:{"aria-labelledby":_vm.componentAttrIdAutosuggest}},[_vm._t("header"),_vm._v(" "),_vm._l((this.computedSections),function(cs,key){return _c(cs.type,{key:_vm.getSectionRef(key),ref:_vm.getSectionRef(key),refInFor:true,tag:"component",attrs:{"normalizeItemFunction":_vm.normalizeItem,"renderSuggestion":_vm.renderSuggestion,"section":cs,"updateCurrentIndex":_vm.updateCurrentIndex,"searchInput":_vm.searchInput},scopedSlots:_vm._u([{key:"default",fn:function(ref){
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"id":_vm.componentAttrIdAutosuggest}},[_c('input',_vm._g(_vm._b({directives:[{name:"model",rawName:"v-model",value:(_vm.searchInput),expression:"searchInput"}],staticClass:"form-control",class:[_vm.isOpen ? 'autosuggest__input-open' : '', _vm.inputProps['class']],attrs:{"type":"text","autocomplete":_vm.inputProps.autocomplete,"role":"combobox","aria-autocomplete":"list","aria-owns":"autosuggest__results","aria-activedescendant":_vm.isOpen && _vm.currentIndex !== null ? ("autosuggest__results_item-" + _vm.currentIndex) : '',"aria-haspopup":_vm.isOpen ? 'true' : 'false',"aria-expanded":_vm.isOpen ? 'true' : 'false'},domProps:{"value":(_vm.searchInput)},on:{"keydown":_vm.handleKeyStroke,"input":function($event){if($event.target.composing){ return; }_vm.searchInput=$event.target.value}}},'input',_vm.inputProps,false),_vm.listeners)),_vm._v(" "),_c('div',{class:_vm.componentAttrClassAutosuggestResultsContainer},[(_vm.getSize() > 0 && !_vm.loading)?_c('div',{class:_vm.componentAttrClassAutosuggestResults,attrs:{"aria-labelledby":_vm.componentAttrIdAutosuggest}},[_vm._t("header"),_vm._v(" "),_vm._l((_vm.computedSections),function(cs,key){return _c(cs.type,{key:_vm.getSectionRef(key),ref:_vm.getSectionRef(key),refInFor:true,tag:"component",attrs:{"normalize-item-function":_vm.normalizeItem,"render-suggestion":_vm.renderSuggestion,"section":cs,"update-current-index":_vm.updateCurrentIndex,"search-input":_vm.searchInput},scopedSlots:_vm._u([{key:"default",fn:function(ref){
 var suggestion = ref.suggestion;
-var key = ref.key;
-return [_vm._t("default",[_vm._v("\n                      "+_vm._s(suggestion.item)+"\n                    ")],{suggestion:suggestion,index:key})]}}])})}),_vm._v(" "),_vm._t("footer")],2):_vm._e()])])}
+var _key = ref._key;
+return [_vm._t("default",[_vm._v("\n            "+_vm._s(suggestion.item)+"\n          ")],{suggestion:suggestion,index:_key})]}}])})}),_vm._v(" "),_vm._t("footer")],2):_vm._e()])])}
 var staticRenderFns = []
 
 

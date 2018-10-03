@@ -1,6 +1,7 @@
 import vue from "rollup-plugin-vue";
 import buble from "rollup-plugin-buble";
 import filesize from "rollup-plugin-filesize";
+import uglify from "rollup-plugin-uglify";
 import json from "rollup-plugin-json";
 
 export default {
@@ -12,7 +13,8 @@ export default {
       objectAssign: "Object.assign",
       jsx: "h"
     }),
-    filesize()
+    filesize(),
+    uglify()
   ],
   output: [
     {

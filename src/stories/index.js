@@ -29,6 +29,7 @@ const sharedData = {
   ],
   methods: {
     onInputChange(text) {
+      action('onInputChange')(text)
       if (text === null) {
         return;
       }
@@ -46,7 +47,7 @@ storiesOf("Vue-Autosuggest", module)
     template: `<div>
                     <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected '{{selected}}'</span></div>
                     <div>
-                        <autosuggest :suggestions="filteredOptions" :inputProps="inputProps" :onSelected="onSelected" />
+                        <autosuggest :suggestions="filteredOptions" :inputProps="inputProps" @selected="onSelected" />
                     </div>
                 </div>`,
     data() {
@@ -61,6 +62,7 @@ storiesOf("Vue-Autosuggest", module)
           placeholder: "Type 'e'"
         },
         onSelected: item => {
+          action("Selected")(item)
           this.selected = item;
         }
       };
@@ -72,8 +74,7 @@ storiesOf("Vue-Autosuggest", module)
     template: `<div>
                     <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected {{selected}}</span></div>
                     <div>
-                        <autosuggest :suggestions="filteredOptions" :inputProps="inputProps" :sectionConfigs="sectionConfigs"
-                        />
+                        <autosuggest :limit="5" :suggestions="filteredOptions" :inputProps="inputProps" @selected="onSelected"/>
                     </div>
                 </div>`,
     data() {
@@ -86,27 +87,20 @@ storiesOf("Vue-Autosuggest", module)
             data: sharedData.options
           }
         ],
-        sectionConfigs: {
-          default: {
-            limit: 6,
-            onSelected: item => {
-              console.log(`Selected "${item.item}"`);
-            }
-          }
-        },
         inputProps: {
           id: "autosuggest__input",
           initialValue: "",
-          onClick: item => {
-            console.log("hold my beer", item);
-          },
           onInputChange: this.onInputChange,
           placeholder: "Type 'g'"
         }
       };
     },
     methods: {
+      onSelected(item) {
+        action('Selected')(item.item);
+      },
       onInputChange(text) {
+        action('onInputChange')(text)
         if (text === null) {
           return;
         }
@@ -128,6 +122,70 @@ storiesOf("Vue-Autosuggest", module)
           );
         this.filteredOptions = filtered;
       }
+    }
+  }))
+  .add("selected", () => ({
+    components: { Autosuggest },
+    template: `
+              <div>
+                <autosuggest 
+                  ref="autosuggest" 
+                  v-on:selected="onSelected"
+                  :suggestions="filteredOptions" 
+                  :inputProps="inputProps">
+                  <template slot="header">
+                    <h3 style="margin: 10px 10px 0; padding: 5px;">this is a header slot</h3>
+                  </template>
+                  <template slot-scope="{suggestion, index}">
+                    <div>{{suggestion.item}}, suggestion slot 
+                      <span :style="{color: colors[Math.floor(Math.random()*colors.length)]}">style</span> 
+                      <span :style="{color: colors[Math.floor(Math.random()*colors.length)]}">me</span> 
+                      <span :style="{color: colors[Math.floor(Math.random()*colors.length)]}">pretty</span> 
+                    </div>
+                  </template>
+                  <template slot="footer">
+                    <h3 style="margin: 10px 10px 0; padding: 5px;">this is a footer slot</h3>
+                  </template>
+                </autosuggest>
+              </div>
+              `,
+    data() {
+      return {
+        selected: [],
+        colors: [
+          '#1abc9c',
+          '#2ecc71',
+          '#3498db',
+          '#9b59b6',
+          '#34495e',
+          '#f1c40f',
+          '#e74c3c',
+          '#7f8c8d',
+          '#C4E538',
+          '#0652DD',
+          '#9980FA',
+          '#EA2027',
+        ],
+        limit: 10,
+        filteredOptions: [],
+        options: [
+          {
+            data: [...sharedData.options]
+          }
+        ],
+        inputProps: {
+          id: "autosuggest__input",
+          onInputChange: this.onInputChange,
+          onClick: this.onClick,
+          placeholder: "Type 'g'"
+        },
+        onSelected(i){
+          action('Selected')(i);
+        }
+      };
+    },
+    methods: {
+      onInputChange: sharedData.methods.onInputChange
     }
   }))
   .add("with property: initial value", () => ({
@@ -152,7 +210,7 @@ storiesOf("Vue-Autosuggest", module)
           default: {
             limit: 6,
             onSelected: (item, originalInput) => {
-              console.log(`Selected "${item.item}"`);
+              action('Selected')(item);
             }
           }
         },
@@ -173,7 +231,7 @@ storiesOf("Vue-Autosuggest", module)
                     <div>
                         <autosuggest 
                             :suggestions="filteredOptions"
-                            :onSelected="onSelected"
+                            @selected="onSelected"
                             :renderSuggestion="renderSuggestion"
                             :getSuggestionValue="getSuggestionValue"
                             :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"/>
@@ -197,6 +255,7 @@ storiesOf("Vue-Autosuggest", module)
     },
     methods: {
       onInputChange(item) {
+        action('onInputChange')(item);
         if (item === null) {
           return;
         }
@@ -206,7 +265,7 @@ storiesOf("Vue-Autosuggest", module)
         this.filteredOptions = [{ data: filteredData }];
       },
       onSelected(item) {
-        console.log("Selected: ", item);
+        action("Selected")(item);
         this.selected = item;
       },
       renderSuggestion(suggestion) {
@@ -240,7 +299,7 @@ storiesOf("Vue-Autosuggest", module)
     components: { Autosuggest },
     template: `<div>
                     <div>
-                        <autosuggest ref="autosuggest" :suggestions="filteredOptions" :inputProps="inputProps" :sectionConfigs="sectionConfigs"/>
+                        <autosuggest ref="autosuggest" @click="onClick" @selected="onSelected" :suggestions="filteredOptions" :inputProps="inputProps"/>
                         <div v-for="item in selected">
                             <div style="display: block; width: 100%; padding: 10px; margin-right: 20px;">
                             <div style="float:left;">{{item}}</div>
@@ -259,23 +318,19 @@ storiesOf("Vue-Autosuggest", module)
             data: sharedData.options.slice(0, 5)
           }
         ],
-        sectionConfigs: {
-          default: {
-            onSelected: (item, originalInput) => {
-              this.add(item.item);
-            }
-          }
-        },
         inputProps: {
           id: "autosuggest__input",
           initialValue: "math",
           onInputChange: this.onInputChange,
-          onClick: this.onClick,
           placeholder: "Type 'g'"
         }
       };
     },
     methods: {
+      onSelected(item) {
+        action("Selected")(item);
+        this.add(item.item);
+      },
       onClick() {
         this.onInputChange("");
       },
@@ -299,7 +354,7 @@ storiesOf("Vue-Autosuggest", module)
                     <div id="many-many-options">
                         <autosuggest
                             :suggestions="filteredOptions"
-                            :onSelected="onSelected"
+\                            @selected="onSelected"
                             :renderSuggestion="renderSuggestion"
                             :inputProps="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"/>
                     </div>
@@ -321,6 +376,7 @@ storiesOf("Vue-Autosuggest", module)
     },
     methods: {
       onInputChange(input) {
+        action("onInputChange")(input);
         if (input === null) {
           return;
         }
@@ -333,7 +389,7 @@ storiesOf("Vue-Autosuggest", module)
         }, 100);
       },
       onSelected(item) {
-        console.log("Selected:", item);
+        action("Selected")(item);
         this.selected = item;
       },
       renderSuggestion(suggestion) {
@@ -356,7 +412,7 @@ storiesOf("Vue-Autosuggest", module)
               <div>
                 <autosuggest 
                   ref="autosuggest" 
-                  :suggestions="filteredOptions" 
+                  :suggestions="filteredOptions"
                   :inputProps="inputProps">
                   <template slot="header">
                     <h3 style="margin: 10px 10px 0; padding: 5px;">this is a header slot</h3>

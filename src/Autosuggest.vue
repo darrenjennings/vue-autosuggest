@@ -1,52 +1,62 @@
 <template>
-    <div :id="componentAttrIdAutosuggest" >
-        <input class="form-control"
-               type="text"
-               :autocomplete="inputProps.autocomplete"
-               role="combobox"
-               v-model="searchInput"
-               :class="[isOpen ? 'autosuggest__input-open' : '', inputProps['class']]"
-               @keydown="handleKeyStroke"
-               v-bind="inputProps"
-               v-on="listeners"
-               aria-autocomplete="list"
-               aria-owns="autosuggest__results"
-               :aria-activedescendant="isOpen && currentIndex !== null ? `autosuggest__results_item-${currentIndex}` : ''"
-               :aria-haspopup="isOpen ? 'true' : 'false'"
-               :aria-expanded="isOpen ? 'true' : 'false'"
-        />
-        <div :class="componentAttrClassAutosuggestResultsContainer">
-                <div :class="componentAttrClassAutosuggestResults"
-                    :aria-labelledby="componentAttrIdAutosuggest"
-                    v-if="getSize() > 0 && !loading">
-                    <slot name="header"/>
-                    <component :normalizeItemFunction="normalizeItem"
-                              :renderSuggestion="renderSuggestion"
-                              v-for="(cs, key) in this.computedSections"
-                              :is="cs.type"
-                              :section="cs"
-                              :ref="getSectionRef(key)"
-                              :key="getSectionRef(key)"
-                              :updateCurrentIndex="updateCurrentIndex"
-                              :searchInput="searchInput">
-                      <template slot-scope="{ suggestion, key }">
-                        <slot :suggestion="suggestion" :index="key" >
-                          {{ suggestion.item }}
-                        </slot>
-                      </template>
-                    </component>
-                    <slot name="footer"/>
-                </div>
-        </div>
+  <div :id="componentAttrIdAutosuggest">
+    <input 
+      v-model="searchInput"
+      class="form-control"
+      type="text"
+      :autocomplete="inputProps.autocomplete"
+      role="combobox"
+      :class="[isOpen ? 'autosuggest__input-open' : '', inputProps['class']]"
+      v-bind="inputProps"
+      aria-autocomplete="list"
+      aria-owns="autosuggest__results"
+      :aria-activedescendant="isOpen && currentIndex !== null ? `autosuggest__results_item-${currentIndex}` : ''"
+      :aria-haspopup="isOpen ? 'true' : 'false'"
+      :aria-expanded="isOpen ? 'true' : 'false'"
+      @keydown="handleKeyStroke"
+      v-on="listeners"
+    >
+    <div :class="componentAttrClassAutosuggestResultsContainer">
+      <div 
+        v-if="getSize() > 0 && !loading"
+        :class="componentAttrClassAutosuggestResults"
+        :aria-labelledby="componentAttrIdAutosuggest"
+      >
+        <slot name="header" />
+        <component
+          :is="cs.type"
+          v-for="(cs, key) in computedSections"
+          :ref="getSectionRef(key)"
+          :key="getSectionRef(key)"
+          :normalize-item-function="normalizeItem"
+          :render-suggestion="renderSuggestion"
+          :section="cs"
+          :update-current-index="updateCurrentIndex"
+          :search-input="searchInput"
+        >
+          <template slot-scope="{ suggestion, _key }">
+            <slot 
+              :suggestion="suggestion" 
+              :index="_key"
+            >
+              {{ suggestion.item }}
+            </slot>
+          </template>
+        </component>
+        <slot name="footer" />
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
+
 import DefaultSection from "./parts/DefaultSection.js";
 import { addClass, removeClass } from "./utils";
 export default {
-  name: "autosuggest",
+  name: "Autosuggest",
   components: {
+    /* eslint-disable-next-line vue/no-unused-components */
     DefaultSection
   },
   props: {
@@ -82,11 +92,12 @@ export default {
     suggestions: {
       type: Array,
       required: true,
-      default: []
+      default: () => []
     },
     renderSuggestion: {
       type: Function,
-      required: false
+      required: false,
+      default: null
     },
     getSuggestionValue: {
       type: Function,
@@ -178,6 +189,7 @@ export default {
           }
         },
         click: () => {
+          /* eslint-disable-next-line vue/no-side-effects-in-computed-properties */
           this.loading = false;
           this.$listeners.click && this.$listeners.click(this.currentItem);
 
@@ -187,6 +199,25 @@ export default {
           this.$nextTick(() => {
             this.ensureItemVisible(this.currentItem, this.currentIndex);
           });
+        },
+        selected: () => {
+          if (
+            this.currentItem &&
+            this.sectionConfigs[this.currentItem.name] &&
+            this.sectionConfigs[this.currentItem.name].onSelected
+          ) {
+            this.sectionConfigs[this.currentItem.name].onSelected(
+              this.currentItem,
+              this.searchInputOriginal
+            );
+          } else if (this.sectionConfigs["default"].onSelected) {
+            this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
+          } else if (this.$listeners.selected) {
+            this.$emit('selected', this.currentItem);
+          } else if (this.onSelected){
+            // TODO: 2.0 deprecate old event listeners
+            this._onSelected(this.currentItem);
+          }
         }
       };
     },
@@ -194,23 +225,66 @@ export default {
       return this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading;
     }
   },
-  methods: {
-    _onSelected() {
-      if (
-        this.currentItem &&
-        this.sectionConfigs[this.currentItem.name] &&
-        this.sectionConfigs[this.currentItem.name].onSelected
-      ) {
-        this.sectionConfigs[this.currentItem.name].onSelected(
-          this.currentItem,
-          this.searchInputOriginal
-        );
-      } else if (this.sectionConfigs["default"].onSelected) {
-        this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
-      } else {
-        this.onSelected && this.onSelected(this.currentItem);
+  watch: {
+    searchInput(newValue, oldValue) {
+      this.value = newValue;
+      if (!this.didSelectFromOptions) {
+        this.searchInputOriginal = this.value;
+        this.currentIndex = null;
+        this.internal_inputProps.onInputChange(newValue, oldValue);
       }
     },
+    suggestions: {
+      immediate: true,
+      handler() {
+        this.computedSections = [];
+        this.computedSize = 0;
+
+        this.suggestions.forEach(section => {
+          if (!section.data) return;
+
+          const name = section.name ? section.name : this.defaultSectionConfig.name;
+
+          let { type, limit, label } = this.sectionConfigs[name];
+
+          limit = limit || this.limit
+
+          /** Set defaults for section configs. */
+          type = type ? type : this.defaultSectionConfig.type;
+
+          limit = limit ? limit : Infinity;
+          limit = section.data.length < limit ? section.data.length : limit;
+
+          label = label ? label : section.label;
+
+          let computedSection = {
+            name,
+            label,
+            type,
+            limit,
+            data: section.data,
+            start_index: this.computedSize,
+            end_index: this.computedSize + limit - 1
+          };
+          this.computedSections.push(computedSection);
+          this.computedSize += limit;
+        }, this);
+      }
+    }
+  },
+  created() {
+    /** Take care of nested input props */
+    this.internal_inputProps = { ...this.defaultInputProps, ...this.inputProps };
+    this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
+    this.inputProps.name = this.internal_inputProps.name; // TODO: 2.0 Deprecate default name value
+
+    this.searchInput = this.internal_inputProps.initialValue; // set default query, e.g. loaded server side.
+  },
+  mounted() {
+    document.addEventListener("mouseup", this.onDocumentMouseUp);
+    this.loading = true;
+  },
+  methods: {
     getSectionRef(i) {
       return "computed_section_" + i;
     },
@@ -284,20 +358,19 @@ export default {
           break;
         case 13: // Enter
           e.preventDefault();
+
           if (keyCode === 229) {
             // https://github.com/moroshko/react-autosuggest/pull/388
             break;
           }
-          this.$nextTick(() => {
-            if (this.getSize() > 0 && this.currentIndex >= 0) {
-              this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
-              this.didSelectFromOptions = true;
-            }
-            this.loading = true;
-            this.$nextTick(() => {
-              this._onSelected(this.didSelectFromOptions);
-            });
-          });
+
+          if (this.getSize() > 0 && this.currentIndex >= 0) {
+            this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
+            this.didSelectFromOptions = true;
+          }
+          
+          this.loading = true;
+          this.listeners.selected(this.didSelectFromOptions);        
           break;
         case 27: // Escape
           if (this.isOpen) {
@@ -385,7 +458,7 @@ export default {
       this.didSelectFromOptions = true;
       this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
       this.$nextTick(() => {
-        this._onSelected(true);
+        this.listeners.selected(true);
       });
     },
     setCurrentIndex(newIndex, limit = -1, direction) {
@@ -416,6 +489,12 @@ export default {
         addClass(element, hoverClass);
       }
     },
+    _onSelected(e) {
+      console.warn(
+        'onSelected is deprecated. Please use click event listener \n\ne.g. <vue-autosuggest ... @selected="onSelectedMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
+      );
+      this.onSelected && this.onSelected(e);
+    },
     onClick(e) {
       console.warn(
         'inputProps.onClick is deprecated. Please use native click event listener \n\ne.g. <vue-autosuggest ... @click="clickMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
@@ -435,62 +514,5 @@ export default {
       this.internal_inputProps.onFocus && this.internal_inputProps.onFocus(e);
     }
   },
-  created() {
-    /** Take care of nested input props */
-    this.internal_inputProps = { ...this.defaultInputProps, ...this.inputProps };
-    this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
-    this.inputProps.name = this.internal_inputProps.name; // TODO: 2.0 Deprecate default name value
-
-    this.searchInput = this.internal_inputProps.initialValue; // set default query, e.g. loaded server side.
-  },
-  mounted() {
-    document.addEventListener("mouseup", this.onDocumentMouseUp);
-    this.loading = true;
-  },
-  watch: {
-    searchInput(newValue, oldValue) {
-      this.value = newValue;
-      if (!this.didSelectFromOptions) {
-        this.searchInputOriginal = this.value;
-        this.currentIndex = null;
-        this.internal_inputProps.onInputChange(newValue, oldValue);
-      }
-    },
-    suggestions: {
-      immediate: true,
-      handler() {
-        this.computedSections = [];
-        this.computedSize = 0;
-
-        this.suggestions.forEach(section => {
-          if (!section.data) return;
-
-          const name = section.name ? section.name : this.defaultSectionConfig.name;
-
-          let { type, limit, label } = this.sectionConfigs[name];
-
-          /** Set defaults for section configs. */
-          type = type ? type : this.defaultSectionConfig.type;
-
-          limit = limit ? limit : Infinity;
-          limit = section.data.length < limit ? section.data.length : limit;
-
-          label = label ? label : section.label;
-
-          let computedSection = {
-            name,
-            label,
-            type,
-            limit,
-            data: section.data,
-            start_index: this.computedSize,
-            end_index: this.computedSize + limit - 1
-          };
-          this.computedSections.push(computedSection);
-          this.computedSize += limit;
-        }, this);
-      }
-    }
-  }
 };
 </script>

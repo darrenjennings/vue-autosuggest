@@ -1,5 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Autosuggest @click and @selected listener events works as expected 1`] = `
+
+<div id="autosuggest"
+     data-server-rendered="true"
+>
+  <input type="text"
+         autocomplete="off"
+         role="combobox"
+         aria-autocomplete="list"
+         aria-owns="autosuggest__results"
+         aria-activedescendant
+         aria-haspopup="false"
+         aria-expanded="false"
+         id="autosuggest__input"
+         initialvalue
+         oninputchange="function onInputChange() {}"
+         placeholder="Type 'G'"
+         name="q"
+         onblur="function blurred() {}"
+         onfocus="function focused() {
+                mockFn();
+              }"
+         value="clifford kits"
+         class="form-control"
+  >
+  <div class="autosuggest__results-container">
+  </div>
+</div>
+
+`;
+
 exports[`Autosuggest can click outside document to trigger close 1`] = `
 
 <div id="autosuggest"
@@ -709,8 +740,8 @@ exports[`Autosuggest onBlur and onFocus work as expected, including deprecation 
          aria-autocomplete="list"
          aria-owns="autosuggest__results"
          aria-activedescendant
-         aria-haspopup="true"
-         aria-expanded="true"
+         aria-haspopup="false"
+         aria-expanded="false"
          id="autosuggest__input"
          initialvalue
          oninputchange="function onInputChange() {}"
@@ -722,58 +753,10 @@ exports[`Autosuggest onBlur and onFocus work as expected, including deprecation 
          onfocus="function focused() {
                 mockFn();
               }"
-         value="G"
-         class="form-control autosuggest__input-open"
+         value="friendly chemistry"
+         class="form-control"
   >
   <div class="autosuggest__results-container">
-    <div aria-labelledby="autosuggest"
-         class="autosuggest__results"
-    >
-      <ul role="listbox"
-          aria-labelledby="autosuggest"
-      >
-        <li role="option"
-            data-suggestion-index="0"
-            data-section-name="default"
-            id="autosuggest__results_item-0"
-            class="autosuggest__results_item"
-        >
-          clifford kits
-        </li>
-        <li role="option"
-            data-suggestion-index="1"
-            data-section-name="default"
-            id="autosuggest__results_item-1"
-            class="autosuggest__results_item"
-        >
-          friendly chemistry
-        </li>
-        <li role="option"
-            data-suggestion-index="2"
-            data-section-name="default"
-            id="autosuggest__results_item-2"
-            class="autosuggest__results_item"
-        >
-          phonics
-        </li>
-        <li role="option"
-            data-suggestion-index="3"
-            data-section-name="default"
-            id="autosuggest__results_item-3"
-            class="autosuggest__results_item"
-        >
-          life of fred
-        </li>
-        <li role="option"
-            data-suggestion-index="4"
-            data-section-name="default"
-            id="autosuggest__results_item-4"
-            class="autosuggest__results_item"
-        >
-          life of fred math
-        </li>
-      </ul>
-    </div>
   </div>
 </div>
 
