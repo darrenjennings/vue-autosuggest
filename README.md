@@ -95,8 +95,8 @@ Place the component into your app!
 ```html
 <vue-autosuggest
     :suggestions="[{data:['Frodo', 'Samwise', 'Gandalf', 'Galadriel', 'Faramir', 'Éowyn']}]"
-    :on-selected="selectHandler"
     :input-props="{id:'autosuggest__input', onInputChange: onInputChange, placeholder:'Do you feel lucky, punk?'}"
+    @selected="selectHandler"
     @click="clickHandler"
 >  
   <template slot-scope="{suggestion}">
@@ -119,7 +119,7 @@ Advanced usage:
             :suggestions="filteredOptions"
             @focus="focusMe"
             @click="clickHandler"
-            :on-selected="onSelected"
+            @selected="onSelected"
             :render-suggestion="renderSuggestion"
             :get-suggestion-value="getSuggestionValue"
             :input-props="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"/>
@@ -267,6 +267,7 @@ vue-autosuggest does not have an opinion about how you render the items in your 
 | [`section-configs`](#sectionConfigsProp)     | Object   |          | Define multiple sections `<input>`.                       |
 | [`render-suggestion`](#renderSuggestion)     | Function |          | Tell vue-autosuggest how to render inside the `<li>` tag. Overrides what is inside the default suggestion template slot. |
 | [`get-suggestion-value`](#getSuggestionValue) | Function |          | Tells vue-autosuggest what to put in the `<input/>` value |
+| `@selected`            | Function   |    ✓     | suggestion select handler. equivalent to sectionConfigs `on-selected` but for all items             |
 | `component-attr-id-autosuggest` | String |          | `id` of entire component |
 | `component-attr-class-autosuggest-results-container` | String |          | `class` of container of results container |
 | `component-attr-class-autosuggest-results` | String |          | `class` of results container |
