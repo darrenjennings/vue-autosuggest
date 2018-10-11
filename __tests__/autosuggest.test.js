@@ -212,7 +212,10 @@ describe("Autosuggest", () => {
 
     input.trigger("click");
     wrapper.setData({ searchInput: "G" });
+    window.document.dispatchEvent(new Event("mousedown"));
     window.document.dispatchEvent(new Event("mouseup"));
+    
+    await wrapper.vm.$nextTick(() => {});
 
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
