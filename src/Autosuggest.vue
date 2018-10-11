@@ -448,7 +448,7 @@ export default {
     },
     clickedOnScrollbar(mouseX){
       const results = document.querySelector(`.${this.componentAttrClassAutosuggestResults}`);
-      return results.clientWidth <= (mouseX + 16);
+      return results && results.clientWidth <= (mouseX + 16) || false;
     },
     onDocumentMouseDown(e) {
       var rect = e.target.getBoundingClientRect ? e.target.getBoundingClientRect() : 0;
