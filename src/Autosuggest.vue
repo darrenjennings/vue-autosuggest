@@ -447,11 +447,12 @@ export default {
       this.currentIndex = index;
     },
     clickedOnScrollbar(mouseX){
-      const results = document.querySelector(`.${this.componentAttrClassAutosuggestResultsContainer}`);
-      return results.offsetWidth <= mouseX;
+      const results = document.querySelector(`.${this.componentAttrClassAutosuggestResults}`);
+      return results.clientWidth <= (mouseX + 16);
     },
     onDocumentMouseDown(e) {
-      this.clientXMouseDownInitial = e.clientX
+      var rect = e.target.getBoundingClientRect ? e.target.getBoundingClientRect() : 0;
+      this.clientXMouseDownInitial = e.clientX - rect.left;
     },
     onDocumentMouseUp(e) {
       /** Do not re-render list on input click  */
