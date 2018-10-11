@@ -169,7 +169,8 @@ export default {
       defaultSectionConfig: {
         name: "default",
         type: "default-section"
-      }
+      },
+      clientXMouseDownInitial: null
     };
   },
   computed: {
@@ -282,7 +283,12 @@ export default {
   },
   mounted() {
     document.addEventListener("mouseup", this.onDocumentMouseUp);
+    document.addEventListener("mousedown", this.onDocumentMouseDown);
     this.loading = true;
+  },
+  beforeDestroy() {
+    document.removeEventListener("mouseup", this.onDocumentMouseUp)
+    document.removeEventListener("mousedown", this.onDocumentMouseDown)
   },
   methods: {
     getSectionRef(i) {
@@ -440,10 +446,17 @@ export default {
     updateCurrentIndex(index) {
       this.currentIndex = index;
     },
+    clickedOnScrollbar(mouseX){
+      const results = document.querySelector(`.${this.componentAttrClassAutosuggestResultsContainer}`);
+      return results.offsetWidth <= mouseX;
+    },
+    onDocumentMouseDown(e) {
+      this.clientXMouseDownInitial = e.clientX
+    },
     onDocumentMouseUp(e) {
       /** Do not re-render list on input click  */
       const isChild = this.$el.contains(e.target);
-      if (isChild && e.target.tagName === 'INPUT') {
+      if (isChild && e.target.tagName === 'INPUT' || this.clickedOnScrollbar(this.clientXMouseDownInitial)) {
         return;
       }
       
