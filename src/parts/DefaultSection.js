@@ -70,7 +70,9 @@ const DefaultSection = {
               },
               on: {
                 mouseenter: this.onMouseEnter,
-                mouseleave: this.onMouseLeave
+                mouseleave: this.onMouseLeave,
+                touchstart: this.onMouseEnter,
+                touchend: this.onMouseLeave
               }
             },
             [this.renderSuggestion ? this.renderSuggestion(item) 

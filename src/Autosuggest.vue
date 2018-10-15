@@ -284,11 +284,13 @@ export default {
   mounted() {
     document.addEventListener("mouseup", this.onDocumentMouseUp);
     document.addEventListener("mousedown", this.onDocumentMouseDown);
+    document.addEventListener("touchstart", this.onDocumentMouseUp);
     this.loading = true;
   },
   beforeDestroy() {
     document.removeEventListener("mouseup", this.onDocumentMouseUp)
     document.removeEventListener("mousedown", this.onDocumentMouseDown)
+    document.removeEventListener("touchstart", this.onDocumentMouseUp);
   },
   methods: {
     getSectionRef(i) {
