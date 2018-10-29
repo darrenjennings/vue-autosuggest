@@ -280,11 +280,11 @@ export default {
     this.inputProps.name = this.internal_inputProps.name; // TODO: 2.0 Deprecate default name value
 
     this.searchInput = this.internal_inputProps.initialValue; // set default query, e.g. loaded server side.
+    this.loading = this.shouldRenderSuggestions();
   },
   mounted() {
     document.addEventListener("mouseup", this.onDocumentMouseUp);
     document.addEventListener("mousedown", this.onDocumentMouseDown);
-    this.loading = true;
   },
   beforeDestroy() {
     document.removeEventListener("mouseup", this.onDocumentMouseUp)

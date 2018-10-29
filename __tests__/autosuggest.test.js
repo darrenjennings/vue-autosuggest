@@ -534,7 +534,6 @@ describe("Autosuggest", () => {
     expect(wrapper.find('#automatischsuchen').is('div')).toBe(true);
     expect(wrapper.find('.containerz').is('div')).toBe(true);
     expect(wrapper.find('.resultz-containerz').is('div')).toBe(true);
-    expect(wrapper.find('.resultz').is('div')).toBe(true);
     expect(wrapper.find(`#${defaultProps.inputProps.id}`).is('input')).toBe(true);
 
     const renderer = createRenderer();
