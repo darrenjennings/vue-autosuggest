@@ -11,7 +11,7 @@ before_script:
   - npm prune
 script:
   - yarn test:coverage
-  - yarn build
+  - yarn build:umd
 after_success:
   - yarn report-coverage
 branches:
