@@ -17,8 +17,11 @@ module.exports = {
             },
             {
                 test: /\.js/,
-                loaders: ["babel-loader"],
-                exclude: /node_modules/
+                loader: "babel-loader",
+                exclude: /node_modules/,
+                options: {
+                  babelrc: true
+                }
             },
             {
                 test: /\.vue$/,
