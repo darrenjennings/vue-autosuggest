@@ -465,4 +465,66 @@ storiesOf("Vue-Autosuggest", module)
     methods: {
       onInputChange: sharedData.methods.onInputChange
     }
+  }))
+  .add("multiple instances", () => ({
+    components: { Autosuggest },
+    template: `
+              <div>
+                <div style="width: 100%;">
+                    <p>Tab throw each component and use arrow keys to test isolation of functionality.</p>
+                </div>
+                <div style="display: flex; justify-content: center;">
+                  <autosuggest
+                    style="display: block; width: 100%; margin-right: 1rem;"
+                    :suggestions="filteredOptions[0]"
+                    :inputProps="{...inputProps, onInputChange: (text) => this.onInputChange(text, 0)}">
+                  </autosuggest>
+                  <autosuggest
+                    style="display: block; width: 100%; margin-right: 1rem;"
+                    :suggestions="filteredOptions[1]"
+                    :inputProps="{...inputProps, onInputChange: (text) => this.onInputChange(text, 1)}">
+                  </autosuggest>
+                  <autosuggest
+                    style="display: block; width: 100%;"
+                    :suggestions="filteredOptions[2]"
+                    :inputProps="{...inputProps, onInputChange: (text) => this.onInputChange(text, 2)}">
+                  </autosuggest>
+                </div>
+              </div>
+              `,
+    data() {
+      return {
+        selected: [],
+        limit: 10,
+        filteredOptions: {
+          0: [],
+          1: [],
+          2: []
+        },
+        options: [
+          {
+            data: [...sharedData.options]
+          }
+        ],
+        inputProps: {
+          id: "autosuggest__input",
+          onInputChange: this.onInputChange,
+          onClick: this.onClick,
+          placeholder: "Type 'g'"
+        }
+      };
+    },
+    methods: {
+      onInputChange(text, index) {
+        action('onInputChange')(text)
+        if (text === null) {
+          return;
+        }
+        const filteredData = this.options[0].data.filter(item => {
+          return item.toLowerCase().indexOf(text.toLowerCase()) > -1;
+        });
+
+        this.filteredOptions[index] = [{ data: filteredData }];
+      }
+    }
   }));
