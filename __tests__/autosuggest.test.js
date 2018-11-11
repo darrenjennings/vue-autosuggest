@@ -197,6 +197,68 @@ describe("Autosuggest", () => {
     });
   });
 
+  it("can interact with results of specific instance when multiple instances exist", async () => {
+    const multipleAutosuggest = {
+      components: {
+        Autosuggest
+      },
+      data () {
+        return {
+          autosuggestProps: defaultProps,
+          automatischsuchen: true
+        }
+      },
+      render(h) {
+        return h(
+          "div",
+          [
+            h(
+              Autosuggest,
+              {
+                props: this.autosuggestProps
+              }
+            ),
+            h(
+              Autosuggest,
+              {
+                props: this.autosuggestProps
+              }
+            )
+          ]
+        );
+      }
+    }
+    const wrapper = mount(multipleAutosuggest, {
+      attachToDocument: true 
+    });
+
+    const autosuggestInstances = wrapper.findAll(Autosuggest);
+
+    const autosuggest1 = autosuggestInstances.at(0);
+    const autosuggest2 = autosuggestInstances.at(1);
+    const input1 = autosuggest1.find("input");
+    const input2 = autosuggest2.find("input");
+
+    input1.trigger("click");
+    input2.trigger("click");
+    
+    expect(autosuggest1.findAll("li.autosuggest__results_item").length).toBe(5);
+    expect(autosuggest1.findAll("li.autosuggest__results_item").length).toBe(5);
+
+    times(2)(() => {
+      input2.trigger("keydown.down");
+    });
+
+    expect(autosuggest1.findAll("li.autosuggest__results_item-highlighted").length).toBe(0);
+    expect(autosuggest2.findAll("li.autosuggest__results_item-highlighted").length).toBe(1);
+    expect(autosuggest2.findAll("li").at(1).classes()).toContain("autosuggest__results_item-highlighted");
+
+    input2.trigger("keydown.enter");
+
+    expect(input1.element.value).toBe("");
+    expect(input2.element.value).toBe("friendly chemistry");
+  });
+
   it("can click outside document to trigger close", async () => {
     const props = Object.assign({}, defaultProps);
 

@@ -32,6 +32,17 @@
         "example",
         "test"
       ]
+    },
+    {
+      "login": "scottadamsmith",
+      "name": "Scott Smith",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1824850?v=4",
+      "profile": "https://github.com/scottadamsmith",
+      "contributions": [
+        "bug",
+        "code",
+        "test"
+      ]
     }
   ]
 }
