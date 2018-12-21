@@ -44,6 +44,7 @@
   * [Api Fetching suggestions with Multiple sections](https://codesandbox.io/s/mjqrk7v2rx)
   * [Form Validation with VeeValidate](https://codesandbox.io/s/o503m66r59)
   * [Multiple VueAutosuggest instances on same page](https://codesandbox.io/s/2olxlv9q9r)
+* [Integration with Algolia](https://www.algolia.com/doc/guides/building-search-ui/resources/ui-and-ux-patterns/in-depth/autocomplete/vue/?language=vue#results-page-with-autocomplete) thanks to [@haroenv](https://github.com/haroenv)!
 
 ## Features
 
