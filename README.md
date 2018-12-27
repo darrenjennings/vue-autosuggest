@@ -33,8 +33,8 @@
 
 ## Examples
 
-* <a href="https://educents.github.io/vue-autosuggest">Demo</a>
-* <a href="https://educents.github.io/vue-autosuggest/storybook">Storybook</a> Helpful to see all
+* <a href="https://darrenjennings.github.io/vue-autosuggest">Demo</a>
+* <a href="https://darrenjennings.github.io/vue-autosuggest/storybook">Storybook</a> Helpful to see all
   variations of component's props.<br/>
 * <a href="https://jsfiddle.net/darrenjennings/dugbvezs/">JSFiddle</a> Helpful for playing around
   and sharing.
@@ -298,7 +298,7 @@ each section.
 | Prop         | Type     | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | :----------- | :------- | :------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `on-selected` | Function |    ✓     | Determine behavior for what should happen when a suggestion is selected. e.g. Submit a form, open a link, update a vue model, tweet at Ken Wheeler etc.                                                                                                                                                                                                                                                                                                                                                                     |
-| `type`       | String   |          | Vue component name for specifying which type to implement using Vue's `<component :is="componentName"></component>` functionality. See [DefaultSection.vue](https://github.com/Educents/vue-autosuggest/blob/master/src/parts/DefaultSection.vue) for scaffolding a new type. You must declare your component in the scope of the app using `Vue.component()`. You can extend DefaultSection using `extends`. See [UrlSection](https://github.com/Educents/vue-autosuggest/blob/master/docs/UrlSection.vue) for an example. |
+| `type`       | String   |          | Vue component name for specifying which type to implement using Vue's `<component :is="componentName"></component>` functionality. See [DefaultSection.vue](https://github.com/darrenjennings/vue-autosuggest/blob/master/src/parts/DefaultSection.vue) for scaffolding a new type. You must declare your component in the scope of the app using `Vue.component()`. You can extend DefaultSection using `extends`. See [UrlSection](https://github.com/darrenjennings/vue-autosuggest/blob/master/docs/UrlSection.vue) for an example. |
 | `limit`      | Number   |          | Limit each section by some value. Default: `Infinity`                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 Below we have defined a `default` section and a `blog` section. The `blog` section has a component
@@ -399,25 +399,25 @@ MIT
 [npm]: https://www.npmjs.com/
 [node]: https://nodejs.org
 [build-badge]: https://img.shields.io/travis/Educents/vue-autosuggest.svg?style=flat-square
-[build]: https://travis-ci.org/Educents/vue-autosuggest
-[coverage-badge]: https://img.shields.io/codecov/c/github/Educents/vue-autosuggest.svg?style=flat-square
-[coverage]: https://codecov.io/github/Educents/vue-autosuggest
+[build]: https://travis-ci.org/darrenjennings/vue-autosuggest
+[coverage-badge]: https://img.shields.io/codecov/c/github/darrenjennings/vue-autosuggest.svg?style=flat-square
+[coverage]: https://codecov.io/github/darrenjennings/vue-autosuggest
 [version-badge]: https://img.shields.io/npm/v/vue-autosuggest.svg?style=flat-square
 [package]: https://www.npmjs.com/package/vue-autosuggest
 [downloads-badge]: https://img.shields.io/npm/dm/vue-autosuggest.svg?style=flat-square
 [npmtrends]: http://www.npmtrends.com/vue-autosuggest
 [license-badge]: https://img.shields.io/npm/l/vue-autosuggest.svg?style=flat-square
-[license]: https://github.com/Educents/vue-autosuggest/blob/master/LICENSE
+[license]: https://github.com/darrenjennings/vue-autosuggest/blob/master/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [prs]: http://makeapullrequest.com
 [coc-badge]: https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square
-[coc]: https://github.com/Educents/vue-autosuggest/blob/master/other/CODE_OF_CONDUCT.md
-[github-watch-badge]: https://img.shields.io/github/watchers/Educents/vue-autosuggest.svg?style=social
-[github-watch]: https://github.com/Educents/vue-autosuggest/watchers
-[github-star-badge]: https://img.shields.io/github/stars/Educents/vue-autosuggest.svg?style=social
-[github-star]: https://github.com/Educents/vue-autosuggest/stargazers
-[twitter]: https://twitter.com/intent/tweet?text=Check%20out%20vue-autosuggest%20by%20%40educents%20https%3A%2F%2Fgithub.com%2Feducents%2Fvue-autosuggest%20%F0%9F%91%8D
-[twitter-badge]: https://img.shields.io/twitter/url/https/github.com/Educents/vue-autosuggest.svg?style=social
+[coc]: https://github.com/darrenjennings/vue-autosuggest/blob/master/other/CODE_OF_CONDUCT.md
+[github-watch-badge]: https://img.shields.io/github/watchers/darrenjennings/vue-autosuggest.svg?style=social
+[github-watch]: https://github.com/darrenjennings/vue-autosuggest/watchers
+[github-star-badge]: https://img.shields.io/github/stars/darrenjennings/vue-autosuggest.svg?style=social
+[github-star]: https://github.com/darrenjennings/vue-autosuggest/stargazers
+[twitter]: https://twitter.com/intent/tweet?text=Check%20out%20vue-autosuggest%20by%20%40darrenjennings%20https%3A%2F%2Fgithub.com%2Fdarrenjennings%2Fvue-autosuggest%20%F0%9F%91%8D
+[twitter-badge]: https://img.shields.io/twitter/url/https/github.com/darrenjennings/vue-autosuggest.svg?style=social
 [emojis]: https://github.com/kentcdodds/all-contributors#emoji-key
 [all-contributors]: https://github.com/kentcdodds/all-contributors
 
