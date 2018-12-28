@@ -398,7 +398,7 @@ MIT
 
 [npm]: https://www.npmjs.com/
 [node]: https://nodejs.org
-[build-badge]: https://img.shields.io/travis/Educents/vue-autosuggest.svg?style=flat-square
+[build-badge]: https://img.shields.io/travis/darrenjennings/vue-autosuggest.svg?style=flat-square
 [build]: https://travis-ci.org/darrenjennings/vue-autosuggest
 [coverage-badge]: https://img.shields.io/codecov/c/github/darrenjennings/vue-autosuggest.svg?style=flat-square
 [coverage]: https://codecov.io/github/darrenjennings/vue-autosuggest
