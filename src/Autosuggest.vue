@@ -2,7 +2,6 @@
   <div :id="componentAttrIdAutosuggest">
     <input 
       v-model="searchInput"
-      class="form-control"
       type="text"
       :autocomplete="inputProps.autocomplete"
       role="combobox"
