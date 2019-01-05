@@ -2,7 +2,6 @@
   <div :id="componentAttrIdAutosuggest">
     <input 
       v-model="searchInput"
-      class="form-control"
       type="text"
       :autocomplete="inputProps.autocomplete"
       role="combobox"
@@ -164,7 +163,8 @@ export default {
       defaultInputProps: {
         name: "q", // TODO: 2.0 Deprecate default name value
         initialValue: "",
-        autocomplete: "off"
+        autocomplete: "off",
+        class: 'form-control', // TODO: 2.0 remove
       },
       defaultSectionConfig: {
         name: "default",
@@ -278,6 +278,7 @@ export default {
     this.internal_inputProps = { ...this.defaultInputProps, ...this.inputProps };
     this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
     this.inputProps.name = this.internal_inputProps.name; // TODO: 2.0 Deprecate default name value
+    this.inputProps.class = this.internal_inputProps.class; // TODO: 2.0 Deprecate default name value
 
     this.searchInput = this.internal_inputProps.initialValue; // set default query, e.g. loaded server side.
     this.loading = this.shouldRenderSuggestions();

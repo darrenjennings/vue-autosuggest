@@ -109,7 +109,7 @@ exports[`Autosuggest can display section header 1`] = `
          placeholder="Type 'G'"
          name="q"
          value="G"
-         class="form-control autosuggest__input-open"
+         class="autosuggest__input-open form-control"
   >
   <div class="autosuggest__results-container">
     <div aria-labelledby="autosuggest"
@@ -220,7 +220,7 @@ exports[`Autosuggest can render default suggestion value by property name 1`] = 
                 mockFn();
               }"
          value="Frodo"
-         class="form-control cool-class"
+         class="cool-class"
   >
   <div class="autosuggest__results-container">
   </div>
@@ -247,7 +247,7 @@ exports[`Autosuggest can render simplest component with single onSelected 1`] = 
          placeholder="Type 'G'"
          name="q"
          value="phonics"
-         class="form-control autosuggest__input-open cool-class"
+         class="autosuggest__input-open cool-class"
   >
   <div class="autosuggest__results-container">
     <div aria-labelledby="autosuggest"
@@ -446,7 +446,7 @@ exports[`Autosuggest can render slots 1`] = `
                 mockFn();
               }"
          value="G"
-         class="form-control autosuggest__input-open"
+         class="autosuggest__input-open form-control"
   >
   <div class="autosuggest__results-container">
     <div aria-labelledby="autosuggest"
@@ -544,7 +544,7 @@ exports[`Autosuggest can render suggestions 1`] = `
       }"
          name="q"
          value="clifford kits"
-         class="form-control autosuggest__input-open"
+         class="autosuggest__input-open form-control"
   >
   <div class="autosuggest__results-container">
     <div aria-labelledby="autosuggest"
@@ -673,7 +673,7 @@ exports[`Autosuggest is aria complete 1`] = `
          placeholder="Type 'G'"
          name="q"
          value="phonics"
-         class="form-control autosuggest__input-open"
+         class="autosuggest__input-open form-control"
   >
   <div class="autosuggest__results-container">
     <div aria-labelledby="autosuggest"
