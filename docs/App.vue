@@ -1,167 +1,187 @@
 <template>
-  <div>
+  <div class="demo">
+    <button @click="toggleDark">go {{ colorMode === 'light' ? 'dark' : 'light' }}</button>
     <h1>🔍 Vue-autosuggest</h1>
-    <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected {{selected}}</span></div>
     <div>
-    <vue-autosuggest 
-              :suggestions="filteredOptions"
-              :input-props="inputProps"
-              :section-configs="sectionConfigs"
-              :getSuggestionValue="getSuggestionValue"
-              @focus="focusMe"
-              ref="autocomplete">
-      <!-- <template slot="header">
-        header
-      </template> -->
-      <template slot-scope="{suggestion}">
-        <div v-if="suggestion.name === 'blog'">
-          <a target="_blank" :href="suggestion.item.url">{{suggestion.item.value}}</a></div>
-        <div v-else>{{suggestion.item}}</div>
-      </template>
-      <!-- <template slot="footer">
-        footer
-      </template> -->
-    </vue-autosuggest>
+      <vue-autosuggest
+        @selected="onSelected"
+        :suggestions="filteredOptions"
+        :input-props="inputProps"
+        :section-configs="sectionConfigs"
+        :getSuggestionValue="getSuggestionValue"
+        ref="autocomplete"
+      >
+        <template slot-scope="{suggestion}">
+          <div>{{suggestion.item.Name}}</div>
+        </template>
+      </vue-autosuggest>
+    </div>
+    <div style="padding-top:10px; margin-bottom: 10px;">
+      <span
+        v-if="selected.Race === 'Human' && selected.Name === 'Aragorn I'"
+      >"Not idly do the leaves of Lórien fall," proclaimed Aragorn.</span>
+      <span v-else-if="selected.Race === 'Human'">
+        You have choosen poorly. Humans
+        are like... the worst.
+      </span>
+      <span
+        v-else-if="selected.Race === 'Elf' && selected.Name === 'Legolas'"
+      >Legolas is like... so hawt.</span>
+      <span v-else-if="selected.Race === 'Elf' && selected.Name === 'Galadriel'">
+        "Things that were... things that are... and some things... that have not
+        yet come to pass." Wait... is that in the book?!
+      </span>
+      <span v-else-if="selected.Race === 'Dwarf' && selected.Name === 'Gimli'">And with my axe!</span>
+      <span v-else-if="selected.Race === 'Dwarf'">What is the plural of Dwarf anyways?</span>
+      <span v-else-if="selected.Race === 'Maiar' && selected.Name === 'Gandalf'">
+        The counsel of Gandalf was not founded on foreknowledge of safety, for
+        himself or for others," said Aragorn. "There are some things that it is
+        better to begin than to refuse, even though the end may be dark."
+      </span>
+      <span v-else-if="selected.Race === 'Hobbit'">Sneaky little Hobbitses. Wicked. Tricksy.</span>
     </div>
   </div>
 </template>
 
 <script>
 import VueAutosuggest from "../src/Autosuggest.vue";
+import characters from './lotr-character'
+
+function updateCSSVariables(theme) {
+  for (const key in theme) {
+    document.body.style.setProperty(`--theme-${key}`, theme[key]);
+  }
+}
+
+const darkTheme = {
+  bg: '#21222C',
+  header: '#8F73BD',
+  item_color_highlighted: '#80D4E7',
+  item_bg_highlighted: '#363948'
+}
+
+const races = [...new Set(characters.map(c => { return c.Race }))]
 
 export default {
   components: {
     VueAutosuggest
   },
+  mounted(){
+    updateCSSVariables(darkTheme)
+  },
   data() {
     return {
       selected: "",
-      limit: 10,
+      colorMode: 'dark',
       filteredOptions: [],
-      options: [
-        {
-          data: [
-            "clifford kits",
-            "friendly chemistry",
-            "phonics",
-            "life of fred",
-            "life of fred math",
-            "magic school bus",
-            "math mammoth light blue",
-            "handwriting",
-            "math",
-            "minecraft",
-            "free worksheets",
-            "4th grade",
-            "snap circuits",
-            "bath toys",
-            "channies",
-            "fred",
-            "lego",
-            "math life of fred",
-            "multiplication",
-            "thinking tree"
-          ]
-        },
-        {
-          label: "Blog",
-          name: "blog",
-          data: [
-            {
-              url: "https://blog.educents.com/",
-              value: "The Best Blog in the Entire World"
-            },
-            {
-              url: "https://blog.educents.com/best-educational-games-2017-inchimals/",
-              value: "The Best Educational Games and Toys of 2017: Inchimals"
-            },
-            {
-              url: "https://blog.educents.com/reading-exploring-world-through-literature/",
-              value: "Family Read-Alouds: Exploring the World Through Literature"
-            }
-          ]
-        }
-      ],
+      options: races.map(r => ({
+        	label: r,
+          name: r,
+          data: characters.filter(c => c.Race === r)
+        })
+      ),
       sectionConfigs: {
         default: {
-          limit: 6,
-          onSelected: function() {
-            // console.log(item, originalInput, `Selected "${item.item}"`);
-          }
+          limit: 4
         },
-        blog: {
-          limit: 3,
-          onSelected: function() {
-            // alert("url: " + item.item.url);
-          }
+        hobbits: {
+          limit: 4
         }
       },
       inputProps: {
         id: "autosuggest__input",
         onInputChange: this.onInputChange,
-        placeholder: "Type 'g'"
+        placeholder: "Search"
       }
     };
   },
   methods: {
+    toggleDark(){
+      this.colorMode = ((this.colorMode === 'dark') ? 'light' : 'dark')
+      if(this.colorMode === 'dark'){
+        updateCSSVariables({
+          bg: '#21222C',
+          color: 'white',
+          header: '#8F73BD',
+          item_color_highlighted: '#80D4E7',
+          item_bg_highlighted: '#363948',
+        })
+      }else{
+        updateCSSVariables({
+          bg: 'white',
+          header: 'black',
+          color: '#21222C',
+          item_color_highlighted: 'black',
+          item_bg_highlighted: '#e0e0e0',
+        })
+      }
+    },
     onInputChange(text) {
       let filtered = [];
 
-      const suggestionsData = this.options[0].data.filter(item => {
-        return item.toLowerCase().indexOf(text.toLowerCase()) > -1;
-      });
-      const blogData = this.options[1].data.filter(item => {
-        return item.value.toLowerCase().indexOf(text.toLowerCase()) > -1;
-      });
-
-      suggestionsData.length > 0 &&
-        filtered.push({
-          label: "Suggestions",
-          data: suggestionsData
+      races.forEach(r => {
+        const people = this.options.filter(o => o.name === r)[0].data.filter(p => {
+          return p.Name.toLowerCase().indexOf(text.toLowerCase()) > -1;
         });
 
-      blogData.length > 0 &&
-        filtered.push({
-          label: "Blog Resources",
-          name: "blog",
-          data: blogData
-        });
+        people.length > 0 &&
+          filtered.push({
+            label: r,
+            data: people
+          });
+      })
 
       this.filteredOptions = filtered;
     },
+
     getSuggestionValue(item) {
-      if (item.name == "blog") {
-        return item.item.value;
-      } else {
-        return item.item;
-      }
+      return item.item.Name;
     },
-    focusMe(/* e */){
-      // console.log(e)
+
+    onSelected(item) {
+      this.selected = item.item
     }
   }
 };
 </script>
 
 <style rel="stylesheet">
-body {
-  max-width: 800px;
-  padding: 20px;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  font-family: monospace;
-  background-color: #f2f2f2;
+button {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  background: var(--theme-bg);
+  color: var(--theme-color);
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: .66rem;
+  white-space: nowrap;
+  border: 3px solid var(--theme-color);
+  border-radius: 2rem;
+  padding: .2rem .85rem .25rem .85rem;
+  cursor: pointer;
+}
+
+h1 {
+  color: var(--theme-header);
+}
+
+* {
+  transition: height 0.200s linear;
+  transition: border-color linear 0.1s;
 }
 
 #autosuggest__input {
+  background-color: var(--theme-bg);
+  caret-color: #ddd;
+  color: var(--theme-color);
   outline: none;
   position: relative;
   display: block;
   font-family: monospace;
   font-size: 20px;
   border: 1px solid #616161;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
+  border-radius: 3px;
   padding: 10px;
   width: 100%;
   box-sizing: border-box;
@@ -169,17 +189,21 @@ body {
   -moz-box-sizing: border-box;
 }
 
-#autosuggest__input.autosuggest__input-open {
+#autosuggest__input.autosuggest__input-open, #autosuggest__input:hover {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+  border: 1px solid lightgray;
 }
 
 .autosuggest__results-container {
   position: relative;
   width: 100%;
+  background-color: var(--theme-bg);
+  
 }
 
 .autosuggest__results {
+  background-color: var(--theme-bg);
   font-weight: 300;
   margin: 0;
   position: absolute;
@@ -190,17 +214,21 @@ body {
   border-bottom-right-radius: 4px;
   background: white;
   padding: 0px;
+  overflow: scroll;
+  max-height: 400px;
 }
 
 .autosuggest__results ul {
   list-style: none;
   padding-left: 0;
   margin: 0;
+  background-color: var(--theme-bg);
 }
 
 .autosuggest__results .autosuggest__results_item {
   cursor: pointer;
-  padding: 15px;
+  background-color: var(--theme-bg);
+  padding: 10px;
 }
 
 #autosuggest ul:nth-child(1) > .autosuggest__results_title {
@@ -208,7 +236,8 @@ body {
 }
 
 .autosuggest__results .autosuggest__results_title {
-  color: gray;
+  color: var(--theme-color);
+  opacity: 0.5;
   font-size: 11px;
   margin-left: 0;
   padding: 15px 13px 5px;
@@ -219,6 +248,7 @@ body {
 .autosuggest__results .autosuggest__results_item:hover,
 .autosuggest__results .autosuggest__results_item:focus,
 .autosuggest__results .autosuggest__results_item.autosuggest__results_item-highlighted {
-  background-color: #ddd;
+  background-color: var(--theme-item_bg_highlighted);
+  color: var(--theme-item_color_highlighted);
 }
 </style>
