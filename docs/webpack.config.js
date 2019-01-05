@@ -3,6 +3,7 @@ const eslintFriendlyFormatter = require("eslint-friendly-formatter");
 
 module.exports = {
     context: __dirname,
+    mode: 'development',
     module: {
         rules: [
             {
