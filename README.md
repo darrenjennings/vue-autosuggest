@@ -362,7 +362,7 @@ This function will tell vue-autosuggest what to put in the `<input/>` as the val
 
 ```js
 getSuggestionValue(suggestion) {
-    return suggestion.name;
+    return suggestion.item.name;
 },
 ```
 
