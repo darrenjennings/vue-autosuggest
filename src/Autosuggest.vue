@@ -449,7 +449,7 @@ export default {
     },
     clickedOnScrollbar(mouseX){
       const results = this.$el.querySelector(`.${this.componentAttrClassAutosuggestResults}`);
-      return results && results.clientWidth <= (mouseX + 16) || false;
+      return results && (results.clientWidth <= (mouseX + 16) && mouseX + 16 <= results.clientWidth + 16 ) || false;
     },
     onDocumentMouseDown(e) {
       var rect = e.target.getBoundingClientRect ? e.target.getBoundingClientRect() : 0;
