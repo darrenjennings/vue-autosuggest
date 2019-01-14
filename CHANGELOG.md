@@ -2,6 +2,8 @@
 
 Abridged versions of releases. See [release notes](https://github.com/Educents/vue-autosuggest/releases) for more details.
 
+* [1.8.1](https://github.com/darrenjennings/vue-autosuggest/tree/v1.8.1) Bugfix
+  * Fix incorrect scrollbar click calculation
 * [1.8.0-1](https://github.com/darrenjennings/vue-autosuggest/tree/v1.8.0-1) Bugfix
   * Removes form-control as an always present css class on the `<input />`
   * Migration from 1.x -> 1.8.0-1
