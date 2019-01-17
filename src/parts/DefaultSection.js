@@ -47,7 +47,8 @@ const DefaultSection = {
     return h(
       "ul",
       {
-        attrs: { role: "listbox", "aria-labelledby": "autosuggest" }
+        attrs: { role: "listbox", "aria-labelledby": "autosuggest" },
+        class: { [this.section.listClassName]: this.section.listClassName }
       },
       [
         sectionTitle,
@@ -66,7 +67,8 @@ const DefaultSection = {
               class: {
                 "autosuggest__results_item-highlighted":
                   this.getItemIndex(key) == this.currentIndex,
-                autosuggest__results_item: true
+                autosuggest__results_item: true,
+                [this.section.listItemClassName]: this.section.listItemClassName
               },
               on: {
                 mouseenter: this.onMouseEnter,

@@ -123,7 +123,9 @@ export default {
       default: () => {
         return {
           default: {
-            onSelected: null
+            onSelected: null,
+            listClassName: "",
+            listItemClassName: ""
           }
         };
       }
@@ -246,12 +248,15 @@ export default {
 
           const name = section.name ? section.name : this.defaultSectionConfig.name;
 
-          let { type, limit, label } = this.sectionConfigs[name];
+          let { type, limit, label, listClassName, listItemClassName } = this.sectionConfigs[name];
 
           limit = limit || this.limit
 
           /** Set defaults for section configs. */
           type = type ? type : this.defaultSectionConfig.type;
+
+          listClassName = listClassName || this.sectionConfigs['default']['listClassName'];
+          listItemClassName = listItemClassName || this.sectionConfigs['default']['listItemClassName'];
 
           limit = limit ? limit : Infinity;
           limit = section.data.length < limit ? section.data.length : limit;
@@ -265,7 +270,9 @@ export default {
             limit,
             data: section.data,
             start_index: this.computedSize,
-            end_index: this.computedSize + limit - 1
+            end_index: this.computedSize + limit - 1,
+            listClassName,
+            listItemClassName
           };
           this.computedSections.push(computedSection);
           this.computedSize += limit;
