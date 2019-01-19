@@ -557,7 +557,7 @@ exports[`Autosuggest can render suggestions 1`] = `
             data-suggestion-index="0"
             data-section-name="default"
             id="autosuggest__results_item-0"
-            class="autosuggest__results_item"
+            class="autosuggest__results_item-highlighted autosuggest__results_item"
         >
           clifford kits
         </li>
@@ -702,7 +702,7 @@ exports[`Autosuggest is aria complete 1`] = `
             data-suggestion-index="2"
             data-section-name="default"
             id="autosuggest__results_item-2"
-            class="autosuggest__results_item"
+            class="autosuggest__results_item-highlighted autosuggest__results_item"
         >
           phonics
         </li>

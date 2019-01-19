@@ -27,6 +27,7 @@
           v-for="(cs, key) in computedSections"
           :ref="getSectionRef(key)"
           :key="getSectionRef(key)"
+          :current-index="currentIndex"
           :normalize-item-function="normalizeItem"
           :render-suggestion="renderSuggestion"
           :section="cs"
@@ -202,6 +203,9 @@ export default {
           });
         },
         selected: () => {
+          // Determine which onSelected to fire. This can be either from inside
+          // a section's object, from the @selected event, or from the deprecated
+          // native onSelected prop (to be removed later)
           if (
             this.currentItem &&
             this.sectionConfigs[this.currentItem.name] &&
@@ -219,6 +223,7 @@ export default {
             // TODO: 2.0 deprecate old event listeners
             this._onSelected(this.currentItem);
           }
+          this.setChangeItem(null)
         }
       };
     },
@@ -391,7 +396,7 @@ export default {
       }
     },
     setChangeItem(item, overrideOriginalInput = false) {
-      if (this.currentIndex === null) {
+      if (this.currentIndex === null || !item) {
         this.currentItem = null;
       } else if (item) {
         this.searchInput = this.getSuggestionValue(item);
