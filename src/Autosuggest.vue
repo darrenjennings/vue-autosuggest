@@ -1,8 +1,8 @@
 <template>
   <div :id="componentAttrIdAutosuggest">
     <input 
-      v-model="searchInput"
       type="text"
+      :value="internalValue"
       :autocomplete="inputProps.autocomplete"
       role="combobox"
       :class="[isOpen ? 'autosuggest__input-open' : '', inputProps['class']]"
@@ -12,6 +12,7 @@
       :aria-activedescendant="isOpen && currentIndex !== null ? `autosuggest__results_item-${currentIndex}` : ''"
       :aria-haspopup="isOpen ? 'true' : 'false'"
       :aria-expanded="isOpen ? 'true' : 'false'"
+      @input="inputHandler"
       @keydown="handleKeyStroke"
       v-on="listeners"
     >
@@ -32,7 +33,7 @@
           :render-suggestion="renderSuggestion"
           :section="cs"
           :update-current-index="updateCurrentIndex"
-          :search-input="searchInput"
+          :search-input="internalValue"
         >
           <template slot-scope="{ suggestion, _key }">
             <slot 
@@ -60,6 +61,10 @@ export default {
     DefaultSection
   },
   props: {
+    value: {
+      type: String,
+      default: '' 
+    },
     inputProps: {
       type: Object,
       required: true,
@@ -68,14 +73,6 @@ export default {
           id: {
             type: String,
             default: "autosuggest__input"
-          },
-          onInputChange: {
-            type: Function,
-            required: true
-          },
-          initialValue: {
-            type: String,
-            required: false
           },
           onClick: {
             type: Function,
@@ -152,7 +149,7 @@ export default {
   },
   data() {
     return {
-      searchInput: "",
+      internalValue: null,
       searchInputOriginal: null,
       currentIndex: null,
       currentItem: null,
@@ -162,10 +159,7 @@ export default {
       computedSize: 0,
       internal_inputProps: {}, // Nest default prop values don't work currently in Vue
       defaultInputProps: {
-        name: "q", // TODO: 2.0 Deprecate default name value
-        initialValue: "",
         autocomplete: "off",
-        class: 'form-control', // TODO: 2.0 remove
       },
       defaultSectionConfig: {
         name: "default",
@@ -178,6 +172,10 @@ export default {
     listeners() {
       return {
         ...this.$listeners,
+        input: e => {
+          // Don't do anything native here, since we have inputHandler
+          return
+        },
         focus: e => {
           this.$listeners.focus && this.$listeners.focus(e);
           if (this.inputProps.onFocus) {
@@ -219,9 +217,6 @@ export default {
             this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
           } else if (this.$listeners.selected) {
             this.$emit('selected', this.currentItem);
-          } else if (this.onSelected){
-            // TODO: 2.0 deprecate old event listeners
-            this._onSelected(this.currentItem);
           }
           this.setChangeItem(null)
         }
@@ -229,17 +224,9 @@ export default {
     },
     isOpen() {
       return this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading;
-    }
+    },
   },
   watch: {
-    searchInput(newValue, oldValue) {
-      this.value = newValue;
-      if (!this.didSelectFromOptions) {
-        this.searchInputOriginal = this.value;
-        this.currentIndex = null;
-        this.internal_inputProps.onInputChange(newValue, oldValue);
-      }
-    },
     suggestions: {
       immediate: true,
       handler() {
@@ -282,10 +269,6 @@ export default {
     /** Take care of nested input props */
     this.internal_inputProps = { ...this.defaultInputProps, ...this.inputProps };
     this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
-    this.inputProps.name = this.internal_inputProps.name; // TODO: 2.0 Deprecate default name value
-    this.inputProps.class = this.internal_inputProps.class; // TODO: 2.0 Deprecate default name value
-
-    this.searchInput = this.internal_inputProps.initialValue; // set default query, e.g. loaded server side.
     this.loading = this.shouldRenderSuggestions();
   },
   mounted() {
@@ -297,6 +280,15 @@ export default {
     document.removeEventListener("mousedown", this.onDocumentMouseDown)
   },
   methods: {
+    inputHandler(e) {
+      const newValue = e.target.value
+      this.$emit('input', newValue)
+      this.internalValue = newValue
+      if (!this.didSelectFromOptions) {
+        this.searchInputOriginal = newValue;
+        this.currentIndex = null;
+      }
+    },
     getSectionRef(i) {
       return "computed_section_" + i;
     },
@@ -363,7 +355,7 @@ export default {
               this.didSelectFromOptions = true;
             } else if (this.currentIndex == -1) {
               this.currentIndex = null;
-              this.searchInput = this.searchInputOriginal;
+              this.internalValue = this.searchInputOriginal;
               e.preventDefault();
             }
           }
@@ -389,7 +381,8 @@ export default {
             /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
             this.loading = true;
             this.currentIndex = null;
-            this.searchInput = this.searchInputOriginal;
+            this.internalValue = this.searchInputOriginal
+            this.$emit('input', this.searchInputOriginal);
             e.preventDefault();
           }
           break;
@@ -399,10 +392,12 @@ export default {
       if (this.currentIndex === null || !item) {
         this.currentItem = null;
       } else if (item) {
-        this.searchInput = this.getSuggestionValue(item);
         this.currentItem = item;
+        const v = this.getSuggestionValue(item)
+        this.internalValue = v;
         if (overrideOriginalInput) {
-          this.searchInputOriginal = this.getSuggestionValue(item);
+          this.searchInputOriginal = v;
+          this.$emit('input', v)
         }
         this.ensureItemVisible(item, this.currentIndex);
       }
@@ -509,30 +504,6 @@ export default {
       if (element) {
         addClass(element, hoverClass);
       }
-    },
-    _onSelected(e) {
-      console.warn(
-        'onSelected is deprecated. Please use click event listener \n\ne.g. <vue-autosuggest ... @selected="onSelectedMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
-      );
-      this.onSelected && this.onSelected(e);
-    },
-    onClick(e) {
-      console.warn(
-        'inputProps.onClick is deprecated. Please use native click event listener \n\ne.g. <vue-autosuggest ... @click="clickMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
-      );
-      this.internal_inputProps.onClick && this.internal_inputProps.onClick(e);
-    },
-    onBlur(e) {
-      console.warn(
-        'inputProps.onBlur is deprecated. Please use native blur event listener \n\ne.g. <vue-autosuggest ... @blur="blurMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
-      );
-      this.internal_inputProps.onBlur && this.internal_inputProps.onBlur(e);
-    },
-    onFocus(e) {
-      console.warn(
-        'inputProps.onFocus is deprecated. Please use native focus event listener \n\ne.g. <vue-autosuggest ... @focus="focusMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
-      );
-      this.internal_inputProps.onFocus && this.internal_inputProps.onFocus(e);
     }
   },
 };

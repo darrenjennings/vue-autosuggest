@@ -46,8 +46,6 @@ describe("Autosuggest", () => {
     suggestions: filteredOptions,
     inputProps: {
       id,
-      initialValue: "",
-      onInputChange: () => {},
       placeholder: "Type 'G'"
     },
     sectionConfigs: {
@@ -72,6 +70,9 @@ describe("Autosuggest", () => {
       propsData: props
     });
 
+    const input = wrapper.find('input[type="text"]')
+    input.setValue('q')
+
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) throw new Error(err);
@@ -83,17 +84,6 @@ describe("Autosuggest", () => {
     const props = Object.assign({}, defaultProps);
     props.inputProps = Object.assign({}, defaultProps.inputProps);
 
-    // Testing deprecation of onClick
-    const mockFn = jest.fn();
-    const mockConsole = jest.fn();
-    console.warn = mockConsole;
-
-    const clicked = () => {
-      mockFn();
-    };
-
-    props.inputProps.onClick = clicked;
-
     const wrapper = mount(Autosuggest, {
       propsData: props,
       attachToDocument: true
@@ -103,7 +93,7 @@ describe("Autosuggest", () => {
     expect(input.attributes("id", defaultProps.inputProps.id)).toBeTruthy();
 
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
     input.trigger("keydown.down");
 
     expect(wrapper.findAll(`ul li`).length).toBeLessThanOrEqual(
@@ -114,7 +104,6 @@ describe("Autosuggest", () => {
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) throw new Error(err);
       expect(str).toMatchSnapshot();
-      expect(mockFn).toHaveBeenCalledTimes(1); // deprecation warning
     });
   });
 
@@ -126,7 +115,7 @@ describe("Autosuggest", () => {
 
     const input = wrapper.find("input");
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
 
     input.trigger("keydown.up"); // Check it doesn't offset the selection by going up first when nothing is selected.
 

@@ -182,12 +182,8 @@ exports[`Autosuggest can mount 1`] = `
          aria-haspopup="false"
          aria-expanded="false"
          id="autosuggest__input"
-         initialvalue
-         oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         name="q"
-         value
-         class="form-control"
+         value="q"
   >
   <div class="autosuggest__results-container">
   </div>
@@ -536,15 +532,9 @@ exports[`Autosuggest can render suggestions 1`] = `
          aria-haspopup="true"
          aria-expanded="true"
          id="autosuggest__input"
-         initialvalue
-         oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         onclick="function clicked() {
-        mockFn();
-      }"
-         name="q"
          value="clifford kits"
-         class="autosuggest__input-open form-control"
+         class="autosuggest__input-open"
   >
   <div class="autosuggest__results-container">
     <div aria-labelledby="autosuggest"
@@ -641,12 +631,8 @@ exports[`Autosuggest can use escape key to exit 1`] = `
          aria-haspopup="false"
          aria-expanded="false"
          id="autosuggest__input"
-         initialvalue
-         oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         name="q"
          value="G"
-         class="form-control"
   >
   <div class="autosuggest__results-container">
   </div>

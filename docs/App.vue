@@ -4,6 +4,7 @@
     <h1>🔍 Vue-autosuggest</h1>
     <div>
       <vue-autosuggest
+        v-model="searchText"
         @selected="onSelected"
         :suggestions="filteredOptions"
         :input-props="inputProps"
@@ -72,8 +73,8 @@ export default {
   data() {
     return {
       selected: "",
+      searchText: "aragorn",
       colorMode: 'dark',
-      filteredOptions: [],
       options: races.map(r => ({
         	label: r,
           name: r,
@@ -90,10 +91,27 @@ export default {
       },
       inputProps: {
         id: "autosuggest__input",
-        onInputChange: this.onInputChange,
         placeholder: "Search"
       }
     };
+  },
+  computed: {
+    filteredOptions() {
+      const filtered = []
+      races.forEach(r => {
+        const people = this.options.filter(o => o.name === r)[0].data.filter(p => {
+          return p.Name.toLowerCase().indexOf(this.searchText.toLowerCase()) > -1;
+        });
+
+        people.length > 0 &&
+          filtered.push({
+            label: r,
+            data: people
+          });
+      })
+
+      return Object.freeze(filtered)
+    }
   },
   methods: {
     toggleDark(){
@@ -115,23 +133,6 @@ export default {
           item_bg_highlighted: '#e0e0e0',
         })
       }
-    },
-    onInputChange(text) {
-      let filtered = [];
-
-      races.forEach(r => {
-        const people = this.options.filter(o => o.name === r)[0].data.filter(p => {
-          return p.Name.toLowerCase().indexOf(text.toLowerCase()) > -1;
-        });
-
-        people.length > 0 &&
-          filtered.push({
-            label: r,
-            data: people
-          });
-      })
-
-      this.filteredOptions = filtered;
     },
 
     getSuggestionValue(item) {
