@@ -176,26 +176,11 @@ export default {
           // Don't do anything native here, since we have inputHandler
           return
         },
-        focus: e => {
-          this.$listeners.focus && this.$listeners.focus(e);
-          if (this.inputProps.onFocus) {
-            this.onFocus(e)
-          }
-        },
-        blur: e => {
-          this.$listeners.blur && this.$listeners.blur(e);
-          if (this.inputProps.onBlur) {
-            this.onBlur(e)
-          }
-        },
         click: () => {
           /* eslint-disable-next-line vue/no-side-effects-in-computed-properties */
           this.loading = false;
           this.$listeners.click && this.$listeners.click(this.currentItem);
 
-          if(this.inputProps.onClick){
-            this.onClick(this.currentItem);
-          }
           this.$nextTick(() => {
             this.ensureItemVisible(this.currentItem, this.currentIndex);
           });

@@ -163,7 +163,7 @@ describe("Autosuggest", () => {
 
     const input = wrapper.find("input");
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
 
     times(5)(() => {
       input.trigger("keydown.down");
@@ -257,12 +257,11 @@ describe("Autosuggest", () => {
       attachToDocument: true
     });
 
-    wrapper.setData({ searchInput: "G" });
-
     const input = wrapper.find("input");
+    input.setValue("G");
 
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
     window.document.dispatchEvent(new Event("mousedown"));
     window.document.dispatchEvent(new Event("mouseup"));
     
@@ -292,12 +291,11 @@ describe("Autosuggest", () => {
       attachToDocument: true
     });
 
-    wrapper.setData({ searchInput: "G" });
-
     const input = wrapper.find("input");
+    input.setValue("G");
 
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
     expect(wrapper.find("ul li:nth-child(1)").element.innerHTML).toBe(
       props.sectionConfigs.default.label
     );
@@ -325,7 +323,7 @@ describe("Autosuggest", () => {
     // TODO: Make sure aria-completeness is actually 2legit2quit.
 
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
 
     expect(input.attributes()["aria-haspopup"]).toBe("true");
 
@@ -368,7 +366,7 @@ describe("Autosuggest", () => {
 
     const input = wrapper.find("input");
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
 
     times(3)(() => {
       input.trigger("keydown.down");
@@ -385,59 +383,6 @@ describe("Autosuggest", () => {
       }
       expect(str).toMatchSnapshot();
     });
-  });
-
-  it("onBlur and onFocus work as expected, including deprecation warnings", async () => {
-    let props = Object.assign({}, defaultProps);
-
-    const mockFn = jest.fn();
-    const mockConsole = jest.fn();
-
-    console.warn = mockConsole;
-
-    const blurred = () => {
-      mockFn();
-    };
-    const focused = () => {
-      mockFn();
-    };
-    const selected = () => {
-      mockFn();
-    };
-
-    props.inputProps.onBlur = blurred;
-    props.inputProps.onFocus = focused;
-    delete props['sectionConfigs'];
-    props.onSelected = selected;
-
-    const wrapper = mount(Autosuggest, {
-      propsData: props,
-      attachToDocument: true
-    });
-
-    const input = wrapper.find("input");
-
-    input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
-    await wrapper.vm.$nextTick(() => {});
-
-    input.trigger("blur");
-    input.trigger("focus");
-
-    input.trigger("keydown.down");
-    input.trigger("keydown.down");
-    input.trigger("keydown.enter");
-
-    const renderer = createRenderer();
-    renderer.renderToString(wrapper.vm, (err, str) => {
-      if (err) {
-        return false;
-      }
-      expect(str).toMatchSnapshot();
-    });
-
-    expect(mockFn).toHaveBeenCalledTimes(3);
-    expect(mockConsole).toHaveBeenCalledTimes(3); // onBlur and onFocus deprecation warnings
   });
 
   it("can render default suggestion value by property name", async () => {
@@ -466,7 +411,7 @@ describe("Autosuggest", () => {
 
     const input = wrapper.find("input");
     input.trigger("click");
-    wrapper.setData({ searchInput: "F" });
+    input.setValue("F");
 
     input.trigger("keydown.down");
     input.trigger("keydown.enter");
@@ -497,7 +442,10 @@ describe("Autosuggest", () => {
   });
 
   it("search input prop type handles string and integers only", async () => {
-    let props = Object.assign({}, defaultProps);
+    let props = {
+      ...defaultProps, 
+      inputProps: {...defaultProps.inputProps}
+    };
 
     const mockConsole = jest.fn();
     console.error = mockConsole;
@@ -513,13 +461,13 @@ describe("Autosuggest", () => {
 
     // Integers
     input.trigger("click");
-    wrapper.setData({ searchInput: 1 });
+    input.setValue(1);
     await wrapper.vm.$nextTick(() => {});
     input.trigger("blur");
 
     // Strings
     input.trigger("click");
-    wrapper.setData({ searchInput: "Hello" });
+    input.setValue("Hello");
     await wrapper.vm.$nextTick(() => {});
     input.trigger("blur");
 
@@ -553,7 +501,7 @@ describe("Autosuggest", () => {
 
     const input = wrapper.find("input");
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
     
     expect(wrapper.findAll('.header-dude').length).toEqual(1);
     expect(wrapper.findAll('#footer-dude span').length).toEqual(2);

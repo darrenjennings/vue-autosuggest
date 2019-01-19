@@ -14,16 +14,8 @@ exports[`Autosuggest @click and @selected listener events works as expected 1`] 
          aria-haspopup="false"
          aria-expanded="false"
          id="autosuggest__input"
-         initialvalue
-         oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         name="q"
-         onblur="function blurred() {}"
-         onfocus="function focused() {
-                mockFn();
-              }"
          value="clifford kits"
-         class="form-control"
   >
   <div class="autosuggest__results-container">
   </div>
@@ -45,12 +37,8 @@ exports[`Autosuggest can click outside document to trigger close 1`] = `
          aria-haspopup="false"
          aria-expanded="false"
          id="autosuggest__input"
-         initialvalue
-         oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         name="q"
          value="G"
-         class="form-control"
   >
   <div class="autosuggest__results-container">
   </div>
@@ -73,16 +61,7 @@ exports[`Autosuggest can customize ids and classes for container divs 1`] = `
          aria-haspopup="false"
          aria-expanded="false"
          id="autosuggest__input"
-         initialvalue
-         oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         name="q"
-         onblur="function blurred() {}"
-         onfocus="function focused() {
-                mockFn();
-              }"
-         value
-         class="form-control"
   >
   <div class="resultz-containerz">
   </div>
@@ -104,12 +83,9 @@ exports[`Autosuggest can display section header 1`] = `
          aria-haspopup="true"
          aria-expanded="true"
          id="autosuggest__input"
-         initialvalue
-         oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         name="q"
          value="G"
-         class="autosuggest__input-open form-control"
+         class="autosuggest__input-open"
   >
   <div class="autosuggest__results-container">
     <div aria-labelledby="autosuggest"
@@ -205,16 +181,7 @@ exports[`Autosuggest can render default suggestion value by property name 1`] = 
          aria-haspopup="false"
          aria-expanded="false"
          id="autosuggest__input"
-         initialvalue
-         oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         name="q"
-         onblur="function blurred() {
-                mockFn();
-              }"
-         onfocus="function focused() {
-                mockFn();
-              }"
          value="Frodo"
          class="cool-class"
   >
@@ -238,10 +205,7 @@ exports[`Autosuggest can render simplest component with single onSelected 1`] = 
          aria-haspopup="true"
          aria-expanded="true"
          id="autosuggest__input"
-         initialvalue
-         oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         name="q"
          value="phonics"
          class="autosuggest__input-open cool-class"
   >
@@ -433,16 +397,9 @@ exports[`Autosuggest can render slots 1`] = `
          aria-haspopup="true"
          aria-expanded="true"
          id="autosuggest__input"
-         initialvalue
-         oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         name="q"
-         onblur="function blurred() {}"
-         onfocus="function focused() {
-                mockFn();
-              }"
          value="G"
-         class="autosuggest__input-open form-control"
+         class="autosuggest__input-open"
   >
   <div class="autosuggest__results-container">
     <div aria-labelledby="autosuggest"
@@ -604,12 +561,8 @@ exports[`Autosuggest can select from suggestions using keystroke 1`] = `
          aria-haspopup="false"
          aria-expanded="false"
          id="autosuggest__input"
-         initialvalue
-         oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         name="q"
          value="G"
-         class="form-control"
   >
   <div class="autosuggest__results-container">
   </div>
@@ -654,12 +607,9 @@ exports[`Autosuggest is aria complete 1`] = `
          aria-haspopup="true"
          aria-expanded="true"
          id="autosuggest__input"
-         initialvalue
-         oninputchange="function onInputChange() {}"
          placeholder="Type 'G'"
-         name="q"
          value="phonics"
-         class="autosuggest__input-open form-control"
+         class="autosuggest__input-open"
   >
   <div class="autosuggest__results-container">
     <div aria-labelledby="autosuggest"
@@ -710,39 +660,6 @@ exports[`Autosuggest is aria complete 1`] = `
         </li>
       </ul>
     </div>
-  </div>
-</div>
-
-`;
-
-exports[`Autosuggest onBlur and onFocus work as expected, including deprecation warnings 1`] = `
-
-<div id="autosuggest"
-     data-server-rendered="true"
->
-  <input type="text"
-         autocomplete="off"
-         role="combobox"
-         aria-autocomplete="list"
-         aria-owns="autosuggest__results"
-         aria-activedescendant
-         aria-haspopup="false"
-         aria-expanded="false"
-         id="autosuggest__input"
-         initialvalue
-         oninputchange="function onInputChange() {}"
-         placeholder="Type 'G'"
-         name="q"
-         onblur="function blurred() {
-                mockFn();
-              }"
-         onfocus="function focused() {
-                mockFn();
-              }"
-         value="friendly chemistry"
-         class="form-control"
-  >
-  <div class="autosuggest__results-container">
   </div>
 </div>
 
