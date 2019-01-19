@@ -2,7 +2,7 @@ const DefaultSection = {
   name: "default-section",
   props: {
     section: { type: Object, required: true },
-    currentIndex: { type: Number, required: false, default: Infinity },
+    currentIndex: { type: [Number, String], required: false, default: Infinity },
     updateCurrentIndex: { type: Function, required: true },
     searchInput: { type: [String, Number], required: false, default: "" },
     renderSuggestion: { type: Function, required: false },

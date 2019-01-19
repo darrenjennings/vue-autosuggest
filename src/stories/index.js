@@ -329,7 +329,7 @@ storiesOf("Vue-Autosuggest", module)
     methods: {
       onSelected(item) {
         action("Selected")(item);
-        this.add(item.item);
+        item && item.item && this.add(item.item);
       },
       onClick() {
         this.onInputChange("");
