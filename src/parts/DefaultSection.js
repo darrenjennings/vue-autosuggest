@@ -4,9 +4,13 @@ const DefaultSection = {
     section: { type: Object, required: true },
     currentIndex: { type: [Number, String], required: false, default: Infinity },
     updateCurrentIndex: { type: Function, required: true },
-    searchInput: { type: [String, Number], required: false, default: "" },
     renderSuggestion: { type: Function, required: false },
     normalizeItemFunction: { type: Function, required: true }
+  },
+  data: function() {
+    return {
+      _currentIndex: null
+    }
   },
   computed: {
     list: function() {
@@ -27,11 +31,10 @@ const DefaultSection = {
     getItemByIndex(i) {
       return this.section.data[i];
     },
-    getLabelByIndex(i) {
-      return this.section.data[i];
-    },
     onMouseEnter(event) {
-      this.updateCurrentIndex(event.currentTarget.getAttribute("data-suggestion-index"));
+      const idx = event.currentTarget.getAttribute("data-suggestion-index")
+      this._currentIndex = idx
+      this.updateCurrentIndex(idx)
     },
     onMouseLeave() {
       this.updateCurrentIndex(null);
@@ -52,7 +55,7 @@ const DefaultSection = {
       [
         sectionTitle,
         this.list.map((val, key) => {
-          let item = this.normalizeItemFunction(this.section.name, this.section.type, this.getLabelByIndex(key), val)
+          let item = this.normalizeItemFunction(this.section.name, this.section.type, this.section.label, val)
           return h(
             "li",
             {

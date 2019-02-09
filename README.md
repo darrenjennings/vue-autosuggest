@@ -97,7 +97,8 @@ Place the component into your app!
 ```html
 <vue-autosuggest
     :suggestions="[{data:['Frodo', 'Samwise', 'Gandalf', 'Galadriel', 'Faramir', 'Éowyn']}]"
-    :input-props="{id:'autosuggest__input', onInputChange: onInputChange, placeholder:'Do you feel lucky, punk?'}"
+    :input-props="{id:'autosuggest__input', placeholder:'Do you feel lucky, punk?'}"
+    @input="onInputChange"
     @selected="selectHandler"
     @click="clickHandler"
 >  
@@ -118,13 +119,19 @@ Advanced usage:
     <h1>Vue-autosuggest 🔮</h1>
     <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected '{{JSON.stringify(selected,null,2)}}'</span></div>
         <vue-autosuggest
+            v-model="query"
             :suggestions="filteredOptions"
             @focus="focusMe"
             @click="clickHandler"
+            @input="onInputChange"
             @selected="onSelected"
-            :render-suggestion="renderSuggestion"
             :get-suggestion-value="getSuggestionValue"
-            :input-props="{id:'autosuggest__input', onInputChange: this.onInputChange, placeholder:'Do you feel lucky, punk?'}"/>
+            :input-props="{id:'autosuggest__input', placeholder:'Do you feel lucky, punk?'}">
+          <div slot-scope="{suggestion}" style="{display: 'flex',alignItems: 'center'}">
+            <img style="{ width: '25px', height: '25px', borderRadius: '15px', marginRight: '10px'}" :src="suggestion.item.avatar" />
+            <span style="{ color: 'navyblue'}">{suggestion.item.name}</span>
+          </div>
+        </vue-autosuggest>
 </div>
 </template>
 
@@ -137,8 +144,8 @@ export default {
   },
   data() {
     return {
+      query: "",
       selected: "",
-      filteredOptions: [],
       suggestions: [
         {
           data: [
@@ -151,25 +158,20 @@ export default {
       ]
     };
   },
+  computed: {
+    filteredOptions() {
+
+      return Object.freeze([
+        { 
+          data: this.suggestions[0].data.filter(option => {
+            return option.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+          })
+        }
+      ]);
   methods: {
-    onInputChange(text, oldText) {
-      if (text === null) {
-        /* Maybe the text is null but you wanna do
-        *  something else, but don't filter by null.
-        */
-        return;
-      }
-
-      // Full customizability over filtering
-      const filteredData = this.suggestions[0].data.filter(option => {
-        return option.name.toLowerCase().indexOf(text.toLowerCase()) > -1;
-      });
-
-      // Store data in one property, and filtered in another
-      this.filteredOptions = [{ data: filteredData }];
-    },
     clickHandler(item) {
-      // items are selected by default on click, but you can add some more behavior here!
+      // items are selected by default on click,
+      // but you can add some more behavior here!
     },
     onSelected(item) {
       this.selected = item;
@@ -177,31 +179,6 @@ export default {
     /**
      * renderSuggestion will override the default suggestion template slot.
      */
-    renderSuggestion(suggestion) {
-      /* You will need babel-plugin-transform-vue-jsx for this kind of syntax for
-       * rendering. If you don't use babel or the jsx transform, then you can create 
-       * the you can create the virtual node yourself using this.$createElement.
-       */
-      const character = suggestion.item;
-      return (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center"
-          }}
-        >
-          <img
-            style={{
-              width: "25px",
-              height: "25px",
-              borderRadius: "15px",
-              marginRight: "10px"
-            }}
-            src={character.avatar}
-          />{" "}
-          <span style={{ color: "navyblue" }}>{character.name}</span>
-        </div>
-      );
     },
     /**
      * This is what the <input/> value is set to when you are selecting a suggestion.
@@ -269,7 +246,7 @@ vue-autosuggest does not have an opinion about how you render the items in your 
 | [`section-configs`](#sectionConfigsProp)     | Object   |          | Define multiple sections `<input>`.                       |
 | [`render-suggestion`](#renderSuggestion)     | Function |          | Tell vue-autosuggest how to render inside the `<li>` tag. Overrides what is inside the default suggestion template slot. |
 | [`get-suggestion-value`](#getSuggestionValue) | Function |          | Tells vue-autosuggest what to put in the `<input/>` value |
-| `@selected`            | Function   |    ✓     | suggestion select handler. equivalent to sectionConfigs `on-selected` but for all items             |
+| `@selected`            | Function             |    ✓     | suggestion select handler. equivalent to sectionConfigs `on-selected` but for all items             |
 | `component-attr-id-autosuggest` | String |          | `id` of entire component |
 | `component-attr-class-autosuggest-results-container` | String |          | `class` of container of results container |
 | `component-attr-class-autosuggest-results` | String |          | `class` of results container |
@@ -281,10 +258,6 @@ vue-autosuggest does not have an opinion about how you render the items in your 
 | Prop                     | Type                |  Required  | Description                                                                                                                                                                  |
 | :----------------------- | :------------------ | :--------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`id`](#inputPropsTable) | String              |     ✓      | id attribute on `<input>`.                                                                                                                                                   |
-| [`on-input-change`](#)     | Function            |     ✓      | Triggers everytime the `<input>` changes. This is triggered via a Vue watcher, so you have both current value, and previous value access e.g. `onInputChange(text, oldText)` |
-| ~~onClick~~              | ~~Function~~        | Deprecated | ~~Triggers everytime the &lt;input> is clicked.~~ You can now use `@click` which will map to the underlying `<input />`                                                      |
-| ~~onBlur~~               | ~~Function~~</span> | Deprecated | ~~HTML onblur event on &lt;input> same as Vue @blur event binding~~. You can now use `@blur` which will map to the underlying `<input />`                                    |
-| ~~onFocus~~              | ~~Function~~        | Deprecated | ~~HTML onfocus event on &lt;input> same as Vue @focus event binding~~ You can now use `@focus` which will map to the underlying `<input />`                                  |
 | [`initial-value`](#)      | String              |            | Set some initial value for the `<input>`.                                                                                                                                    |
 | Any DOM Props            | \*                  |            | You can add any props to `<input>` as the component will `v-bind` inputProps. Similar to rest spread in JSX. See more details here: https://vuejs.org/v2/api/#v-bind. The `name` attribute is set to "`q`" by default.         |
 
@@ -365,15 +338,6 @@ getSuggestionValue(suggestion) {
     return suggestion.item.name;
 },
 ```
-
-## FAQ
-
-> How do I update the input programatically?
-
-* You can assign a ref to the component `<vue-autosuggest ref="myRefName" ... />` and then access
-  the input value through `this.$refs.myRefName.searchInput`. This is useful mainly for clearing the
-  input. ⚠️ Note, refs are more of an "escape hatch" as they call it, so it won't trigger the
-  `onInputChange` method.
 
 ## Inspiration
 

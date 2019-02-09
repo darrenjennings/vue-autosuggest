@@ -18,7 +18,7 @@
     >
     <div :class="componentAttrClassAutosuggestResultsContainer">
       <div 
-        v-if="getSize() > 0 && !loading"
+        v-if="totalResults > 0 && !loading"
         :class="componentAttrClassAutosuggestResults"
         :aria-labelledby="componentAttrIdAutosuggest"
       >
@@ -33,7 +33,6 @@
           :render-suggestion="renderSuggestion"
           :section="cs"
           :update-current-index="updateCurrentIndex"
-          :search-input="internalValue"
         >
           <template slot-scope="{ suggestion, _key }">
             <slot 
@@ -63,7 +62,7 @@ export default {
   props: {
     value: {
       type: String,
-      default: '' 
+      default: null
     },
     inputProps: {
       type: Object,
@@ -155,7 +154,6 @@ export default {
       currentItem: null,
       loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */,
       didSelectFromOptions: false,
-      computedSections: [],
       computedSize: 0,
       internal_inputProps: {}, // Nest default prop values don't work currently in Vue
       defaultInputProps: {
@@ -208,46 +206,49 @@ export default {
       };
     },
     isOpen() {
-      return this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading;
+      return this.totalResults > 0 && this.shouldRenderSuggestions() && !this.loading;
     },
-  },
-  watch: {
-    suggestions: {
-      immediate: true,
-      handler() {
-        this.computedSections = [];
-        this.computedSize = 0;
+    /**
+     * @returns <Array>
+     */
+    computedSections() {
+      let tmpSize = 0
 
-        this.suggestions.forEach(section => {
-          if (!section.data) return;
+      return this.suggestions.map(section => {
+        if (!section.data) return;
 
-          const name = section.name ? section.name : this.defaultSectionConfig.name;
+        const name = section.name ? section.name : this.defaultSectionConfig.name;
 
-          let { type, limit, label } = this.sectionConfigs[name];
+        let { type, limit, label } = this.sectionConfigs[name];
 
-          limit = limit || this.limit
+        limit = limit || this.limit
 
-          /** Set defaults for section configs. */
-          type = type ? type : this.defaultSectionConfig.type;
+        /** Set defaults for section configs. */
+        type = type ? type : this.defaultSectionConfig.type;
 
-          limit = limit ? limit : Infinity;
-          limit = section.data.length < limit ? section.data.length : limit;
+        limit = limit ? limit : Infinity;
+        limit = section.data.length < limit ? section.data.length : limit;
+        label = label ? label : section.label;
 
-          label = label ? label : section.label;
-
-          let computedSection = {
-            name,
-            label,
-            type,
-            limit,
-            data: section.data,
-            start_index: this.computedSize,
-            end_index: this.computedSize + limit - 1
-          };
-          this.computedSections.push(computedSection);
-          this.computedSize += limit;
-        }, this);
-      }
+        const computedSection = {
+          name,
+          label,
+          type,
+          limit,
+          data: section.data,
+          start_index: tmpSize,
+          end_index: tmpSize + limit - 1
+        }
+        
+        tmpSize += limit;
+        
+        return computedSection
+      })
+    },
+    totalResults () {
+      return this.computedSections.reduce((acc, section) => {
+        return acc + section.data.length
+      }, 0)
     }
   },
   created() {
@@ -255,6 +256,7 @@ export default {
     this.internal_inputProps = { ...this.defaultInputProps, ...this.inputProps };
     this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
     this.loading = this.shouldRenderSuggestions();
+    this.internalValue = this.value
   },
   mounted() {
     document.addEventListener("mouseup", this.onDocumentMouseUp);
@@ -277,9 +279,6 @@ export default {
     getSectionRef(i) {
       return "computed_section_" + i;
     },
-    getSize() {
-      return this.computedSize;
-    },
     getItemByIndex(index) {
       let obj = false;
       if (index === null) return obj;
@@ -294,7 +293,7 @@ export default {
             obj = this.normalizeItem(
               this.computedSections[i].name,
               this.computedSections[i].type,
-              childSection.getLabelByIndex(trueIndex),
+              childSection.section.label,
               childSection.getItemByIndex(trueIndex)
             );
             break;
@@ -333,9 +332,9 @@ export default {
             const direction = keyCode === 40 ? 1 : -1;
             const newIndex = parseInt(this.currentIndex) + direction;
 
-            this.setCurrentIndex(newIndex, this.getSize(), direction);
+            this.setCurrentIndex(newIndex, this.totalResults, direction);
             this.didSelectFromOptions = true;
-            if (this.getSize() > 0 && this.currentIndex >= 0) {
+            if (this.totalResults > 0 && this.currentIndex >= 0) {
               this.setChangeItem(this.getItemByIndex(this.currentIndex));
               this.didSelectFromOptions = true;
             } else if (this.currentIndex == -1) {
@@ -353,7 +352,7 @@ export default {
             break;
           }
 
-          if (this.getSize() > 0 && this.currentIndex >= 0) {
+          if (this.totalResults > 0 && this.currentIndex >= 0) {
             this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
             this.didSelectFromOptions = true;
           }
