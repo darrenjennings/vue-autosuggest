@@ -66,19 +66,7 @@ export default {
     },
     inputProps: {
       type: Object,
-      required: true,
-      default: function() {
-        return {
-          id: {
-            type: String,
-            default: "autosuggest__input"
-          },
-          onClick: {
-            type: Function,
-            required: false
-          }
-        };
-      }
+      required: true
     },
     limit: {
       type: Number,
@@ -87,8 +75,7 @@ export default {
     },
     suggestions: {
       type: Array,
-      required: true,
-      default: () => []
+      required: true
     },
     renderSuggestion: {
       type: Function,
@@ -179,9 +166,7 @@ export default {
           this.loading = false;
           this.$listeners.click && this.$listeners.click(this.currentItem);
 
-          this.$nextTick(() => {
-            this.ensureItemVisible(this.currentItem, this.currentIndex);
-          });
+          this.ensureItemVisible(this.currentItem, this.currentIndex);
         },
         selected: () => {
           // Determine which onSelected to fire. This can be either from inside
@@ -247,7 +232,11 @@ export default {
     },
     totalResults () {
       return this.computedSections.reduce((acc, section) => {
-        return acc + section.data.length
+        // For each section, make sure we calculate the size
+        // based on how many are rendered, which maxes out at
+        // the limit but can be less than the limit.
+        const { limit, data } = section
+        return acc + (data.length >= limit ? limit : data.length)
       }, 0)
     }
   },
@@ -346,11 +335,6 @@ export default {
           break;
         case 13: // Enter
           e.preventDefault();
-
-          if (keyCode === 229) {
-            // https://github.com/moroshko/react-autosuggest/pull/388
-            break;
-          }
 
           if (this.totalResults > 0 && this.currentIndex >= 0) {
             this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
@@ -456,9 +440,7 @@ export default {
       this.loading = true;
       this.didSelectFromOptions = true;
       this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
-      this.$nextTick(() => {
-        this.listeners.selected(true);
-      });
+      this.listeners.selected(true);
     },
     setCurrentIndex(newIndex, limit = -1, direction) {
       let adjustedValue = newIndex;
@@ -468,17 +450,12 @@ export default {
         adjustedValue = 0;
       }
 
-      if (this.currentIndex < 0 && direction === 1) {
-        adjustedValue = 0;
-      }
-
       // if we hit the upper limit then just stop iterating the index
       if (newIndex >= limit) {
         adjustedValue = 0;
       }
 
       this.currentIndex = adjustedValue;
-
       const element = this.$el.querySelector(`#autosuggest__results_item-${this.currentIndex}`);
 
       const hoverClass = "autosuggest__results_item-highlighted";

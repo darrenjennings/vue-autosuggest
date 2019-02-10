@@ -86,7 +86,7 @@ export default {
           limit: 4
         },
         hobbits: {
-          limit: 4
+          limit: 6
         }
       },
       inputProps: {
@@ -140,6 +140,9 @@ export default {
     },
 
     onSelected(item) {
+      if(!item){
+        return
+      }
       this.selected = item.item
     }
   }

@@ -590,4 +590,25 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
+
+  it("tears down event listeners", async () => {
+    let props = {...defaultProps};
+
+    delete props['sectionConfigs']
+
+    const AEL = jest.fn();
+    const REL = jest.fn();
+
+    window.document.addEventListener = AEL
+    window.document.removeEventListener = REL
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+      attachToDocument: true
+    });
+
+    wrapper.destroy()
+    expect(AEL).toHaveBeenCalledTimes(2)
+    expect(REL).toHaveBeenCalledTimes(2)
+  });
 });
