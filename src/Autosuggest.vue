@@ -240,12 +240,20 @@ export default {
       }, 0)
     }
   },
+  // Watcher to support initialValue
+  watch: {
+    value: {
+      handler(newValue){
+        this.internalValue = newValue
+      },
+      immediate: true
+    }
+  },
   created() {
     /** Take care of nested input props */
     this.internal_inputProps = { ...this.defaultInputProps, ...this.inputProps };
     this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
     this.loading = this.shouldRenderSuggestions();
-    this.internalValue = this.value
   },
   mounted() {
     document.addEventListener("mouseup", this.onDocumentMouseUp);

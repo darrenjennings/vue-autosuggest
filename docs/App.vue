@@ -69,11 +69,14 @@ export default {
   },
   mounted(){
     updateCSSVariables(darkTheme)
+    setTimeout(() => {
+      this.searchText = "dj"
+    },1000)
   },
   data() {
     return {
       selected: "",
-      searchText: "aragorn",
+      searchText: "",
       colorMode: 'dark',
       options: races.map(r => ({
         	label: r,
