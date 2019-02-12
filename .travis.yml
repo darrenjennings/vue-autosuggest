@@ -6,7 +6,7 @@ cache:
 notifications:
   email: false
 node_js: '8'
-install: npm install
+install: yarn install
 before_script:
   - npm prune
 before_install:
