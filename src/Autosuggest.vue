@@ -373,7 +373,6 @@ export default {
         this.internalValue = v;
         if (overrideOriginalInput) {
           this.searchInputOriginal = v;
-          this.$emit('input', v)
         }
         this.ensureItemVisible(item, this.currentIndex);
       }
