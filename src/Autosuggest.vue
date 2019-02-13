@@ -18,7 +18,7 @@
     >
     <div :class="componentAttrClassAutosuggestResultsContainer">
       <div 
-        v-if="totalResults > 0 && !loading"
+        v-if="isOpen"
         :class="componentAttrClassAutosuggestResults"
         :aria-labelledby="componentAttrIdAutosuggest"
       >
@@ -97,8 +97,8 @@ export default {
     shouldRenderSuggestions: {
       type: Function,
       required: false,
-      default: () => {
-        return true;
+      default: (totalResults, loading) => {
+        return totalResults > 0 && !loading;
       }
     },
     sectionConfigs: {
@@ -141,7 +141,6 @@ export default {
       currentItem: null,
       loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */,
       didSelectFromOptions: false,
-      computedSize: 0,
       internal_inputProps: {}, // Nest default prop values don't work currently in Vue
       defaultInputProps: {
         autocomplete: "off",
@@ -191,7 +190,7 @@ export default {
       };
     },
     isOpen() {
-      return this.totalResults > 0 && this.shouldRenderSuggestions() && !this.loading;
+      return this.shouldRenderSuggestions(this.totalResults, this.loading)
     },
     /**
      * @returns <Array>
@@ -253,7 +252,7 @@ export default {
     /** Take care of nested input props */
     this.internal_inputProps = { ...this.defaultInputProps, ...this.inputProps };
     this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
-    this.loading = this.shouldRenderSuggestions();
+    this.loading = true;
   },
   mounted() {
     document.addEventListener("mouseup", this.onDocumentMouseUp);
@@ -439,7 +438,7 @@ export default {
       
       /** Clicks outside of dropdown to exit */
       if (this.currentIndex === null || !this.isOpen) {
-        this.loading = this.shouldRenderSuggestions();
+        this.loading = true;
         return;
       }
 

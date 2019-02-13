@@ -10,10 +10,14 @@
         :input-props="inputProps"
         :section-configs="sectionConfigs"
         :getSuggestionValue="getSuggestionValue"
+        :should-render-suggestions="(size, loading) => size >= 0 && !loading"
         ref="autocomplete"
       >
         <template slot-scope="{suggestion}">
           <div>{{suggestion.item.Name}}</div>
+        </template>
+        <template slot="footer">
+          <p v-if="filteredOptions == 0" style="text-align: center;">No Results...</p>
         </template>
       </vue-autosuggest>
     </div>
@@ -69,9 +73,6 @@ export default {
   },
   mounted(){
     updateCSSVariables(darkTheme)
-    setTimeout(() => {
-      this.searchText = "dj"
-    },1000)
   },
   data() {
     return {
@@ -101,6 +102,9 @@ export default {
   computed: {
     filteredOptions() {
       const filtered = []
+      if(!this.searchText){
+        return []
+      }
       races.forEach(r => {
         const people = this.options.filter(o => o.name === r)[0].data.filter(p => {
           return p.Name.toLowerCase().indexOf(this.searchText.toLowerCase()) > -1;
@@ -219,7 +223,6 @@ h1 {
   border: 1px solid #e0e0e0;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
-  background: white;
   padding: 0px;
   overflow: scroll;
   max-height: 400px;
