@@ -611,4 +611,28 @@ describe("Autosuggest", () => {
     expect(AEL).toHaveBeenCalledTimes(2)
     expect(REL).toHaveBeenCalledTimes(2)
   });
+
+  it("can modify input type attribute", async () => {
+    const props = Object.assign({}, defaultProps);
+    props.inputProps = {
+      ...defaultProps.inputProps,
+      type: 'search'
+    };
+
+    props.suggestions = [filteredOptions[0]];
+
+    const wrapper = shallowMount(Autosuggest, {
+      propsData: props
+    });
+
+    const input = wrapper.find('input[type="search"]')
+    expect(input.is('input')).toBe(true)
+    expect(input.attributes("type", 'search')).toBeTruthy();
+
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) throw new Error(err);
+      expect(str).toMatchSnapshot();
+    });
+  });
 });

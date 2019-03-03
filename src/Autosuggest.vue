@@ -1,7 +1,7 @@
 <template>
   <div :id="componentAttrIdAutosuggest">
     <input 
-      type="text"
+      :type="inputProps['type'] ? inputProps['type'] : 'text'"
       :value="internalValue"
       :autocomplete="inputProps.autocomplete"
       role="combobox"

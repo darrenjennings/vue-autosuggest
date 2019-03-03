@@ -51,6 +51,14 @@ exports[`Autosuggest can display section header 1`] = `
 </div>
 `;
 
+exports[`Autosuggest can modify input type attribute 1`] = `
+<div id="autosuggest"><input type="search" autocomplete="off" role="combobox" aria-autocomplete="list" aria-owns="autosuggest__results" aria-activedescendant="" aria-haspopup="false" aria-expanded="false" id="autosuggest__input" placeholder="Type 'G'">
+  <div class="autosuggest__results-container">
+    <!---->
+  </div>
+</div>
+`;
+
 exports[`Autosuggest can mount 1`] = `
 <div id="autosuggest"><input type="text" autocomplete="off" role="combobox" aria-autocomplete="list" aria-owns="autosuggest__results" aria-activedescendant="" aria-haspopup="false" aria-expanded="false" id="autosuggest__input" placeholder="Type 'G'" value="q">
   <div class="autosuggest__results-container">
