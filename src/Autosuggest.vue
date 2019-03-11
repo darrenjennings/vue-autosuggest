@@ -1,6 +1,6 @@
 <template>
   <div :id="componentAttrIdAutosuggest">
-    <input 
+    <slot name="before-input" /><input
       :type="inputProps['type'] ? inputProps['type'] : 'text'"
       :value="internalValue"
       :autocomplete="inputProps.autocomplete"
@@ -15,14 +15,14 @@
       @input="inputHandler"
       @keydown="handleKeyStroke"
       v-on="listeners"
-    >
+    ><slot name="after-input" />
     <div :class="componentAttrClassAutosuggestResultsContainer">
       <div 
         v-if="isOpen"
         :class="componentAttrClassAutosuggestResults"
         :aria-labelledby="componentAttrIdAutosuggest"
       >
-        <slot name="header" />
+        <slot name="before-suggestions" />
         <component
           :is="cs.type"
           v-for="(cs, key) in computedSections"
@@ -43,7 +43,7 @@
             </slot>
           </template>
         </component>
-        <slot name="footer" />
+        <slot name="after-suggestions" />
       </div>
     </div>
   </div>

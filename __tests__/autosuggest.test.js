@@ -488,8 +488,8 @@ describe("Autosuggest", () => {
     const wrapper = mount(Autosuggest, {
       propsData: defaultProps,
       slots: {
-        header: '<div class="header-dude"></div>',
-        footer: '<div id="footer-dude"><span>1</span><span>2</span></div>'
+        ['before-suggestions']: '<div class="header-dude"></div>',
+        ['after-suggestions']: '<div id="footer-dude"><span>1</span><span>2</span></div>'
       },
       scopedSlots: {
         default: `

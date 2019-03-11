@@ -10,13 +10,13 @@
         :input-props="inputProps"
         :section-configs="sectionConfigs"
         :getSuggestionValue="getSuggestionValue"
-        :should-render-suggestions="(size, loading) => size >= 0 && !loading"
+        :should-render-suggestions="(size, loading) => size >= 0 && !loading && searchText !== ''"
         ref="autocomplete"
       >
         <template slot-scope="{suggestion}">
           <div>{{suggestion.item.Name}}</div>
         </template>
-        <template slot="footer">
+        <template slot="after-suggestions">
           <p v-if="filteredOptions == 0" style="text-align: center;">No Results...</p>
         </template>
       </vue-autosuggest>
