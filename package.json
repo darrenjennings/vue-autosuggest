@@ -9,6 +9,7 @@
   "scripts": {
     "commit": "git-cz",
     "start": "webpack-dev-server --config docs/webpack.config.js",
+    "lint": "eslint --ext .js,.vue src",
     "build": "yarn build:docs && yarn build:esm && yarn build:umd && yarn storybook:build",
     "build:docs": "NODE_ENV=production webpack --config docs/webpack.config.js",
     "build:esm": "rollup -c ./build/rollup.esm.config.js",
