@@ -421,9 +421,12 @@ export default {
     updateCurrentIndex(index) {
       this.currentIndex = index;
     },
-    clickedOnScrollbar(mouseX){
+    clickedOnScrollbar(e, mouseX){
       const results = this.$el.querySelector(`.${this.componentAttrClassAutosuggestResults}`);
-      return results && (results.clientWidth <= (mouseX + 16) && mouseX + 16 <= results.clientWidth + 16 ) || false;
+
+      const mouseIsInsideScrollbar = results && results.clientWidth <= (mouseX + 17) && 
+        mouseX + 17 <= results.clientWidth + 34
+      return e.target.tagName === 'DIV' && results && mouseIsInsideScrollbar || false;
     },
     onDocumentMouseDown(e) {
       var rect = e.target.getBoundingClientRect ? e.target.getBoundingClientRect() : 0;
@@ -432,7 +435,9 @@ export default {
     onDocumentMouseUp(e) {
       /** Do not re-render list on input click  */
       const isChild = this.$el.contains(e.target);
-      if (isChild && e.target.tagName === 'INPUT' || this.clickedOnScrollbar(this.clientXMouseDownInitial)) {
+
+      if (isChild && e.target.tagName === 'INPUT' ||
+        (this.clickedOnScrollbar(e, this.clientXMouseDownInitial))) {
         return;
       }
       
