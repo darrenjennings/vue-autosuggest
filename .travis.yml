@@ -6,9 +6,12 @@ cache:
 notifications:
   email: false
 node_js: '8'
-install: npm install
+install: yarn install
 before_script:
   - npm prune
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - export PATH="$HOME/.yarn/bin:$PATH"
 script:
   - yarn test:coverage
   - yarn build:umd
