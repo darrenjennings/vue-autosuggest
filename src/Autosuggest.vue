@@ -409,13 +409,10 @@ export default {
         resultsScrollScrollTop + resultsScrollWindowHeight
       ) {
         /** Current item goes below visible scroll window */
-        resultsScrollElement.scrollTo(
-          0,
-          itemHeight + currentItemScrollOffset - resultsScrollWindowHeight
-        );
+        resultsScrollElement.scrollTop = itemHeight + currentItemScrollOffset - resultsScrollWindowHeight;
       } else if (currentItemScrollOffset < resultsScrollScrollTop && resultsScrollScrollTop > 0) {
         /** Current item goes above visible scroll window */
-        resultsScrollElement.scrollTo(0, currentItemScrollOffset);
+        resultsScrollElement.scrollTop = currentItemScrollOffset;
       }
     },
     updateCurrentIndex(index) {
