@@ -1,4 +1,6 @@
 ﻿<div>
+<p align="center"><img width="100" src="docs/logo.png" alt="Vue logo"></a></p>
+
 <h1>vue-autosuggest</h1>
 
 <p>🔍 Autosuggest component built for Vue.</a></p>
