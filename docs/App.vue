@@ -13,8 +13,8 @@
         :should-render-suggestions="(size, loading) => size >= 0 && !loading && searchText !== ''"
         ref="autocomplete"
       >
-        <template slot-scope="{suggestion}">
-          <div>{{suggestion.item.Name}}</div>
+        <template slot-scope="{suggestion, index, cs}">
+          <div>{{ suggestion && suggestion.item.Name }}</div>
         </template>
         <template slot="after-suggestions">
           <p v-if="filteredOptions == 0" style="text-align: center;">No Results...</p>
@@ -186,7 +186,6 @@ h1 {
   background-color: var(--theme-bg);
   caret-color: #ddd;
   color: var(--theme-color);
-  outline: none;
   position: relative;
   display: block;
   font-family: monospace;
@@ -200,7 +199,7 @@ h1 {
   -moz-box-sizing: border-box;
 }
 
-#autosuggest__input.autosuggest__input-open, #autosuggest__input:hover {
+#autosuggest__input.autosuggest__input--open, #autosuggest__input:hover {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border: 1px solid lightgray;
@@ -235,17 +234,17 @@ h1 {
   background-color: var(--theme-bg);
 }
 
-.autosuggest__results .autosuggest__results_item {
+.autosuggest__results .autosuggest__results-item {
   cursor: pointer;
   background-color: var(--theme-bg);
   padding: 10px;
 }
 
-#autosuggest ul:nth-child(1) > .autosuggest__results_title {
+#autosuggest ul:nth-child(1) > .autosuggest__results-before {
   border-top: none;
 }
 
-.autosuggest__results .autosuggest__results_title {
+.autosuggest__results .autosuggest__results-before {
   color: var(--theme-color);
   opacity: 0.5;
   font-size: 11px;
@@ -254,10 +253,10 @@ h1 {
   border-top: 1px solid lightgray;
 }
 
-.autosuggest__results .autosuggest__results_item:active,
-.autosuggest__results .autosuggest__results_item:hover,
-.autosuggest__results .autosuggest__results_item:focus,
-.autosuggest__results .autosuggest__results_item.autosuggest__results_item-highlighted {
+.autosuggest__results .autosuggest__results-item:active,
+.autosuggest__results .autosuggest__results-item:hover,
+.autosuggest__results .autosuggest__results-item:focus,
+.autosuggest__results .autosuggest__results-item.autosuggest__results-item--highlighted {
   background-color: var(--theme-item_bg_highlighted);
   color: var(--theme-item_color_highlighted);
 }

@@ -231,16 +231,16 @@ describe("Autosuggest", () => {
     input1.trigger("click");
     input2.trigger("click");
     
-    expect(autosuggest1.findAll("li.autosuggest__results_item").length).toBe(5);
-    expect(autosuggest1.findAll("li.autosuggest__results_item").length).toBe(5);
+    expect(autosuggest1.findAll("li.autosuggest__results-item").length).toBe(5);
+    expect(autosuggest1.findAll("li.autosuggest__results-item").length).toBe(5);
 
     times(2)(() => {
       input2.trigger("keydown.down");
     });
 
-    expect(autosuggest1.findAll("li.autosuggest__results_item-highlighted").length).toBe(0);
-    expect(autosuggest2.findAll("li.autosuggest__results_item-highlighted").length).toBe(1);
-    expect(autosuggest2.findAll("li").at(1).classes()).toContain("autosuggest__results_item-highlighted");
+    expect(autosuggest1.findAll("li.autosuggest__results-item--highlighted").length).toBe(0);
+    expect(autosuggest2.findAll("li.autosuggest__results-item--highlighted").length).toBe(1);
+    expect(autosuggest2.findAll("li").at(1).classes()).toContain("autosuggest__results-item--highlighted");
 
     input2.trigger("keydown.enter");
 
@@ -488,8 +488,8 @@ describe("Autosuggest", () => {
     const wrapper = mount(Autosuggest, {
       propsData: defaultProps,
       slots: {
-        ['before-suggestions']: '<div class="header-dude"></div>',
-        ['after-suggestions']: '<div id="footer-dude"><span>1</span><span>2</span></div>'
+        'before-suggestions': '<div class="header-dude"></div>',
+        'after-suggestions': '<div id="footer-dude"><span>1</span><span>2</span></div>'
       },
       scopedSlots: {
         default: `
@@ -509,6 +509,50 @@ describe("Autosuggest", () => {
 
     await wrapper.vm.$nextTick(() => {});
 
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
+  });
+  
+  it("can render section slots", async () => {
+    const props = { ...defaultProps };
+    props.suggestions.push({ name: 'dogs', data: ['spike', 'bud', 'rover']})
+    props.suggestions.push({ name: 'cats', data: ['sassy', 'tuesday', 'church']})
+    props.suggestions.push({ name: 'zeu', data: ['elephant', 'lion']})
+    props.suggestions.push({ name: 'Uhh', data: ['something', 'something2']})
+
+    props.sectionConfigs = {
+      default: {
+        label: "Suggestions",
+        limit: 5,
+        onSelected: () => {}
+      },
+      Uhh: {
+        label: "uhh"
+      },
+    };
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+      attachToDocument: true,
+      scopedSlots: {
+        'before-section-dogs': `<li :class="props.className">The Dogs</li>`,
+        'before-section-cats': `<li>Moar Cats is good</li>`,
+        'before-section-zeu': `<li>zoo animals?</li>`
+      },
+    });
+
+    const input = wrapper.find("input");
+    input.setValue("G");
+
+    input.trigger("click");
+    input.setValue("G");
+    expect(wrapper.find("ul li:nth-child(1)").element.innerHTML).toBe(
+      props.sectionConfigs.default.label
+    );
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) {

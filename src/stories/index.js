@@ -6,26 +6,18 @@ import Autosuggest from "../Autosuggest.vue";
 
 const sharedData = {
   options: [
-    "clifford kits",
-    "friendly chemistry",
-    "phonics",
-    "life of fred",
-    "life of fred math",
-    "magic school bus",
-    "math mammoth light blue",
-    "handwriting",
-    "math",
-    "minecraft",
-    "free worksheets",
-    "4th grade",
-    "snap circuits",
-    "bath toys",
-    "channies",
-    "fred",
-    "lego",
-    "math life of fred",
-    "multiplication",
-    "thinking tree"
+    "Frodo",
+    "Gandalf",
+    "Samwise",
+    "Aragorn",
+    "Galadriel",
+    "Sauron",
+    "Gimli",
+    "Legolas",
+    "Saruman",
+    "Elrond",
+    "Gollum",
+    "Bilbo"
   ],
   methods: {
     onInputChange(text) {
@@ -49,7 +41,7 @@ storiesOf("Vue-Autosuggest", module)
                     <div>
                         <autosuggest @input="onInputChange" :suggestions="filteredOptions" :inputProps="inputProps" @selected="onSelected" />
                     </div>
-                </div>`,
+               </div>`,
     data() {
       return {
         selected: "",
@@ -134,7 +126,7 @@ storiesOf("Vue-Autosuggest", module)
                     <h3 style="margin: 10px 10px 0; padding: 5px;">this is a header slot</h3>
                   </template>
                   <template slot-scope="{suggestion, index}">
-                    <div>{{suggestion.item}}, suggestion slot 
+                    <div>{{suggestion.item}}
                       <span :style="{color: colors[Math.floor(Math.random()*colors.length)]}">style</span> 
                       <span :style="{color: colors[Math.floor(Math.random()*colors.length)]}">me</span> 
                       <span :style="{color: colors[Math.floor(Math.random()*colors.length)]}">pretty</span> 
@@ -189,14 +181,14 @@ storiesOf("Vue-Autosuggest", module)
     template: `<div>
                     <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected {{selected}}</span></div>
                     <div>
-                        <autosuggest @input="onInputChange" :suggestions="filteredOptions" :inputProps="inputProps" :sectionConfigs="sectionConfigs" />
+                        <autosuggest v-model="query" @input="onInputChange" :suggestions="filteredOptions" :inputProps="inputProps" :sectionConfigs="sectionConfigs" />
                     </div>
                 </div>`,
     data() {
       return {
         selected: "",
         limit: 10,
-        val: 'math',
+        query: 'Frodo',
         filteredOptions: [],
         options: [
           {
@@ -242,7 +234,7 @@ storiesOf("Vue-Autosuggest", module)
             data: [
               { id: 1, name: "Frodo", avatar: "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png" },
               { id: 2, name: "Samwise", avatar: "https://pbs.twimg.com/media/Cdbyw8JUIAAXY8d.jpg" },
-              { id: 3, name: "Gandalf", avatar: "http://www.thelandofshadow.com/wp-content/uploads/2014/08/GandalfStaff2-200x200.jpg" },
+              { id: 3, name: "Gandalf", avatar: "https://upload.wikimedia.org/wikipedia/en/e/e9/Gandalf600ppx.jpg" },
               { id: 4, name: "Aragorn", avatar: "https://i.pinimg.com/236x/78/75/40/7875409365d056d145dfb4c32e413aad--viggo-mortensen-aragorn-lord-of-the-rings.jpg" }
             ]
           }
@@ -410,11 +402,11 @@ storiesOf("Vue-Autosuggest", module)
                   :suggestions="filteredOptions"
                   :inputProps="inputProps"
                   @input="onInputChange">
-                  <template slot="header">
+                  <template slot="before-section-default">
                     <h3 style="margin: 10px 10px 0; padding: 5px;">this is a header slot</h3>
                   </template>
                   <template slot-scope="{suggestion, index}">
-                    <div>{{suggestion.item}}, suggestion slot 
+                    <div>{{suggestion.item}}
                       <span :style="{color: colors[Math.floor(Math.random()*colors.length)]}">style</span> 
                       <span :style="{color: colors[Math.floor(Math.random()*colors.length)]}">me</span> 
                       <span :style="{color: colors[Math.floor(Math.random()*colors.length)]}">pretty</span> 
@@ -524,4 +516,81 @@ storiesOf("Vue-Autosuggest", module)
         this.filteredOptions[index] = [{ data: filteredData }];
       }
     }
-  }));
+  }))
+  .add("with section before/after slots", () => ({
+      components: { Autosuggest },
+      template: `<div>
+                      <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected {{selected}}</span></div>
+                      <div>
+                          <autosuggest 
+                            @input="onInputChange" 
+                            @selected="onSelected"
+                            :limit="5"
+                            :suggestions="filteredOptions"
+                            :inputProps="inputProps">
+                            <template slot="before-section-1" slot-scope="{section, className}">
+                              <li :class="className">A Custom Section <strong style="color: blue;">Before</strong></li>
+                            </template>
+                            <template slot="after-section" slot-scope="{section}">
+                              <li style="padding: 1rem; text-align: center; color: lightgray;">
+                                Showing {{section.limit}} / {{section.data.length}}
+                              </li>
+                            </template>
+                          </autosuggest>
+                      </div>
+                  </div>`,
+      data() {
+        return {
+          selected: "",
+          limit: 10,
+          query: '',
+          options: [
+            {
+              data: sharedData.options
+            }
+          ],
+          inputProps: {
+            id: "autosuggest__input",
+            placeholder: "Type 'g'"
+          }
+        };
+      },
+      computed: {
+        filteredOptions() {
+          const suggestionsData = this.options[0].data.filter(item => {
+            return item.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+          });
+
+          return [
+              {
+                label: "Section 1",
+                data: suggestionsData,
+                limit: 2
+              },
+              {
+                label: "Section 2",
+                data: suggestionsData.map(a => `${a} ${this.rando()}` )
+                  .concat(suggestionsData.map(a => `${a} ${this.rando()}`))
+                  .concat(suggestionsData.map(a => `${a} ${this.rando()}`))
+              }
+          ]
+        }
+      },
+      methods: {
+        rando(){
+          return Math.floor(Math.random() * (100 - 1)) + 1
+        },
+        onSelected(item) {
+          action('Selected')(item.item)
+          
+          this.query = item.item
+        },
+        onInputChange(text) {
+          action('onInputChange')(text)
+          if (text === null) {
+            return;
+          }
+          this.query = text
+        }
+      }
+    }));
