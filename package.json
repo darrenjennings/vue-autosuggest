@@ -1,6 +1,6 @@
 {
   "name": "vue-autosuggest",
-  "version": "2.0.0-beta.7",
+  "version": "2.0.0-beta.8",
   "description": "Vue autosuggest component.",
   "engines": {
     "node": "> 4",
@@ -26,7 +26,8 @@
     "storybook:build": "build-storybook -c .storybook -o docs/storybook"
   },
   "files": [
-    "dist"
+    "dist", 
+    "src"
   ],
   "main": "dist/vue-autosuggest.js",
   "module": "dist/vue-autosuggest.esm.js",
