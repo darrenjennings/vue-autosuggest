@@ -6,3 +6,5 @@ dist
 .DS_Store
 .eslintcache
 .idea
+docs/dist
+docs/storybook
