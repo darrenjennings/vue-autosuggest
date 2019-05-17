@@ -1,27 +1,28 @@
 <template>
   <div :id="componentAttrIdAutosuggest">
-    <input 
-      v-model="searchInput"
-      type="text"
+    <slot name="before-input" /><input
+      :type="inputProps['type'] ? inputProps['type'] : 'text'"
+      :value="internalValue"
       :autocomplete="inputProps.autocomplete"
       role="combobox"
-      :class="[isOpen ? 'autosuggest__input-open' : '', inputProps['class']]"
+      :class="[isOpen ? 'autosuggest__input--open' : '', inputProps['class']]"
       v-bind="inputProps"
       aria-autocomplete="list"
       aria-owns="autosuggest__results"
-      :aria-activedescendant="isOpen && currentIndex !== null ? `autosuggest__results_item-${currentIndex}` : ''"
+      :aria-activedescendant="isOpen && currentIndex !== null ? `autosuggest__results-item--${currentIndex}` : ''"
       :aria-haspopup="isOpen ? 'true' : 'false'"
       :aria-expanded="isOpen ? 'true' : 'false'"
+      @input="inputHandler"
       @keydown="handleKeyStroke"
       v-on="listeners"
-    >
+    ><slot name="after-input" />
     <div :class="componentAttrClassAutosuggestResultsContainer">
       <div 
-        v-if="getSize() > 0 && !loading"
+        v-if="isOpen"
         :class="componentAttrClassAutosuggestResults"
         :aria-labelledby="componentAttrIdAutosuggest"
       >
-        <slot name="header" />
+        <slot name="before-suggestions" />
         <component
           :is="cs.type"
           v-for="(cs, key) in computedSections"
@@ -31,19 +32,46 @@
           :normalize-item-function="normalizeItem"
           :render-suggestion="renderSuggestion"
           :section="cs"
-          :update-current-index="updateCurrentIndex"
-          :search-input="searchInput"
+          @updateCurrentIndex="updateCurrentIndex"
         >
+          <template 
+            :slot="`before-section-${cs.name || cs.label}`"
+            slot-scope="{section, className}"
+          >
+            <slot
+              :name="`before-section-${cs.name || cs.label}`"
+              :section="section"
+              :className="className"
+            />
+          </template>
           <template slot-scope="{ suggestion, _key }">
-            <slot 
+            <slot
               :suggestion="suggestion" 
               :index="_key"
             >
               {{ suggestion.item }}
             </slot>
           </template>
+          <template 
+            :slot="`after-section-${cs.name || cs.label}`"
+            slot-scope="{section}"
+          >
+            <slot 
+              :name="`after-section-${cs.name || cs.label}`" 
+              :section="section"
+            />
+          </template>
+          <template
+            slot="after-section"
+            slot-scope="{section}"
+          >
+            <slot
+              name="after-section"
+              :section="section"
+            />
+          </template>
         </component>
-        <slot name="footer" />
+        <slot name="after-suggestions" />
       </div>
     </div>
   </div>
@@ -51,8 +79,25 @@
 
 <script>
 
+/**
+ * @typedef {Object} ResultSection
+ * @prop {String} name - Name of the section
+ * @prop {String} label - What is displayed in the section header, is exists
+ * @prop {String} type - Used to decide which component to use for section
+ * @prop {Number} limit - max number of results
+ * @prop {Array} data - the results
+ * @prop {Number} start_index - tracks section start reference point
+ * @prop {Number} end_index - tracks section end reference point
+ */
+
 import DefaultSection from "./parts/DefaultSection.js";
 import { addClass, removeClass } from "./utils";
+
+const defaultSectionConfig = {
+  name: "default",
+  type: "default-section"
+}
+
 export default {
   name: "Autosuggest",
   components: {
@@ -60,29 +105,13 @@ export default {
     DefaultSection
   },
   props: {
+    value: {
+      type: String,
+      default: null
+    },
     inputProps: {
       type: Object,
-      required: true,
-      default: function() {
-        return {
-          id: {
-            type: String,
-            default: "autosuggest__input"
-          },
-          onInputChange: {
-            type: Function,
-            required: true
-          },
-          initialValue: {
-            type: String,
-            required: false
-          },
-          onClick: {
-            type: Function,
-            required: false
-          }
-        };
-      }
+      required: true
     },
     limit: {
       type: Number,
@@ -91,8 +120,7 @@ export default {
     },
     suggestions: {
       type: Array,
-      required: true,
-      default: () => []
+      required: true
     },
     renderSuggestion: {
       type: Function,
@@ -114,8 +142,8 @@ export default {
     shouldRenderSuggestions: {
       type: Function,
       required: false,
-      default: () => {
-        return true;
+      default: (totalResults, loading) => {
+        return totalResults > 0 && !loading;
       }
     },
     sectionConfigs: {
@@ -152,24 +180,15 @@ export default {
   },
   data() {
     return {
-      searchInput: "",
+      internalValue: null,
       searchInputOriginal: null,
       currentIndex: null,
       currentItem: null,
       loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */,
       didSelectFromOptions: false,
-      computedSections: [],
-      computedSize: 0,
       internal_inputProps: {}, // Nest default prop values don't work currently in Vue
       defaultInputProps: {
-        name: "q", // TODO: 2.0 Deprecate default name value
-        initialValue: "",
         autocomplete: "off",
-        class: 'form-control', // TODO: 2.0 remove
-      },
-      defaultSectionConfig: {
-        name: "default",
-        type: "default-section"
       },
       clientXMouseDownInitial: null
     };
@@ -178,29 +197,16 @@ export default {
     listeners() {
       return {
         ...this.$listeners,
-        focus: e => {
-          this.$listeners.focus && this.$listeners.focus(e);
-          if (this.inputProps.onFocus) {
-            this.onFocus(e)
-          }
-        },
-        blur: e => {
-          this.$listeners.blur && this.$listeners.blur(e);
-          if (this.inputProps.onBlur) {
-            this.onBlur(e)
-          }
+        input: e => {
+          // Don't do anything native here, since we have inputHandler
+          return
         },
         click: () => {
           /* eslint-disable-next-line vue/no-side-effects-in-computed-properties */
           this.loading = false;
           this.$listeners.click && this.$listeners.click(this.currentItem);
 
-          if(this.inputProps.onClick){
-            this.onClick(this.currentItem);
-          }
-          this.$nextTick(() => {
-            this.ensureItemVisible(this.currentItem, this.currentIndex);
-          });
+          this.ensureItemVisible(this.currentItem, this.currentIndex);
         },
         selected: () => {
           // Determine which onSelected to fire. This can be either from inside
@@ -219,74 +225,76 @@ export default {
             this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
           } else if (this.$listeners.selected) {
             this.$emit('selected', this.currentItem);
-          } else if (this.onSelected){
-            // TODO: 2.0 deprecate old event listeners
-            this._onSelected(this.currentItem);
           }
           this.setChangeItem(null)
         }
       };
     },
     isOpen() {
-      return this.getSize() > 0 && this.shouldRenderSuggestions() && !this.loading;
+      return this.shouldRenderSuggestions(this.totalResults, this.loading)
+    },
+    /** @returns {Array<ResultSection>} */
+    computedSections() {
+      let tmpSize = 0
+      return this.suggestions.map(section => {
+        if (!section.data) return;
+
+        const name = section.name ? section.name : defaultSectionConfig.name;
+        let limit, label, type = null
+        
+        if (this.sectionConfigs[name]) {
+          limit = this.sectionConfigs[name].limit
+          type = this.sectionConfigs[name].type
+          label = this.sectionConfigs[name].label
+        }
+
+        /** Set defaults for section configs. */
+        type = type ? type : defaultSectionConfig.type;
+
+        limit = limit || this.limit
+        limit = limit ? limit : Infinity;
+        limit = section.data.length < limit ? section.data.length : limit;
+        label = label ? label : section.label;
+
+        const computedSection = {
+          name,
+          label,
+          type,
+          limit,
+          data: section.data,
+          start_index: tmpSize,
+          end_index: tmpSize + limit - 1
+        }
+        
+        tmpSize += limit;
+        
+        return computedSection
+      })
+    },
+    totalResults () {
+      return this.computedSections.reduce((acc, section) => {
+        // For each section, make sure we calculate the size
+        // based on how many are rendered, which maxes out at
+        // the limit but can be less than the limit.
+        const { limit, data } = section
+        return acc + (data.length >= limit ? limit : data.length)
+      }, 0)
     }
   },
+  // Watcher to support initialValue
   watch: {
-    searchInput(newValue, oldValue) {
-      this.value = newValue;
-      if (!this.didSelectFromOptions) {
-        this.searchInputOriginal = this.value;
-        this.currentIndex = null;
-        this.internal_inputProps.onInputChange(newValue, oldValue);
-      }
-    },
-    suggestions: {
-      immediate: true,
-      handler() {
-        this.computedSections = [];
-        this.computedSize = 0;
-
-        this.suggestions.forEach(section => {
-          if (!section.data) return;
-
-          const name = section.name ? section.name : this.defaultSectionConfig.name;
-
-          let { type, limit, label } = this.sectionConfigs[name];
-
-          limit = limit || this.limit
-
-          /** Set defaults for section configs. */
-          type = type ? type : this.defaultSectionConfig.type;
-
-          limit = limit ? limit : Infinity;
-          limit = section.data.length < limit ? section.data.length : limit;
-
-          label = label ? label : section.label;
-
-          let computedSection = {
-            name,
-            label,
-            type,
-            limit,
-            data: section.data,
-            start_index: this.computedSize,
-            end_index: this.computedSize + limit - 1
-          };
-          this.computedSections.push(computedSection);
-          this.computedSize += limit;
-        }, this);
-      }
+    value: {
+      handler(newValue){
+        this.internalValue = newValue
+      },
+      immediate: true
     }
   },
   created() {
     /** Take care of nested input props */
     this.internal_inputProps = { ...this.defaultInputProps, ...this.inputProps };
     this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
-    this.inputProps.name = this.internal_inputProps.name; // TODO: 2.0 Deprecate default name value
-    this.inputProps.class = this.internal_inputProps.class; // TODO: 2.0 Deprecate default name value
-
-    this.searchInput = this.internal_inputProps.initialValue; // set default query, e.g. loaded server side.
-    this.loading = this.shouldRenderSuggestions();
+    this.loading = true;
   },
   mounted() {
     document.addEventListener("mouseup", this.onDocumentMouseUp);
@@ -297,11 +305,17 @@ export default {
     document.removeEventListener("mousedown", this.onDocumentMouseDown)
   },
   methods: {
+    inputHandler(e) {
+      const newValue = e.target.value
+      this.$emit('input', newValue)
+      this.internalValue = newValue
+      if (!this.didSelectFromOptions) {
+        this.searchInputOriginal = newValue;
+        this.currentIndex = null;
+      }
+    },
     getSectionRef(i) {
       return "computed_section_" + i;
-    },
-    getSize() {
-      return this.computedSize;
     },
     getItemByIndex(index) {
       let obj = false;
@@ -317,7 +331,7 @@ export default {
             obj = this.normalizeItem(
               this.computedSections[i].name,
               this.computedSections[i].type,
-              childSection.getLabelByIndex(trueIndex),
+              childSection.section.label,
               childSection.getItemByIndex(trueIndex)
             );
             break;
@@ -356,14 +370,14 @@ export default {
             const direction = keyCode === 40 ? 1 : -1;
             const newIndex = parseInt(this.currentIndex) + direction;
 
-            this.setCurrentIndex(newIndex, this.getSize(), direction);
+            this.setCurrentIndex(newIndex, this.totalResults);
             this.didSelectFromOptions = true;
-            if (this.getSize() > 0 && this.currentIndex >= 0) {
+            if (this.totalResults > 0 && this.currentIndex >= 0) {
               this.setChangeItem(this.getItemByIndex(this.currentIndex));
               this.didSelectFromOptions = true;
             } else if (this.currentIndex == -1) {
               this.currentIndex = null;
-              this.searchInput = this.searchInputOriginal;
+              this.internalValue = this.searchInputOriginal;
               e.preventDefault();
             }
           }
@@ -371,12 +385,7 @@ export default {
         case 13: // Enter
           e.preventDefault();
 
-          if (keyCode === 229) {
-            // https://github.com/moroshko/react-autosuggest/pull/388
-            break;
-          }
-
-          if (this.getSize() > 0 && this.currentIndex >= 0) {
+          if (this.totalResults > 0 && this.currentIndex >= 0) {
             this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
             this.didSelectFromOptions = true;
           }
@@ -389,7 +398,8 @@ export default {
             /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
             this.loading = true;
             this.currentIndex = null;
-            this.searchInput = this.searchInputOriginal;
+            this.internalValue = this.searchInputOriginal
+            this.$emit('input', this.searchInputOriginal);
             e.preventDefault();
           }
           break;
@@ -399,15 +409,16 @@ export default {
       if (this.currentIndex === null || !item) {
         this.currentItem = null;
       } else if (item) {
-        this.searchInput = this.getSuggestionValue(item);
         this.currentItem = item;
+        const v = this.getSuggestionValue(item)
+        this.internalValue = v;
         if (overrideOriginalInput) {
-          this.searchInputOriginal = this.getSuggestionValue(item);
+          this.searchInputOriginal = v;
         }
         this.ensureItemVisible(item, this.currentIndex);
       }
     },
-    normalizeItem(name, type, label, item) {
+    normalizeItem(name, type, label, item) {  
       return {
         name,
         type,
@@ -424,7 +435,7 @@ export default {
         return;
       }
 
-      const itemElement = this.$el.querySelector(`#autosuggest__results_item-${index}`);
+      const itemElement = this.$el.querySelector(`#autosuggest__results-item--${index}`);
       if (!itemElement) {
         return;
       }
@@ -447,7 +458,7 @@ export default {
       }
     },
     updateCurrentIndex(index) {
-      this.currentIndex = index;
+      this.setCurrentIndex(index, -1, true);
     },
     clickedOnScrollbar(e, mouseX){
       const results = this.$el.querySelector(`.${this.componentAttrClassAutosuggestResults}`);
@@ -471,7 +482,7 @@ export default {
       
       /** Clicks outside of dropdown to exit */
       if (this.currentIndex === null || !this.isOpen) {
-        this.loading = this.shouldRenderSuggestions();
+        this.loading = true;
         return;
       }
 
@@ -479,62 +490,30 @@ export default {
       this.loading = true;
       this.didSelectFromOptions = true;
       this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
-      this.$nextTick(() => {
-        this.listeners.selected(true);
-      });
+      this.listeners.selected(true);
     },
-    setCurrentIndex(newIndex, limit = -1, direction) {
+
+    setCurrentIndex(newIndex, limit = -1, onHover = false) {
       let adjustedValue = newIndex;
-
-      // if we hit the lower limit then stop iterating the index
-      if (this.currentIndex === null) {
-        adjustedValue = 0;
+      
+      if (!onHover){
+        const hitLowerLimt = this.currentIndex === null
+        const hitUpperLimit = newIndex >= limit
+        if (hitLowerLimt || hitUpperLimit) {
+          adjustedValue = 0;
+        }
       }
-
-      if (this.currentIndex < 0 && direction === 1) {
-        adjustedValue = 0;
-      }
-
-      // if we hit the upper limit then just stop iterating the index
-      if (newIndex >= limit) {
-        adjustedValue = 0;
-      }
-
+      
       this.currentIndex = adjustedValue;
+      const element = this.$el.querySelector(`#autosuggest__results-item--${this.currentIndex}`);
+      const hoverClass = "autosuggest__results-item--highlighted";
 
-      const element = this.$el.querySelector(`#autosuggest__results_item-${this.currentIndex}`);
-
-      const hoverClass = "autosuggest__results_item-highlighted";
       if (this.$el.querySelector(`.${hoverClass}`)) {
         removeClass(this.$el.querySelector(`.${hoverClass}`), hoverClass);
       }
       if (element) {
         addClass(element, hoverClass);
       }
-    },
-    _onSelected(e) {
-      console.warn(
-        'onSelected is deprecated. Please use click event listener \n\ne.g. <vue-autosuggest ... @selected="onSelectedMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
-      );
-      this.onSelected && this.onSelected(e);
-    },
-    onClick(e) {
-      console.warn(
-        'inputProps.onClick is deprecated. Please use native click event listener \n\ne.g. <vue-autosuggest ... @click="clickMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
-      );
-      this.internal_inputProps.onClick && this.internal_inputProps.onClick(e);
-    },
-    onBlur(e) {
-      console.warn(
-        'inputProps.onBlur is deprecated. Please use native blur event listener \n\ne.g. <vue-autosuggest ... @blur="blurMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
-      );
-      this.internal_inputProps.onBlur && this.internal_inputProps.onBlur(e);
-    },
-    onFocus(e) {
-      console.warn(
-        'inputProps.onFocus is deprecated. Please use native focus event listener \n\ne.g. <vue-autosuggest ... @focus="focusMethod" /> \n\nhttps://vuejs.org/v2/guide/syntax.html#v-on-Shorthand'
-      );
-      this.internal_inputProps.onFocus && this.internal_inputProps.onFocus(e);
     }
   },
 };

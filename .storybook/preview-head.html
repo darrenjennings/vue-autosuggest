@@ -8,7 +8,6 @@
       }
       
       #autosuggest__input {
-        outline: none;
         position: relative;
         display: block;
         font-family: monospace;
@@ -21,7 +20,7 @@
         -moz-box-sizing: border-box;
       }
       
-      #autosuggest__input.autosuggest__input-open {
+      #autosuggest__input.autosuggest__input--open {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
       }
@@ -50,16 +49,16 @@
         margin: 0;
       }
       
-      .autosuggest__results .autosuggest__results_item {
+      .autosuggest__results .autosuggest__results-item {
         cursor: pointer;
         padding: 15px;
       }
       
-      #autosuggest ul:nth-child(1) > .autosuggest__results_title {
+      #autosuggest ul:nth-child(1) > .autosuggest__results-before {
         border-top: none;
       }
       
-      .autosuggest__results .autosuggest__results_title {
+      .autosuggest__results .autosuggest__results-before {
         color: gray;
         font-size: 11px;
         margin-left: 0;
@@ -67,16 +66,24 @@
         border-top: 1px solid lightgray;
       }
       
-      .autosuggest__results .autosuggest__results_item:active,
-      .autosuggest__results .autosuggest__results_item:hover,
-      .autosuggest__results .autosuggest__results_item:focus,
+      .autosuggest__results .autosuggest__results-item:active,
+      .autosuggest__results .autosuggest__results-item:hover,
+      .autosuggest__results .autosuggest__results-item:focus,
       .autosuggest__results
-        .autosuggest__results_item.autosuggest__results_item-highlighted {
-        background-color: #ddd;
+        .autosuggest__results-item.autosuggest__results-item--highlighted {
+        background-color: rgba(0,0,0,0.04);
       }
 
       .autosuggest__results{
         overflow: scroll;
         max-height: 400px;
-      }    
+      }
+
+      .autosuggest__results .autosuggest__results-after {
+        color: gray;
+        font-size: 11px;
+        margin-left: 0;
+        padding: 15px 13px 5px;
+        border-top: 1px solid lightgray;
+      }
 </style>

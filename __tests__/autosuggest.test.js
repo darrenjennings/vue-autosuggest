@@ -46,8 +46,6 @@ describe("Autosuggest", () => {
     suggestions: filteredOptions,
     inputProps: {
       id,
-      initialValue: "",
-      onInputChange: () => {},
       placeholder: "Type 'G'"
     },
     sectionConfigs: {
@@ -72,6 +70,9 @@ describe("Autosuggest", () => {
       propsData: props
     });
 
+    const input = wrapper.find('input[type="text"]')
+    input.setValue('q')
+
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) throw new Error(err);
@@ -83,17 +84,6 @@ describe("Autosuggest", () => {
     const props = Object.assign({}, defaultProps);
     props.inputProps = Object.assign({}, defaultProps.inputProps);
 
-    // Testing deprecation of onClick
-    const mockFn = jest.fn();
-    const mockConsole = jest.fn();
-    console.warn = mockConsole;
-
-    const clicked = () => {
-      mockFn();
-    };
-
-    props.inputProps.onClick = clicked;
-
     const wrapper = mount(Autosuggest, {
       propsData: props,
       attachToDocument: true
@@ -103,7 +93,7 @@ describe("Autosuggest", () => {
     expect(input.attributes("id", defaultProps.inputProps.id)).toBeTruthy();
 
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
     input.trigger("keydown.down");
 
     expect(wrapper.findAll(`ul li`).length).toBeLessThanOrEqual(
@@ -114,7 +104,6 @@ describe("Autosuggest", () => {
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) throw new Error(err);
       expect(str).toMatchSnapshot();
-      expect(mockFn).toHaveBeenCalledTimes(1); // deprecation warning
     });
   });
 
@@ -126,7 +115,7 @@ describe("Autosuggest", () => {
 
     const input = wrapper.find("input");
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
 
     input.trigger("keydown.up"); // Check it doesn't offset the selection by going up first when nothing is selected.
 
@@ -174,7 +163,7 @@ describe("Autosuggest", () => {
 
     const input = wrapper.find("input");
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
 
     times(5)(() => {
       input.trigger("keydown.down");
@@ -242,16 +231,16 @@ describe("Autosuggest", () => {
     input1.trigger("click");
     input2.trigger("click");
     
-    expect(autosuggest1.findAll("li.autosuggest__results_item").length).toBe(5);
-    expect(autosuggest1.findAll("li.autosuggest__results_item").length).toBe(5);
+    expect(autosuggest1.findAll("li.autosuggest__results-item").length).toBe(5);
+    expect(autosuggest1.findAll("li.autosuggest__results-item").length).toBe(5);
 
     times(2)(() => {
       input2.trigger("keydown.down");
     });
 
-    expect(autosuggest1.findAll("li.autosuggest__results_item-highlighted").length).toBe(0);
-    expect(autosuggest2.findAll("li.autosuggest__results_item-highlighted").length).toBe(1);
-    expect(autosuggest2.findAll("li").at(1).classes()).toContain("autosuggest__results_item-highlighted");
+    expect(autosuggest1.findAll("li.autosuggest__results-item--highlighted").length).toBe(0);
+    expect(autosuggest2.findAll("li.autosuggest__results-item--highlighted").length).toBe(1);
+    expect(autosuggest2.findAll("li").at(1).classes()).toContain("autosuggest__results-item--highlighted");
 
     input2.trigger("keydown.enter");
 
@@ -268,12 +257,11 @@ describe("Autosuggest", () => {
       attachToDocument: true
     });
 
-    wrapper.setData({ searchInput: "G" });
-
     const input = wrapper.find("input");
+    input.setValue("G");
 
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
     window.document.dispatchEvent(new Event("mousedown"));
     window.document.dispatchEvent(new Event("mouseup"));
     
@@ -303,12 +291,11 @@ describe("Autosuggest", () => {
       attachToDocument: true
     });
 
-    wrapper.setData({ searchInput: "G" });
-
     const input = wrapper.find("input");
+    input.setValue("G");
 
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
     expect(wrapper.find("ul li:nth-child(1)").element.innerHTML).toBe(
       props.sectionConfigs.default.label
     );
@@ -336,7 +323,7 @@ describe("Autosuggest", () => {
     // TODO: Make sure aria-completeness is actually 2legit2quit.
 
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
 
     expect(input.attributes()["aria-haspopup"]).toBe("true");
 
@@ -379,7 +366,7 @@ describe("Autosuggest", () => {
 
     const input = wrapper.find("input");
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
 
     times(3)(() => {
       input.trigger("keydown.down");
@@ -396,59 +383,6 @@ describe("Autosuggest", () => {
       }
       expect(str).toMatchSnapshot();
     });
-  });
-
-  it("onBlur and onFocus work as expected, including deprecation warnings", async () => {
-    let props = Object.assign({}, defaultProps);
-
-    const mockFn = jest.fn();
-    const mockConsole = jest.fn();
-
-    console.warn = mockConsole;
-
-    const blurred = () => {
-      mockFn();
-    };
-    const focused = () => {
-      mockFn();
-    };
-    const selected = () => {
-      mockFn();
-    };
-
-    props.inputProps.onBlur = blurred;
-    props.inputProps.onFocus = focused;
-    delete props['sectionConfigs'];
-    props.onSelected = selected;
-
-    const wrapper = mount(Autosuggest, {
-      propsData: props,
-      attachToDocument: true
-    });
-
-    const input = wrapper.find("input");
-
-    input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
-    await wrapper.vm.$nextTick(() => {});
-
-    input.trigger("blur");
-    input.trigger("focus");
-
-    input.trigger("keydown.down");
-    input.trigger("keydown.down");
-    input.trigger("keydown.enter");
-
-    const renderer = createRenderer();
-    renderer.renderToString(wrapper.vm, (err, str) => {
-      if (err) {
-        return false;
-      }
-      expect(str).toMatchSnapshot();
-    });
-
-    expect(mockFn).toHaveBeenCalledTimes(3);
-    expect(mockConsole).toHaveBeenCalledTimes(3); // onBlur and onFocus deprecation warnings
   });
 
   it("can render default suggestion value by property name", async () => {
@@ -477,7 +411,7 @@ describe("Autosuggest", () => {
 
     const input = wrapper.find("input");
     input.trigger("click");
-    wrapper.setData({ searchInput: "F" });
+    input.setValue("F");
 
     input.trigger("keydown.down");
     input.trigger("keydown.enter");
@@ -508,7 +442,10 @@ describe("Autosuggest", () => {
   });
 
   it("search input prop type handles string and integers only", async () => {
-    let props = Object.assign({}, defaultProps);
+    let props = {
+      ...defaultProps, 
+      inputProps: {...defaultProps.inputProps}
+    };
 
     const mockConsole = jest.fn();
     console.error = mockConsole;
@@ -524,13 +461,13 @@ describe("Autosuggest", () => {
 
     // Integers
     input.trigger("click");
-    wrapper.setData({ searchInput: 1 });
+    input.setValue(1);
     await wrapper.vm.$nextTick(() => {});
     input.trigger("blur");
 
     // Strings
     input.trigger("click");
-    wrapper.setData({ searchInput: "Hello" });
+    input.setValue("Hello");
     await wrapper.vm.$nextTick(() => {});
     input.trigger("blur");
 
@@ -551,8 +488,8 @@ describe("Autosuggest", () => {
     const wrapper = mount(Autosuggest, {
       propsData: defaultProps,
       slots: {
-        header: '<div class="header-dude"></div>',
-        footer: '<div id="footer-dude"><span>1</span><span>2</span></div>'
+        'before-suggestions': '<div class="header-dude"></div>',
+        'after-suggestions': '<div id="footer-dude"><span>1</span><span>2</span></div>'
       },
       scopedSlots: {
         default: `
@@ -564,7 +501,7 @@ describe("Autosuggest", () => {
 
     const input = wrapper.find("input");
     input.trigger("click");
-    wrapper.setData({ searchInput: "G" });
+    input.setValue("G");
     
     expect(wrapper.findAll('.header-dude').length).toEqual(1);
     expect(wrapper.findAll('#footer-dude span').length).toEqual(2);
@@ -572,6 +509,50 @@ describe("Autosuggest", () => {
 
     await wrapper.vm.$nextTick(() => {});
 
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
+  });
+  
+  it("can render section slots", async () => {
+    const props = { ...defaultProps };
+    props.suggestions.push({ name: 'dogs', data: ['spike', 'bud', 'rover']})
+    props.suggestions.push({ name: 'cats', data: ['sassy', 'tuesday', 'church']})
+    props.suggestions.push({ name: 'zeu', data: ['elephant', 'lion']})
+    props.suggestions.push({ name: 'Uhh', data: ['something', 'something2']})
+
+    props.sectionConfigs = {
+      default: {
+        label: "Suggestions",
+        limit: 5,
+        onSelected: () => {}
+      },
+      Uhh: {
+        label: "uhh"
+      },
+    };
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+      attachToDocument: true,
+      scopedSlots: {
+        'before-section-dogs': `<li :class="props.className">The Dogs</li>`,
+        'before-section-cats': `<li>Moar Cats is good</li>`,
+        'before-section-zeu': `<li>zoo animals?</li>`
+      },
+    });
+
+    const input = wrapper.find("input");
+    input.setValue("G");
+
+    input.trigger("click");
+    input.setValue("G");
+    expect(wrapper.find("ul li:nth-child(1)").element.innerHTML).toBe(
+      props.sectionConfigs.default.label
+    );
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) {
@@ -650,6 +631,51 @@ describe("Autosuggest", () => {
       if (err) {
         return false;
       }
+      expect(str).toMatchSnapshot();
+    });
+  });
+
+  it("tears down event listeners", async () => {
+    let props = {...defaultProps};
+
+    delete props['sectionConfigs']
+
+    const AEL = jest.fn();
+    const REL = jest.fn();
+
+    window.document.addEventListener = AEL
+    window.document.removeEventListener = REL
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+      attachToDocument: true
+    });
+
+    wrapper.destroy()
+    expect(AEL).toHaveBeenCalledTimes(2)
+    expect(REL).toHaveBeenCalledTimes(2)
+  });
+
+  it("can modify input type attribute", async () => {
+    const props = Object.assign({}, defaultProps);
+    props.inputProps = {
+      ...defaultProps.inputProps,
+      type: 'search'
+    };
+
+    props.suggestions = [filteredOptions[0]];
+
+    const wrapper = shallowMount(Autosuggest, {
+      propsData: props
+    });
+
+    const input = wrapper.find('input[type="search"]')
+    expect(input.is('input')).toBe(true)
+    expect(input.attributes("type", 'search')).toBeTruthy();
+
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) throw new Error(err);
       expect(str).toMatchSnapshot();
     });
   });

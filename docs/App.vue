@@ -4,15 +4,20 @@
     <h1>🔍 Vue-autosuggest</h1>
     <div>
       <vue-autosuggest
+        v-model="searchText"
         @selected="onSelected"
         :suggestions="filteredOptions"
         :input-props="inputProps"
         :section-configs="sectionConfigs"
         :getSuggestionValue="getSuggestionValue"
+        :should-render-suggestions="(size, loading) => size >= 0 && !loading && searchText !== ''"
         ref="autocomplete"
       >
-        <template slot-scope="{suggestion}">
-          <div>{{suggestion.item.Name}}</div>
+        <template slot-scope="{suggestion, index, cs}">
+          <div>{{ suggestion && suggestion.item.Name }}</div>
+        </template>
+        <template slot="after-suggestions">
+          <p v-if="filteredOptions == 0" style="text-align: center;">No Results...</p>
         </template>
       </vue-autosuggest>
     </div>
@@ -72,8 +77,8 @@ export default {
   data() {
     return {
       selected: "",
+      searchText: "",
       colorMode: 'dark',
-      filteredOptions: [],
       options: races.map(r => ({
         	label: r,
           name: r,
@@ -85,15 +90,35 @@ export default {
           limit: 4
         },
         hobbits: {
-          limit: 4
+          limit: 6
         }
       },
       inputProps: {
         id: "autosuggest__input",
-        onInputChange: this.onInputChange,
         placeholder: "Search"
       }
     };
+  },
+  computed: {
+    filteredOptions() {
+      const filtered = []
+      if(!this.searchText){
+        return []
+      }
+      races.forEach(r => {
+        const people = this.options.filter(o => o.name === r)[0].data.filter(p => {
+          return p.Name.toLowerCase().indexOf(this.searchText.toLowerCase()) > -1;
+        });
+
+        people.length > 0 &&
+          filtered.push({
+            label: r,
+            data: people
+          });
+      })
+
+      return Object.freeze(filtered)
+    }
   },
   methods: {
     toggleDark(){
@@ -116,29 +141,15 @@ export default {
         })
       }
     },
-    onInputChange(text) {
-      let filtered = [];
-
-      races.forEach(r => {
-        const people = this.options.filter(o => o.name === r)[0].data.filter(p => {
-          return p.Name.toLowerCase().indexOf(text.toLowerCase()) > -1;
-        });
-
-        people.length > 0 &&
-          filtered.push({
-            label: r,
-            data: people
-          });
-      })
-
-      this.filteredOptions = filtered;
-    },
 
     getSuggestionValue(item) {
       return item.item.Name;
     },
 
     onSelected(item) {
+      if(!item){
+        return
+      }
       this.selected = item.item
     }
   }
@@ -175,7 +186,6 @@ h1 {
   background-color: var(--theme-bg);
   caret-color: #ddd;
   color: var(--theme-color);
-  outline: none;
   position: relative;
   display: block;
   font-family: monospace;
@@ -189,7 +199,7 @@ h1 {
   -moz-box-sizing: border-box;
 }
 
-#autosuggest__input.autosuggest__input-open, #autosuggest__input:hover {
+#autosuggest__input.autosuggest__input--open, #autosuggest__input:hover {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border: 1px solid lightgray;
@@ -212,7 +222,6 @@ h1 {
   border: 1px solid #e0e0e0;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
-  background: white;
   padding: 0px;
   overflow: scroll;
   max-height: 400px;
@@ -225,17 +234,17 @@ h1 {
   background-color: var(--theme-bg);
 }
 
-.autosuggest__results .autosuggest__results_item {
+.autosuggest__results .autosuggest__results-item {
   cursor: pointer;
   background-color: var(--theme-bg);
   padding: 10px;
 }
 
-#autosuggest ul:nth-child(1) > .autosuggest__results_title {
+#autosuggest ul:nth-child(1) > .autosuggest__results-before {
   border-top: none;
 }
 
-.autosuggest__results .autosuggest__results_title {
+.autosuggest__results .autosuggest__results-before {
   color: var(--theme-color);
   opacity: 0.5;
   font-size: 11px;
@@ -244,10 +253,10 @@ h1 {
   border-top: 1px solid lightgray;
 }
 
-.autosuggest__results .autosuggest__results_item:active,
-.autosuggest__results .autosuggest__results_item:hover,
-.autosuggest__results .autosuggest__results_item:focus,
-.autosuggest__results .autosuggest__results_item.autosuggest__results_item-highlighted {
+.autosuggest__results .autosuggest__results-item:active,
+.autosuggest__results .autosuggest__results-item:hover,
+.autosuggest__results .autosuggest__results-item:focus,
+.autosuggest__results .autosuggest__results-item.autosuggest__results-item--highlighted {
   background-color: var(--theme-item_bg_highlighted);
   color: var(--theme-item_color_highlighted);
 }
