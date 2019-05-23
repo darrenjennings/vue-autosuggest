@@ -304,7 +304,6 @@ vue-autosuggest does not have an opinion about how you render the items in your 
 | Prop                     | Type                |  Required  | Description                                                                                                                                                                  |
 | :----------------------- | :------------------ | :--------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`id`](#inputPropsTable) | String              |     ✓      | id attribute on `<input>`.                                                                                                                                                   |
-| [`initial-value`](#)      | String              |            | Set some initial value for the `<input>`.                                                                                                                                    |
 | Any DOM Props            | \*                  |            | You can add any props to `<input>` as the component will `v-bind` inputProps. Similar to rest spread in JSX. See more details here: https://vuejs.org/v2/api/#v-bind. The `name` attribute is set to "`q`" by default.         |
 
 <a name="sectionConfigsProp"></a>
