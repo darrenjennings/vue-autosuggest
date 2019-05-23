@@ -49,7 +49,7 @@ const DefaultSection = {
     const before = slots.beforeSection && slots.beforeSection({
       section: this.section,
       className: beforeClassName
-    })
+    }) || []
 
     return h(
       "ul",
