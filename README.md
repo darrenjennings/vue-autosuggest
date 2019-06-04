@@ -248,16 +248,17 @@ For more advanced usage, check out the examples below, and explore the
 ## [Slots](#slots)
 
 ### header/footer
-Slots for injecting content above all the results inside the results container.
+Slots for injecting content around the results/input. Useful for header/footer like slots or empty state.
 
 ```html
 <vue-autosuggest ...>
-  <template slot="header">
-    <h1>header content goes here</h1>
-  </template>
-  <template slot="footer">
-    <h1>footer content goes here</h1>
-  </template>
+  <template slot="before-input"> content before the <input /> goes here </template>
+  <template slot="after-input"> content after the <input /> goes here </template>
+  <template slot="before-suggestions"> content before the <ul> goes here </template>
+  <template slot="before-section-<section.name e.g. 'default'>"> section header content for specific section goes here </template>
+  <template slot="after-section-<section.name e.g. 'default'>"> footer content goes here for specific section. </template>
+  <template slot="after-section"> Default footer content for all sections </template>
+  <template slot="after-suggestions"> content after the <ul> goes here </template>
 </vue-autosuggest>
 ```
 
