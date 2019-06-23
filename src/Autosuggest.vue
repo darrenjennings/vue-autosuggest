@@ -1,12 +1,12 @@
 <template>
   <div :id="componentAttrIdAutosuggest">
     <slot name="before-input" /><input
-      :type="inputProps['type'] ? inputProps['type'] : 'text'"
+      :type="internal_inputProps.type"
       :value="internalValue"
-      :autocomplete="inputProps.autocomplete"
+      :autocomplete="internal_inputProps.autocomplete"
       role="combobox"
-      :class="[isOpen ? 'autosuggest__input--open' : '', inputProps['class']]"
-      v-bind="inputProps"
+      :class="[isOpen ? 'autosuggest__input--open' : '', internal_inputProps['class']]"
+      v-bind="internal_inputProps"
       aria-autocomplete="list"
       aria-owns="autosuggest__results"
       :aria-activedescendant="isOpen && currentIndex !== null ? `autosuggest__results-item--${currentIndex}` : ''"
@@ -188,6 +188,7 @@ export default {
       didSelectFromOptions: false,
       internal_inputProps: {}, // Nest default prop values don't work currently in Vue
       defaultInputProps: {
+        type: 'text',
         autocomplete: "off",
       },
       clientXMouseDownInitial: null
@@ -291,9 +292,7 @@ export default {
     }
   },
   created() {
-    /** Take care of nested input props */
     this.internal_inputProps = { ...this.defaultInputProps, ...this.inputProps };
-    this.inputProps.autocomplete = this.internal_inputProps.autocomplete;
     this.loading = true;
   },
   mounted() {
