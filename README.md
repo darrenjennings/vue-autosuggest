@@ -293,6 +293,7 @@ vue-autosuggest does not have an opinion about how you render the items in your 
 | [`section-configs`](#sectionConfigsProp)     | Object   |          | Define multiple sections `<input>`.                       |
 | [`render-suggestion`](#renderSuggestion)     | Function |          | Tell vue-autosuggest how to render inside the `<li>` tag. Overrides what is inside the default suggestion template slot. |
 | [`get-suggestion-value`](#getSuggestionValue) | Function |          | Tells vue-autosuggest what to put in the `<input/>` value |
+| [`should-render-suggestions`](#shouldRenderSuggestions) | Function |          | Tell vue-autosuggest if it should render the suggestions results popover |
 | `@selected`            | Function             |    ✓     | suggestion select handler. equivalent to sectionConfigs `on-selected` but for all items             |
 | `component-attr-id-autosuggest` | String |          | `id` of entire component |
 | `component-attr-class-autosuggest-results-container` | String |          | `class` of container of results container |
@@ -382,6 +383,26 @@ This function will tell vue-autosuggest what to put in the `<input/>` as the val
 getSuggestionValue(suggestion) {
     return suggestion.item.name;
 },
+```
+
+<a name="shouldRenderSuggestion"></a>
+
+### shouldRenderSuggestions
+
+This function will tell vue-autosuggest if it should display the suggestions popover
+
+```js
+/**
+ * @param {Array} size - total results displayed
+ * @param {Boolean} loading - value that indicates if vue-autosuggest _thinks_ that the 
+ *                            the popover should be open (e.g. if user hit escape, or
+ *                            user clicked away)
+ * @returns {Boolean}
+ */
+shouldRenderSuggestions (size, loading) {
+  // This is the default behavior
+  return size >= 0 && !loading
+}
 ```
 
 ## Inspiration
