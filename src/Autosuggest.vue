@@ -474,14 +474,15 @@ export default {
       /** Do not re-render list on input click  */
       const isChild = this.$el.contains(e.target);
 
-      if (isChild && e.target.tagName === 'INPUT' ||
-        (this.clickedOnScrollbar(e, this.clientXMouseDownInitial))) {
+      /* Clicks outside of dropdown */
+      if (!isChild) {
+        this.loading = true;
+        this.currentIndex = null;
         return;
       }
-      
-      /** Clicks outside of dropdown to exit */
-      if (this.currentIndex === null || !this.isOpen) {
-        this.loading = true;
+
+      if (e.target.tagName === 'INPUT' ||
+        (this.clickedOnScrollbar(e, this.clientXMouseDownInitial))) {
         return;
       }
 
