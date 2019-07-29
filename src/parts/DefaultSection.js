@@ -7,13 +7,13 @@ const DefaultSection = {
     renderSuggestion: { type: Function, required: false },
     normalizeItemFunction: { type: Function, required: true }
   },
-  data: function() {
+  data: function () {
     return {
       _currentIndex: null
     }
   },
   computed: {
-    list: function() {
+    list: function () {
       let { limit, data } = this.section;
       if (data.length < limit) {
         limit = data.length;
@@ -22,29 +22,29 @@ const DefaultSection = {
     }
   },
   methods: {
-    getItemIndex(i) {
+    getItemIndex (i) {
       return this.section.start_index + i;
     },
-    getItemByIndex(i) {
+    getItemByIndex (i) {
       return this.section.data[i];
     },
-    onMouseEnter(event) {
+    onMouseEnter (event) {
       const idx = event.currentTarget.getAttribute("data-suggestion-index")
       this._currentIndex = idx
       this.$emit('updateCurrentIndex', idx)
     },
-    onMouseLeave() {
+    onMouseLeave () {
       this.$emit('updateCurrentIndex', null)
     }
   },
   // eslint-disable-next-line no-unused-vars
-  render(h) {
+  render (h) {
     const slots = {
       beforeSection: this.$scopedSlots[`before-section-${this.section.name}`],
       afterSectionDefault: this.$scopedSlots[`after-section`],
       afterSectionNamed: this.$scopedSlots[`after-section-${this.section.name}`]
     }
-    
+
     const beforeClassName = `autosuggest__results-before autosuggest__results-before--${this.section.name}`
     const before = slots.beforeSection && slots.beforeSection({
       section: this.section,
@@ -80,18 +80,18 @@ const DefaultSection = {
                 mouseleave: this.onMouseLeave
               }
             },
-            [this.renderSuggestion ? this.renderSuggestion(item) 
+            [this.renderSuggestion ? this.renderSuggestion(item)
               : this.$scopedSlots.default && this.$scopedSlots.default({
                 _key: key,
                 suggestion: item
-            })]
+              })]
           );
         }),
-        slots.afterSectionDefault && slots.afterSectionDefault({ 
+        slots.afterSectionDefault && slots.afterSectionDefault({
           section: this.section,
           className: `autosuggest__results-after autosuggest__results-after--${this.section.name}`
         }),
-        slots.afterSectionNamed && slots.afterSectionNamed({ 
+        slots.afterSectionNamed && slots.afterSectionNamed({
           section: this.section,
           className: `autosuggest__results_after autosuggest__results-after--${this.section.name}`
         })
