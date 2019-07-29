@@ -17,7 +17,7 @@
           <div>{{ suggestion && suggestion.item.Name }}</div>
         </template>
         <template slot="after-suggestions">
-          <p v-if="filteredOptions == 0" style="text-align: center;">No Results...</p>
+          <p v-if="filteredOptions == 0" style="text-align: center;">No Results... Try <a style="color: peachpuff;" :href="`https://www.google.com/search?safe=active&source=hp&ei=t_M-Xci6EYq6tgXrzbLoCw&q=${searchText}`" @mouseup.stop target="_blank">googling</a></p>
         </template>
       </vue-autosuggest>
     </div>
@@ -147,6 +147,7 @@ export default {
     },
 
     onSelected(item) {
+      console.log(item)
       if(!item){
         return
       }

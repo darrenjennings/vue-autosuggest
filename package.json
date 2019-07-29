@@ -1,6 +1,6 @@
 {
   "name": "vue-autosuggest",
-  "version": "2.0.1",
+  "version": "2.0.2-beta.0",
   "description": "Vue autosuggest component.",
   "engines": {
     "node": "> 4",
