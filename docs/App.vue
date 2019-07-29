@@ -147,7 +147,6 @@ export default {
     },
 
     onSelected(item) {
-      console.log(item)
       if(!item){
         return
       }
