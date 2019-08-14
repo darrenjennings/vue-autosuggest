@@ -2,6 +2,14 @@
 
 Abridged versions of releases. See [release notes](https://github.com/Educents/vue-autosuggest/releases) for more details.
 
+* [2.0.1](https://github.com/darrenjennings/vue-autosuggest/releases/tag/v2.0.1) Bugfix
+  * Fixes #129 where in some cases, re-renders would cause the default autocomplete="off" to be unset.
+* [2.0.0](https://github.com/darrenjennings/vue-autosuggest/releases/tag/v2.0.0) :sparkles: Major Release
+  * See [full release notes](https://github.com/darrenjennings/vue-autosuggest/releases/tag/v2.0.0)
+* [1.8.3](https://github.com/darrenjennings/vue-autosuggest/tree/v1.8.3) Bugfix
+  * Bugfix to support IE/Edge since they don't support scrollTo. #40
+* [1.8.2](https://github.com/darrenjennings/vue-autosuggest/tree/v1.8.2) Bugfix
+  * Fixes #102 Clicking on the scroll bar has been a rough go. This release aims to rid us of the all the frustration.
 * [1.8.1](https://github.com/darrenjennings/vue-autosuggest/tree/v1.8.1) Bugfix
   * Fix incorrect scrollbar click calculation
 * [1.8.0-1](https://github.com/darrenjennings/vue-autosuggest/tree/v1.8.0-1) Bugfix
