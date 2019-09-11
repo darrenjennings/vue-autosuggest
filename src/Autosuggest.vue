@@ -186,7 +186,6 @@ export default {
       currentItem: null,
       loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */,
       didSelectFromOptions: false,
-      internal_inputProps: {}, // Nest default prop values don't work currently in Vue
       defaultInputProps: {
         type: 'text',
         autocomplete: "off",
@@ -195,6 +194,12 @@ export default {
     };
   },
   computed: {
+    internal_inputProps() {
+      return {
+        ...this.defaultInputProps,
+        ...this.inputProps 
+      }
+    },
     listeners() {
       return {
         ...this.$listeners,
@@ -292,7 +297,6 @@ export default {
     }
   },
   created() {
-    this.internal_inputProps = { ...this.defaultInputProps, ...this.inputProps };
     this.loading = true;
   },
   mounted() {
