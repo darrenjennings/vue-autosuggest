@@ -2,6 +2,10 @@
 
 Abridged versions of releases. See [release notes](https://github.com/Educents/vue-autosuggest/releases) for more details.
 
+* [2.0.3](https://github.com/darrenjennings/vue-autosuggest/releases/tag/v2.0.3) Bugfix
+  * Fixes #142
+* [2.0.2](https://github.com/darrenjennings/vue-autosuggest/releases/tag/v2.0.2) Bugfixes
+  * Fixes #136, Fixes #135, Fixes #129
 * [2.0.1](https://github.com/darrenjennings/vue-autosuggest/releases/tag/v2.0.1) Bugfix
   * Fixes #129 where in some cases, re-renders would cause the default autocomplete="off" to be unset.
 * [2.0.0](https://github.com/darrenjennings/vue-autosuggest/releases/tag/v2.0.0) :sparkles: Major Release
