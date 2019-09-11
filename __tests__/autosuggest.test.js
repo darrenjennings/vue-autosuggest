@@ -679,4 +679,28 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
+  
+  it("can modify input props", async () => {
+    const Parent = {
+      template: `<div>
+       <Autosuggest
+        :suggestions="[{data:['Frodo']}]"
+        :input-props="{id:'autosuggest', placeholder: ph}" />
+      </div>
+      `,
+      components: { Autosuggest },
+      data: () => {
+        return {
+          'ph': 'Type here...'
+        }
+      }
+    }
+
+    const wrapper = mount(Parent);
+    const input = wrapper.find('input[type="text"]')
+    expect(input.attributes("placeholder")).toBe('Type here...');
+    
+    wrapper.setData({ ph: 'Please type here...' })
+    expect(input.attributes("placeholder")).toBe('Please type here...')
+  });
 });
