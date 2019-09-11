@@ -282,6 +282,7 @@ export default {
         // For each section, make sure we calculate the size
         // based on how many are rendered, which maxes out at
         // the limit but can be less than the limit.
+        if (!section) return acc
         const { limit, data } = section
         return acc + (data.length >= limit ? limit : data.length)
       }, 0)
