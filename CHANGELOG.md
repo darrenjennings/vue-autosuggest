@@ -2,6 +2,8 @@
 
 Abridged versions of releases. See [release notes](https://github.com/Educents/vue-autosuggest/releases) for more details.
 
+* [2.0.4](https://github.com/darrenjennings/vue-autosuggest/releases/tag/v2.0.4) Bugfix
+  * Fixes #124
 * [2.0.3](https://github.com/darrenjennings/vue-autosuggest/releases/tag/v2.0.3) Bugfix
   * Fixes #142
 * [2.0.2](https://github.com/darrenjennings/vue-autosuggest/releases/tag/v2.0.2) Bugfixes
