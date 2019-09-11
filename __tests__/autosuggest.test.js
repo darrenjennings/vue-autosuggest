@@ -703,4 +703,18 @@ describe("Autosuggest", () => {
     wrapper.setData({ ph: 'Please type here...' })
     expect(input.attributes("placeholder")).toBe('Please type here...')
   });
+  
+  it("can handle null data", async () => {
+    const props = {...defaultProps, suggestions: [{ data: null }]};
+
+    const wrapper = shallowMount(Autosuggest, {
+      propsData: props
+    });
+
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) throw new Error(err);
+      expect(str).toMatchSnapshot();
+    });
+  });
 });
