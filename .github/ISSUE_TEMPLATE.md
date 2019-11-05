@@ -29,11 +29,14 @@ What happened:
 
 <!-- Please provide the full error message/screenshots/anything -->
 
-Reproduction repository:
+Reproduction sandbox/repository:
 
 <!--
 If possible, please create a repository that reproduces the issue with the
-minimal amount of code possible.
+minimal amount of code possible. Please fork this codesandbox to demonstrate
+!!!
+https://codesandbox.io/s/vueautosuggest-20-base-yij1b
+!!!
 -->
 
 Problem description:
