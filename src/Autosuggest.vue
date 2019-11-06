@@ -360,12 +360,12 @@ export default {
         return;
       }
 
-      this.loading = false;
       this.didSelectFromOptions = false;
       switch (keyCode) {
         case 40: // ArrowDown
         case 38: // ArrowUp
           e.preventDefault();
+          this.loading = false; // Open suggestions
           if (this.isOpen) {
             if (keyCode === 38 && this.currentIndex === null) {
               break;
@@ -382,27 +382,28 @@ export default {
             } else if (this.currentIndex == -1) {
               this.currentIndex = null;
               this.internalValue = this.searchInputOriginal;
-              e.preventDefault();
             }
           }
           break;
         case 13: // Enter
-          e.preventDefault();
+          if (this.isOpen) {
+            e.preventDefault();
 
-          if (this.totalResults > 0 && this.currentIndex >= 0) {
-            this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
-            this.didSelectFromOptions = true;
+            if (this.totalResults > 0 && this.currentIndex >= 0) {
+              this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
+              this.didSelectFromOptions = true;
+            }
+
+            this.loading = true;
+            this.listeners.selected(this.didSelectFromOptions);
           }
-          
-          this.loading = true;
-          this.listeners.selected(this.didSelectFromOptions);        
           break;
         case 27: // Escape
           if (this.isOpen) {
             /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
             this.loading = true;
             this.currentIndex = null;
-            this.internalValue = this.searchInputOriginal
+            this.internalValue = this.searchInputOriginal;
             this.$emit('input', this.searchInputOriginal);
             e.preventDefault();
           }
