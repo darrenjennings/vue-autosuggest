@@ -64,7 +64,7 @@ This module is distributed via [npm][npm] which is bundled with [node][node] and
 should be installed as one of your project's `dependencies`:
 
 ```
-npm install --save vue-autosuggest
+npm install vue-autosuggest
 ```
 
 or
