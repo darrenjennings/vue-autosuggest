@@ -405,6 +405,10 @@ shouldRenderSuggestions (size, loading) {
 }
 ```
 
+## Browser support
+
+For IE11 and below, some functionality may not work. For example, you will have to manually [polyfill](https://github.com/Financial-Times/polyfill-service/issues/177) `Node.prototype.contains`
+
 ## Inspiration
 
 * Misha Moroshko's react-autosuggest component inspired the api + WAI-ARIA completeness
