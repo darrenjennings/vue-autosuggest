@@ -573,6 +573,10 @@ describe("Autosuggest", () => {
       },
       attachToDocument: true
     });
+    
+    const input = wrapper.find("input");
+    input.trigger("click");
+    input.setValue("G");
 
     expect(wrapper.find('#automatischsuchen').is('div')).toBe(true);
     expect(wrapper.find('.containerz').is('div')).toBe(true);
@@ -714,6 +718,39 @@ describe("Autosuggest", () => {
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) throw new Error(err);
+      expect(str).toMatchSnapshot();
+    });
+  });
+  
+  it("highlights first option on keydown when previously closed", async () => {
+    const props = { ...defaultProps };
+    props.inputProps = { ...defaultProps.inputProps };
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+      attachToDocument: true
+    });
+
+    const input = wrapper.find("input");
+    expect(input.attributes("id", defaultProps.inputProps.id)).toBeTruthy();
+
+    input.trigger("click");
+    input.setValue("G");
+    input.trigger("keydown.down");
+    input.trigger("keydown.enter");
+    input.trigger("keydown.down");
+    
+    expect(wrapper.findAll("li.autosuggest__results-item--highlighted")).toHaveLength(1)
+    
+    const item = wrapper.find("li.autosuggest__results-item--highlighted")
+    expect(item.attributes('data-suggestion-index')).toBe('0')
+    expect(input.attributes('aria-activedescendant')).toBe('autosuggest__results-item--0')
+
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
       expect(str).toMatchSnapshot();
     });
   });
