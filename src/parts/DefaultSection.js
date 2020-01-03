@@ -9,7 +9,7 @@ const DefaultSection = {
   },
   data: function () {
     return {
-      _currentIndex: null
+      _currentIndex: this.currentIndex
     }
   },
   computed: {
@@ -29,7 +29,7 @@ const DefaultSection = {
       return this.section.data[i];
     },
     onMouseEnter (event) {
-      const idx = event.currentTarget.getAttribute("data-suggestion-index")
+      const idx = parseInt(event.currentTarget.getAttribute("data-suggestion-index"))
       this._currentIndex = idx
       this.$emit('updateCurrentIndex', idx)
     },
@@ -59,20 +59,22 @@ const DefaultSection = {
       [
         before[0] && before[0] || this.section.label && <li class={beforeClassName}>{this.section.label}</li> || '',
         this.list.map((val, key) => {
-          let item = this.normalizeItemFunction(this.section.name, this.section.type, this.section.label, val)
+          const item = this.normalizeItemFunction(this.section.name, this.section.type, this.section.label, val)
+          const itemIndex = this.getItemIndex(key)
+          const isHighlighted = this._currentIndex === itemIndex || parseInt(this.currentIndex) === itemIndex
+
           return h(
             "li",
             {
               attrs: {
                 role: "option",
-                "data-suggestion-index": this.getItemIndex(key),
+                "data-suggestion-index": itemIndex,
                 "data-section-name": this.section.name,
-                id: "autosuggest__results-item--" + this.getItemIndex(key)
+                id: "autosuggest__results-item--" + itemIndex
               },
-              key: this.getItemIndex(key),
+              key: itemIndex,
               class: {
-                "autosuggest__results-item--highlighted":
-                  this.getItemIndex(key) == this._currentIndex,
+                "autosuggest__results-item--highlighted": isHighlighted,
                 'autosuggest__results-item': true
               },
               on: {

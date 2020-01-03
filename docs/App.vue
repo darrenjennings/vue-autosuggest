@@ -5,6 +5,8 @@
     <div>
       <vue-autosuggest
         v-model="searchText"
+        @input="(...args) => logEvent('input', args)"
+        @highlighted="(...args) => logEvent('highlighted', args)"
         @selected="onSelected"
         :suggestions="filteredOptions"
         :input-props="inputProps"
@@ -44,6 +46,11 @@
         better to begin than to refuse, even though the end may be dark."
       </span>
       <span v-else-if="selected.Race === 'Hobbit'">Sneaky little Hobbitses. Wicked. Tricksy.</span>
+    </div>
+    <div class="event-log">
+      <div v-for="evt in events">
+        <span class="evt-name">{{ evt.name }}</span>: <span class="evt-val">{{ evt.value }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -96,7 +103,8 @@ export default {
       inputProps: {
         id: "autosuggest__input",
         placeholder: "Search"
-      }
+      },
+      events: []
     };
   },
   computed: {
@@ -146,7 +154,13 @@ export default {
       return item.item.Name;
     },
 
-    onSelected(item) {
+    logEvent(name, value) {
+      this.events.unshift({ name, value })
+    },
+
+    onSelected(...args) {
+      const item = args[0]
+      this.logEvent('selected', args)
       if(!item){
         return
       }
@@ -259,5 +273,30 @@ h1 {
 .autosuggest__results .autosuggest__results-item.autosuggest__results-item--highlighted {
   background-color: var(--theme-item_bg_highlighted);
   color: var(--theme-item_color_highlighted);
+}
+
+@media screen and (max-width: 900px) {
+  .event-log {
+    display: none;
+  }
+}
+
+.event-log {
+  left: 1rem;
+  position: absolute;
+  width: 800px;
+  height: 500px;
+  bottom: 1rem;
+  border: 1px solid var(--theme-color);
+  border-radius: 2px;
+  padding: 1rem;
+  overflow: scroll;
+}
+
+.evt-name {
+  color: var(--theme-item_color_highlighted);
+}
+.evt-val {
+  color: var(--theme-color);
 }
 </style>

@@ -73,6 +73,7 @@
         </component>
         <slot name="after-suggestions" />
       </div>
+      <slot name="after-suggestions-container" />
     </div>
   </div>
 </template>
@@ -176,7 +177,7 @@ export default {
       type: String,
       required: false,
       default: "autosuggest__results"
-    }
+    },
   },
   data() {
     return {
@@ -211,8 +212,9 @@ export default {
           /* eslint-disable-next-line vue/no-side-effects-in-computed-properties */
           this.loading = false;
           this.$listeners.click && this.$listeners.click(this.currentItem);
-
-          this.ensureItemVisible(this.currentItem, this.currentIndex);
+          this.$nextTick(() => {
+            this.ensureItemVisible(this.currentItem, this.currentIndex);
+          })
         },
         selected: () => {
           // Determine which onSelected to fire. This can be either from inside
@@ -230,7 +232,7 @@ export default {
           } else if (this.sectionConfigs["default"].onSelected) {
             this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
           } else if (this.$listeners.selected) {
-            this.$emit('selected', this.currentItem);
+            this.$emit('selected', this.currentItem, this.currentIndex);
           }
           this.setChangeItem(null)
         }
@@ -351,6 +353,7 @@ export default {
       const ignoredKeyCodes = [
         16, // Shift
         9,  // Tab
+        17, // ctrl
         18, // alt/option
         91, // OS Key
         93  // Right OS Key
@@ -359,20 +362,22 @@ export default {
       if (ignoredKeyCodes.indexOf(keyCode) > -1) {
         return;
       }
-
+      
+      const wasClosed = !this.isOpen
       this.loading = false;
       this.didSelectFromOptions = false;
       switch (keyCode) {
         case 40: // ArrowDown
         case 38: // ArrowUp
-          e.preventDefault();
+
           if (this.isOpen) {
+            e.preventDefault();
             if (keyCode === 38 && this.currentIndex === null) {
               break;
             }
             // Determine direction of arrow up/down and determine new currentIndex
             const direction = keyCode === 40 ? 1 : -1;
-            const newIndex = parseInt(this.currentIndex) + direction;
+            const newIndex = (parseInt(this.currentIndex) || 0) + (wasClosed ? 0 : direction);
 
             this.setCurrentIndex(newIndex, this.totalResults);
             this.didSelectFromOptions = true;
@@ -384,6 +389,10 @@ export default {
               this.internalValue = this.searchInputOriginal;
               e.preventDefault();
             }
+            
+            this.$nextTick(() => {
+              this.ensureItemVisible(this.currentItem, this.currentIndex);
+            })
           }
           break;
         case 13: // Enter
@@ -402,7 +411,7 @@ export default {
             /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
             this.loading = true;
             this.currentIndex = null;
-            this.internalValue = this.searchInputOriginal
+            this.internalValue = this.searchInputOriginal;
             this.$emit('input', this.searchInputOriginal);
             e.preventDefault();
           }
@@ -414,6 +423,7 @@ export default {
         this.currentItem = null;
       } else if (item) {
         this.currentItem = item;
+        this.$emit('itemChanged', item, this.currentIndex)
         const v = this.getSuggestionValue(item)
         this.internalValue = v;
         if (overrideOriginalInput) {
@@ -430,19 +440,23 @@ export default {
         item
       };
     },
-    ensureItemVisible(item, index) {
+    ensureItemVisible(item, index, selector) {
       const resultsScrollElement = this.$el.querySelector(
-        `.${this.componentAttrClassAutosuggestResults}`
+        selector || `.${this.componentAttrClassAutosuggestResults}`
       );
-
-      if (!item || (!index && index !== 0) || !resultsScrollElement) {
-        return;
+      
+      if (!resultsScrollElement) {
+        return
       }
 
-      const itemElement = this.$el.querySelector(`#autosuggest__results-item--${index}`);
+      if (!item && index && index !== 0) {
+        item = this.getItemByIndex(index)
+      }
+
+      const itemElement = resultsScrollElement.querySelector(`#autosuggest__results-item--${index}`);
       if (!itemElement) {
         return;
-      }
+      }      
 
       const resultsScrollWindowHeight = resultsScrollElement.clientHeight;
       const resultsScrollScrollTop = resultsScrollElement.scrollTop;
@@ -462,7 +476,7 @@ export default {
       }
     },
     updateCurrentIndex(index) {
-      this.setCurrentIndex(index, -1, true);
+      this.setCurrentIndex(index, -1, true);      
     },
     clickedOnScrollbar(e, mouseX){
       const results = this.$el.querySelector(`.${this.componentAttrClassAutosuggestResults}`);
