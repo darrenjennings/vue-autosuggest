@@ -754,4 +754,36 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
+  
+  it("can display ul and li classNames", async () => {
+    const props = { ...defaultProps };
+    props.sectionConfigs.default.liClass = { 'hello-li': true }
+    props.sectionConfigs.default.ulClass = { 'hello-ul': true }
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+      listeners: defaultListeners,
+      attachToDocument: true
+    });
+
+    const input = wrapper.find("input");
+    input.setValue("G");
+
+    input.trigger("click");
+    input.setValue("G");
+    
+    const ul = wrapper.find("ul")
+    const li = ul.find("li:nth-child(1)")
+
+    expect(ul.classes()).toContain('hello-ul');
+    expect(li.classes()).toContain('hello-li');
+    
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
+  });
 });

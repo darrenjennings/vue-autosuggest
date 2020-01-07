@@ -1,6 +1,6 @@
 <template>
-  <div class="demo">
-    <button @click="toggleDark">go {{ colorMode === 'light' ? 'dark' : 'light' }}</button>
+  <div class="demo" v-if="theme">
+    <button @click="toggleTheme(oppositeTheme)">{{ oppositeTheme === 'light' ? '🌞 Go Light' : 'Go Dark 🌛' }}</button>
     <h1>🔍 Vue-autosuggest</h1>
     <div>
       <vue-autosuggest
@@ -65,13 +65,6 @@ function updateCSSVariables(theme) {
   }
 }
 
-const darkTheme = {
-  bg: '#21222C',
-  header: '#8F73BD',
-  item_color_highlighted: '#80D4E7',
-  item_bg_highlighted: '#363948'
-}
-
 const races = [...new Set(characters.map(c => { return c.Race }))]
 
 export default {
@@ -79,13 +72,16 @@ export default {
     VueAutosuggest
   },
   mounted(){
-    updateCSSVariables(darkTheme)
+    const storageTheme = localStorage.getItem('autosuggest-theme')
+    const theme = storageTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? 'dark' : 'light')
+    console.log({theme})
+    this.toggleTheme(theme)
   },
   data() {
     return {
       selected: "",
       searchText: "",
-      colorMode: 'dark',
+      theme: null,
       options: races.map(r => ({
         	label: r,
           name: r,
@@ -94,9 +90,11 @@ export default {
       ),
       sectionConfigs: {
         default: {
-          limit: 4
+          limit: 4,
+          ulClass: {'data-darren': true },
+          liClass: {'elf-row': true }
         },
-        hobbits: {
+        Elf: {
           limit: 6
         }
       },
@@ -104,10 +102,29 @@ export default {
         id: "autosuggest__input",
         placeholder: "Search"
       },
+      themes: {
+        dark: {
+          bg: '#21222C',
+          color: 'white',
+          header: '#8F73BD',
+          item_color_highlighted: '#80D4E7',
+          item_bg_highlighted: '#363948',
+        },
+        light: {
+          bg: 'white',
+          header: '#8F73BD',
+          color: 'black',
+          item_color_highlighted: 'black',
+          item_bg_highlighted: '#e0e0e0',
+        }
+      },
       events: []
     };
   },
   computed: {
+    oppositeTheme() {
+      return (this.theme === 'light') ? 'dark' : 'light'
+    },
     filteredOptions() {
       const filtered = []
       if(!this.searchText){
@@ -116,10 +133,14 @@ export default {
       races.forEach(r => {
         const people = this.options.filter(o => o.name === r)[0].data.filter(p => {
           return p.Name.toLowerCase().indexOf(this.searchText.toLowerCase()) > -1;
+        }).map(p => {
+          p.liClass = p.Name === 'Gandalf' ? {'gandalf': true} : null
+          return p
         });
 
         people.length > 0 &&
           filtered.push({
+            name: Object.keys(this.sectionConfigs).indexOf(r) > -1 ? r : 'default',
             label: r,
             data: people
           });
@@ -129,25 +150,11 @@ export default {
     }
   },
   methods: {
-    toggleDark(){
-      this.colorMode = ((this.colorMode === 'dark') ? 'light' : 'dark')
-      if(this.colorMode === 'dark'){
-        updateCSSVariables({
-          bg: '#21222C',
-          color: 'white',
-          header: '#8F73BD',
-          item_color_highlighted: '#80D4E7',
-          item_bg_highlighted: '#363948',
-        })
-      }else{
-        updateCSSVariables({
-          bg: 'white',
-          header: 'black',
-          color: '#21222C',
-          item_color_highlighted: 'black',
-          item_bg_highlighted: '#e0e0e0',
-        })
-      }
+    toggleTheme(theme){
+      this.theme = theme
+      localStorage.setItem('autosuggest-theme', theme)
+      console.log('setting', theme)
+      updateCSSVariables(this.themes[this.theme])
     },
 
     getSuggestionValue(item) {
@@ -179,11 +186,11 @@ button {
   color: var(--theme-color);
   text-transform: uppercase;
   font-weight: 700;
-  font-size: .66rem;
+  font-size: 0.66rem;
   white-space: nowrap;
   border: 3px solid var(--theme-color);
   border-radius: 2rem;
-  padding: .2rem .85rem .25rem .85rem;
+  padding: 0.2rem 0.85rem 0.25rem 0.85rem;
   cursor: pointer;
 }
 
@@ -192,7 +199,7 @@ h1 {
 }
 
 * {
-  transition: height 0.200s linear;
+  transition: height 0.2s linear;
   transition: border-color linear 0.1s;
 }
 
@@ -213,7 +220,8 @@ h1 {
   -moz-box-sizing: border-box;
 }
 
-#autosuggest__input.autosuggest__input--open, #autosuggest__input:hover {
+#autosuggest__input.autosuggest__input--open,
+#autosuggest__input:hover {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border: 1px solid lightgray;
@@ -223,7 +231,6 @@ h1 {
   position: relative;
   width: 100%;
   background-color: var(--theme-bg);
-  
 }
 
 .autosuggest__results {
@@ -298,5 +305,13 @@ h1 {
 }
 .evt-val {
   color: var(--theme-color);
+}
+
+.elf-row {
+  font-style: italic;
+}
+
+.gandalf {
+  color: var(--theme-header);
 }
 </style>

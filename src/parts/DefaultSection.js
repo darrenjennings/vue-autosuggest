@@ -54,12 +54,13 @@ const DefaultSection = {
     return h(
       "ul",
       {
-        attrs: { role: "listbox", "aria-labelledby": "autosuggest" }
+        attrs: { role: "listbox", "aria-labelledby": "autosuggest", ...this.section.ulAttributes },
+        class: this.section.ulClass
       },
       [
         before[0] && before[0] || this.section.label && <li class={beforeClassName}>{this.section.label}</li> || '',
         this.list.map((val, key) => {
-          const item = this.normalizeItemFunction(this.section.name, this.section.type, this.section.label, val)
+          const item = this.normalizeItemFunction(this.section.name, this.section.type, this.section.label, this.section.liClass, val)
           const itemIndex = this.getItemIndex(key)
           const isHighlighted = this._currentIndex === itemIndex || parseInt(this.currentIndex) === itemIndex
 
@@ -69,13 +70,15 @@ const DefaultSection = {
               attrs: {
                 role: "option",
                 "data-suggestion-index": itemIndex,
-                "data-section-name": this.section.name,
-                id: "autosuggest__results-item--" + itemIndex
+                "data-section-name": item.name,
+                id: "autosuggest__results-item--" + itemIndex,
+                ...item.liAttributes
               },
               key: itemIndex,
               class: {
                 "autosuggest__results-item--highlighted": isHighlighted,
-                'autosuggest__results-item': true
+                'autosuggest__results-item': true,
+                ...item.liClass
               },
               on: {
                 mouseenter: this.onMouseEnter,
