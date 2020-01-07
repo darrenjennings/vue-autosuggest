@@ -89,6 +89,8 @@
  * @prop {Array} data - the results
  * @prop {Number} start_index - tracks section start reference point
  * @prop {Number} end_index - tracks section end reference point
+ * @prop {Object} ulClass - class for <ul> of section e.g. { 'bg-blue': true }
+ * @prop {Object} liClass - class for all <li>'s in section
  */
 
 import DefaultSection from "./parts/DefaultSection.js";
@@ -248,12 +250,14 @@ export default {
         if (!section.data) return;
 
         const name = section.name ? section.name : defaultSectionConfig.name;
-        let limit, label, type = null
+        let limit, label, type, ulClass, liClass = null
         
         if (this.sectionConfigs[name]) {
           limit = this.sectionConfigs[name].limit
           type = this.sectionConfigs[name].type
           label = this.sectionConfigs[name].label
+          ulClass = this.sectionConfigs[name].ulClass
+          liClass = this.sectionConfigs[name].liClass
         }
 
         /** Set defaults for section configs. */
@@ -271,7 +275,9 @@ export default {
           limit,
           data: section.data,
           start_index: tmpSize,
-          end_index: tmpSize + limit - 1
+          end_index: tmpSize + limit - 1,
+          ulClass,
+          liClass
         }
         
         tmpSize += limit;
@@ -338,6 +344,7 @@ export default {
               this.computedSections[i].name,
               this.computedSections[i].type,
               childSection.section.label,
+              childSection.section.liClass,
               childSection.getItemByIndex(trueIndex)
             );
             break;
@@ -366,11 +373,10 @@ export default {
       const wasClosed = !this.isOpen
       this.loading = false;
       this.didSelectFromOptions = false;
-      switch (keyCode) {
-        case 40: // ArrowDown
-        case 38: // ArrowUp
-
-          if (this.isOpen) {
+      if (this.isOpen) {
+        switch (keyCode) {
+          case 40: // ArrowDown
+          case 38: // ArrowUp
             e.preventDefault();
             if (keyCode === 38 && this.currentIndex === null) {
               break;
@@ -393,29 +399,27 @@ export default {
             this.$nextTick(() => {
               this.ensureItemVisible(this.currentItem, this.currentIndex);
             })
-          }
-          break;
-        case 13: // Enter
-          e.preventDefault();
+            break;
+          case 13: // Enter
+            e.preventDefault();
 
-          if (this.totalResults > 0 && this.currentIndex >= 0) {
-            this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
-            this.didSelectFromOptions = true;
-          }
-          
-          this.loading = true;
-          this.listeners.selected(this.didSelectFromOptions);        
-          break;
-        case 27: // Escape
-          if (this.isOpen) {
+            if (this.totalResults > 0 && this.currentIndex >= 0) {
+              this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
+              this.didSelectFromOptions = true;
+            }
+            
+            this.loading = true;
+            this.listeners.selected(this.didSelectFromOptions);
+            break;
+          case 27: // Escape
             /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
             this.loading = true;
             this.currentIndex = null;
             this.internalValue = this.searchInputOriginal;
             this.$emit('input', this.searchInputOriginal);
             e.preventDefault();
-          }
-          break;
+            break;
+        }
       }
     },
     setChangeItem(item, overrideOriginalInput = false) {
@@ -432,14 +436,27 @@ export default {
         this.ensureItemVisible(item, this.currentIndex);
       }
     },
-    normalizeItem(name, type, label, item) {  
+    
+    /**
+     * Function to standardize suggestion item object picked from sections
+     * @returns {ResultSection}
+     */
+    normalizeItem(name, type, label, className, item) {
       return {
         name,
         type,
         label,
+        liClass: item.liClass || className,
         item
       };
     },
+    
+    /**
+     * Adjust the scroll position to the item in the suggestions overflow
+     * @param {Object} item - suggestion item
+     * @param {Number} index - item index
+     * @param {String} selector - selector of item that is overflowed
+     */
     ensureItemVisible(item, index, selector) {
       const resultsScrollElement = this.$el.querySelector(
         selector || `.${this.componentAttrClassAutosuggestResults}`
@@ -447,10 +464,6 @@ export default {
       
       if (!resultsScrollElement) {
         return
-      }
-
-      if (!item && index && index !== 0) {
-        item = this.getItemByIndex(index)
       }
 
       const itemElement = resultsScrollElement.querySelector(`#autosuggest__results-item--${index}`);
