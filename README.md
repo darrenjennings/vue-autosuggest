@@ -43,7 +43,7 @@
   and sharing.
 * Codesandbox Demos:
 
-  * [Deeply nested data objects as suggestions](https://codesandbox.io/s/vueautosuggest-api-data-objects-c1f0o)
+  * [Deeply nested data objects as suggestions](https://codesandbox.io/s/vueautosuggest-api-data-objects-0nudq)
   * [Api Fetching suggestions with Multiple sections](https://codesandbox.io/s/vueautosuggest-api-fetching-57d4e)
   * [Form Validation with VeeValidate](https://codesandbox.io/s/vueautosuggest-vee-validate-ve13m)
   * [Multiple VueAutosuggest instances on same page](https://codesandbox.io/s/vueautosuggest-multiple-vue-autosuggests-545ee)
