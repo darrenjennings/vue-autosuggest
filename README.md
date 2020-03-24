@@ -294,10 +294,17 @@ vue-autosuggest does not have an opinion about how you render the items in your 
 | [`render-suggestion`](#renderSuggestion)     | Function |          | Tell vue-autosuggest how to render inside the `<li>` tag. Overrides what is inside the default suggestion template slot. |
 | [`get-suggestion-value`](#getSuggestionValue) | Function |          | Tells vue-autosuggest what to put in the `<input/>` value |
 | [`should-render-suggestions`](#shouldRenderSuggestions) | Function |          | Tell vue-autosuggest if it should render the suggestions results popover |
-| `@selected`            | Function             |    ✓     | suggestion select handler. equivalent to sectionConfigs `on-selected` but for all items             |
 | `component-attr-id-autosuggest` | String |          | `id` of entire component |
 | `component-attr-class-autosuggest-results-container` | String |          | `class` of container of results container |
 | `component-attr-class-autosuggest-results` | String |          | `class` of results container |
+
+## [Events](#events)
+
+| Prop                              | Returns               | Description                                                                                                                                                                 |
+| :-------------------------------- | :-------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@selected`                       | suggestionItem, index | suggestion select handler. equivalent to sectionConfigs `on-selected` but for all items                                                                                     |
+| `@input`, `@focus`, `@blur`, etc. | \*                    | there is a transparent wrapper on the underlying `<input />` so vue-autosuggest will use any DOM event you pass it for listening. This is implemented using `v-on:<event>`. |
+
 
 <a name="inputPropsTable"></a>
 
