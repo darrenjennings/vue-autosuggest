@@ -94,6 +94,7 @@ describe("Autosuggest", () => {
 
     input.trigger("click");
     input.setValue("G");
+    expect(wrapper.emitted().showRenderedSuggestions).toBeTruthy()
     input.trigger("keydown.down");
 
     expect(wrapper.findAll(`ul li`).length).toBeLessThanOrEqual(
@@ -116,7 +117,7 @@ describe("Autosuggest", () => {
     const input = wrapper.find("input");
     input.trigger("click");
     input.setValue("G");
-
+    expect(wrapper.emitted().showRenderedSuggestions).toBeTruthy()
     input.trigger("keydown.up"); // Check it doesn't offset the selection by going up first when nothing is selected.
 
     // TODO: test these keys are actually returning early.
@@ -143,7 +144,7 @@ describe("Autosuggest", () => {
     );
 
     input.trigger("keydown.esc");
-
+    expect(wrapper.emitted().hideRenderedSuggestions).toBeTruthy()
     expect(wrapper.findAll(`ul li`).length).toEqual(0);
 
     const renderer = createRenderer();

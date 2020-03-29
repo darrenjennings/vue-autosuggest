@@ -241,7 +241,11 @@ export default {
       };
     },
     isOpen() {
-      return this.shouldRenderSuggestions(this.totalResults, this.loading)
+      const shouldRender = this.shouldRenderSuggestions(this.totalResults, this.loading);
+      if(shouldRender) {
+        this.$emit('showRenderedSuggestions');
+      } else this.$emit('hideRenderedSuggestions');
+      return shouldRender;
     },
     /** @returns {Array<ResultSection>} */
     computedSections() {
