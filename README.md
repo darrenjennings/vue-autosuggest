@@ -405,6 +405,14 @@ shouldRenderSuggestions (size, loading) {
 }
 ```
 
+## [Events](#events)
+
+| Prop                              | Returns               | Description                                                                                                                                                                 |
+| :-------------------------------- | :-------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@selected`                       | suggestionItem, index | suggestion select handler. equivalent to sectionConfigs `on-selected` but for all items                                                                                     |
+| `@input`, `@focus`, `@blur`, etc. | \*                    | there is a transparent wrapper on the underlying `<input />` so vue-autosuggest will use any DOM event you pass it for listening. This is implemented using `v-on:<event>`. |
+| `@opened`, `@closed`              | \*                    | suggestions visibility handler, indicates when the suggestions are opened and closed.                                                                                       |
+
 ## Browser support
 
 For IE11 and below, some functionality may not work. For example, you will have to manually [polyfill](https://github.com/Financial-Times/polyfill-service/issues/177) `Node.prototype.contains`

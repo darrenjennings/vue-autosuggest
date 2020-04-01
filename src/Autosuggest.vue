@@ -241,11 +241,7 @@ export default {
       };
     },
     isOpen() {
-      const shouldRender = this.shouldRenderSuggestions(this.totalResults, this.loading);
-      if(shouldRender) {
-        this.$emit('showRenderedSuggestions');
-      } else this.$emit('hideRenderedSuggestions');
-      return shouldRender;
+      return this.shouldRenderSuggestions(this.totalResults, this.loading)
     },
     /** @returns {Array<ResultSection>} */
     computedSections() {
@@ -300,13 +296,21 @@ export default {
       }, 0)
     }
   },
-  // Watcher to support initialValue
   watch: {
+    // Support initialValue
     value: {
       handler(newValue){
         this.internalValue = newValue
       },
       immediate: true
+    },
+    // Emits opened/closed events
+    isOpen: {
+      handler(newValue, oldValue){
+        if (newValue !== oldValue) {
+          this.$emit(newValue ? 'opened' : 'closed');      
+        }
+      }
     }
   },
   created() {
