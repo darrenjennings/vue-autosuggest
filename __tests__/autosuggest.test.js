@@ -784,25 +784,62 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
- it("emits opened and closed events", async () => {
-   const props = { ...defaultProps };
-   props.inputProps = { ...defaultProps.inputProps };
 
-   const wrapper = mount(Autosuggest, {
-     propsData: props,
-   });
+  it("emits opened and closed events", async () => {
+    const props = { ...defaultProps };
+    props.inputProps = { ...defaultProps.inputProps };
 
-   const input = wrapper.find("input");
-   input.setValue("G");
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+    });
 
-   // Wait for watchers
-   await wrapper.vm.$nextTick(() => {
-     expect(wrapper.emitted().opened).toBeTruthy();
-   });
+    const input = wrapper.find("input");
+    input.setValue("G");
+    input.trigger("keydown.down");
 
-   input.trigger("keydown.esc");
-   await wrapper.vm.$nextTick(() => {
+    await wrapper.vm.$nextTick(() => {})
+    expect(wrapper.emitted().opened).toBeTruthy();
+
+    input.trigger("keydown.esc");
+    await wrapper.vm.$nextTick(() => {})
     expect(wrapper.emitted().closed).toBeTruthy();
   });
- });
+  
+  it("emits item-changed event", async () => {
+    const props = { ...defaultProps };
+    props.inputProps = { ...defaultProps.inputProps };
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+    });
+    
+    const input = wrapper.find("input");
+    input.setValue("G");
+    input.trigger("keydown.down");
+    input.trigger("keydown.down");
+
+    await wrapper.vm.$nextTick(() => {})
+    expect(wrapper.emitted()['item-changed']).toHaveLength(2);
+    const itemChanged1 = wrapper.emitted()['item-changed'][0]
+    const itemChanged2 = wrapper.emitted()['item-changed'][1]
+    
+    // Emits with item and index
+    expect(itemChanged1[0].item).toBe('clifford kits');
+    expect(itemChanged1[1]).toBe(0);
+    expect(itemChanged2[0].item).toBe('friendly chemistry');
+    expect(itemChanged2[1]).toBe(1);
+    
+    input.trigger("keydown.up");
+    await wrapper.vm.$nextTick(() => {})
+    input.trigger("keydown.up");
+    await wrapper.vm.$nextTick(() => {})
+    await wrapper.vm.$nextTick(() => {})
+    
+    // Ensure empty item-changed is emitted when user keys back
+    // to the input #177
+    expect(wrapper.emitted()['item-changed']).toHaveLength(4)
+    const itemChangedEmpty = wrapper.emitted()['item-changed'][3]
+    expect(itemChangedEmpty[0]).toBeNull();
+    expect(itemChangedEmpty[1]).toBeNull();
+  });
 });
