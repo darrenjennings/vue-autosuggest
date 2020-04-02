@@ -116,7 +116,6 @@ describe("Autosuggest", () => {
     const input = wrapper.find("input");
     input.trigger("click");
     input.setValue("G");
-
     input.trigger("keydown.up"); // Check it doesn't offset the selection by going up first when nothing is selected.
 
     // TODO: test these keys are actually returning early.
@@ -143,7 +142,6 @@ describe("Autosuggest", () => {
     );
 
     input.trigger("keydown.esc");
-
     expect(wrapper.findAll(`ul li`).length).toEqual(0);
 
     const renderer = createRenderer();
@@ -739,7 +737,7 @@ describe("Autosuggest", () => {
     input.trigger("keydown.down");
     input.trigger("keydown.enter");
     input.trigger("keydown.down");
-    
+
     expect(wrapper.findAll("li.autosuggest__results-item--highlighted")).toHaveLength(1)
     
     const item = wrapper.find("li.autosuggest__results-item--highlighted")
@@ -786,4 +784,25 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
+ it("emits opened and closed events", async () => {
+   const props = { ...defaultProps };
+   props.inputProps = { ...defaultProps.inputProps };
+
+   const wrapper = mount(Autosuggest, {
+     propsData: props,
+   });
+
+   const input = wrapper.find("input");
+   input.setValue("G");
+
+   // Wait for watchers
+   await wrapper.vm.$nextTick(() => {
+     expect(wrapper.emitted().opened).toBeTruthy();
+   });
+
+   input.trigger("keydown.esc");
+   await wrapper.vm.$nextTick(() => {
+    expect(wrapper.emitted().closed).toBeTruthy();
+  });
+ });
 });

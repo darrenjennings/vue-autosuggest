@@ -52,6 +52,16 @@
       "contributions": [
         "design"
       ]
+    },
+    {
+      "login": "BerniML",
+      "name": "BerniML",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/12657810?v=4",
+      "profile": "https://github.com/BerniML",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ]
 }
