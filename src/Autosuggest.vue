@@ -310,7 +310,8 @@ export default {
         if (newValue !== oldValue) {
           this.$emit(newValue ? 'opened' : 'closed');      
         }
-      }
+      },
+      immediate: true
     }
   },
   created() {
@@ -399,7 +400,7 @@ export default {
               this.setChangeItem(this.getItemByIndex(this.currentIndex));
               this.didSelectFromOptions = true;
             } else if (this.currentIndex == -1) {
-              this.currentIndex = null;
+              this.setChangeItem(null)
               this.internalValue = this.searchInputOriginal;
               e.preventDefault();
             }
@@ -433,9 +434,10 @@ export default {
     setChangeItem(item, overrideOriginalInput = false) {
       if (this.currentIndex === null || !item) {
         this.currentItem = null;
+        this.$emit('item-changed', null, null)
       } else if (item) {
         this.currentItem = item;
-        this.$emit('itemChanged', item, this.currentIndex)
+        this.$emit('item-changed', item, this.currentIndex)
         const v = this.getSuggestionValue(item)
         this.internalValue = v;
         if (overrideOriginalInput) {
