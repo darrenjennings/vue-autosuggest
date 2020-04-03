@@ -9,10 +9,14 @@ const DefaultSection = {
   },
   data: function () {
     return {
+      /** @type Number */
       _currentIndex: this.currentIndex
     }
   },
   computed: {
+    /**
+     * Suggestions from the section
+     */
     list: function () {
       let { limit, data } = this.section;
       if (data.length < limit) {
