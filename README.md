@@ -297,6 +297,7 @@ vue-autosuggest does not have an opinion about how you render the items in your 
 | `component-attr-id-autosuggest` | String |          | `id` of entire component |
 | `component-attr-class-autosuggest-results-container` | String |          | `class` of container of results container |
 | `component-attr-class-autosuggest-results` | String |          | `class` of results container |
+| `component-attr-prefix` | String |          | prefix to be used for results item classes/ids. default: `autosuggest` |
 
 <a name="inputPropsTable"></a>
 

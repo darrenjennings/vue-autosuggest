@@ -5,21 +5,21 @@
       :value="internalValue"
       :autocomplete="internal_inputProps.autocomplete"
       role="combobox"
-      :class="[isOpen ? 'autosuggest__input--open' : '', internal_inputProps['class']]"
+      :class="[isOpen ? `${componentAttrPrefix}__input--open` : '', internal_inputProps['class']]"
       v-bind="internal_inputProps"
       aria-autocomplete="list"
-      aria-owns="autosuggest__results"
-      :aria-activedescendant="isOpen && currentIndex !== null ? `autosuggest__results-item--${currentIndex}` : ''"
+      :aria-owns="`${componentAttrPrefix}__results`"
+      :aria-activedescendant="isOpen && currentIndex !== null ? `${componentAttrPrefix}__results-item--${currentIndex}` : ''"
       :aria-haspopup="isOpen ? 'true' : 'false'"
       :aria-expanded="isOpen ? 'true' : 'false'"
       @input="inputHandler"
       @keydown="handleKeyStroke"
       v-on="listeners"
     ><slot name="after-input" />
-    <div :class="componentAttrClassAutosuggestResultsContainer">
+    <div :class="_componentAttrClassAutosuggestResultsContainer">
       <div 
         v-if="isOpen"
-        :class="componentAttrClassAutosuggestResults"
+        :class="_componentAttrClassAutosuggestResults"
         :aria-labelledby="componentAttrIdAutosuggest"
       >
         <slot name="before-suggestions" />
@@ -32,6 +32,7 @@
           :normalize-item-function="normalizeItem"
           :render-suggestion="renderSuggestion"
           :section="cs"
+          :component-attr-prefix="componentAttrPrefix"
           @updateCurrentIndex="updateCurrentIndex"
         >
           <template 
@@ -184,13 +185,18 @@ export default {
     componentAttrClassAutosuggestResultsContainer: {
       type: String,
       required: false,
-      default: "autosuggest__results-container"
+      default: null  // `${componentAttrPrefix}__results-container`
     },
     componentAttrClassAutosuggestResults: {
       type: String,
       required: false,
-      default: "autosuggest__results"
+      default: null // `${componentAttrPrefix}__results`
     },
+    componentAttrPrefix: {
+      type: String,
+      required: false,
+      default: "autosuggest"
+    }
   },
   data() {
     return {
@@ -326,7 +332,14 @@ export default {
         const { limit, data } = section
         return acc + (data.length >= limit ? limit : data.length)
       }, 0)
-    }
+    },
+    
+    _componentAttrClassAutosuggestResultsContainer () {
+      return this.componentAttrClassAutosuggestResultsContainer || `${this.componentAttrPrefix}__results-container`
+    },
+    _componentAttrClassAutosuggestResults () {
+      return this.componentAttrClassAutosuggestResults || `${this.componentAttrPrefix}__results`
+    },
   },
   watch: {
     /**
@@ -538,14 +551,14 @@ export default {
      */
     ensureItemVisible(item, index, selector) {
       const resultsScrollElement = this.$el.querySelector(
-        selector || `.${this.componentAttrClassAutosuggestResults}`
+        selector || `.${this._componentAttrClassAutosuggestResults}`
       );
       
       if (!resultsScrollElement) {
         return
       }
 
-      const itemElement = resultsScrollElement.querySelector(`#autosuggest__results-item--${index}`);
+      const itemElement = resultsScrollElement.querySelector(`#${this.componentAttrPrefix}__results-item--${index}`);
       if (!itemElement) {
         return;
       }      
@@ -580,7 +593,7 @@ export default {
      *   results e.g. an offset of clientX
      */
     clickedOnScrollbar(e, mouseX){
-      const results = this.$el.querySelector(`.${this.componentAttrClassAutosuggestResults}`);
+      const results = this.$el.querySelector(`.${this._componentAttrClassAutosuggestResults}`);
 
       const mouseIsInsideScrollbar = results && results.clientWidth <= (mouseX + 17) && 
         mouseX + 17 <= results.clientWidth + 34
@@ -645,8 +658,8 @@ export default {
       }
       
       this.currentIndex = adjustedValue;
-      const element = this.$el.querySelector(`#autosuggest__results-item--${this.currentIndex}`);
-      const hoverClass = "autosuggest__results-item--highlighted";
+      const element = this.$el.querySelector(`#${this.componentAttrPrefix}__results-item--${this.currentIndex}`);
+      const hoverClass = `${this.componentAttrPrefix}__results-item--highlighted`;
 
       if (this.$el.querySelector(`.${hoverClass}`)) {
         removeClass(this.$el.querySelector(`.${hoverClass}`), hoverClass);
