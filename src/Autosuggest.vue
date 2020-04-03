@@ -93,6 +93,14 @@
  * @prop {Object} liClass - class for all <li>'s in section
  */
 
+/**
+ * @typedef {Object} ResultItem
+ * @prop {Object<any>} item - data object
+ * @prop {ResultSection.liClass} liClass
+ * @prop {ResultSection.label} label
+ * @prop {ResultSection.type} type
+ */
+
 import DefaultSection from "./parts/DefaultSection.js";
 import { addClass, removeClass } from "./utils";
 
@@ -108,14 +116,17 @@ export default {
     DefaultSection
   },
   props: {
+    /** Allows for v-model support */
     value: {
       type: String,
       default: null
     },
+    /** v-binds to the <input /> tag for fine-grain control */
     inputProps: {
       type: Object,
       required: true
     },
+    /** limits the number of suggestions for all sections */
     limit: {
       type: Number,
       required: false,
@@ -186,17 +197,23 @@ export default {
       internalValue: null,
       searchInputOriginal: null,
       currentIndex: null,
+      /** @type ResultItem|null */
       currentItem: null,
+      // TODO use event states instead of generic "loading" variable
       loading: false /** Helps with making sure the dropdown doesn't stay open after certain actions */,
       didSelectFromOptions: false,
       defaultInputProps: {
         type: 'text',
         autocomplete: "off",
       },
+      /** @type Number */
       clientXMouseDownInitial: null
     };
   },
   computed: {
+    /**
+     * Merged object for defaults + user defined `<input/>` props
+     */
     internal_inputProps() {
       return {
         ...this.defaultInputProps,
@@ -210,6 +227,9 @@ export default {
           // Don't do anything native here, since we have inputHandler
           return
         },
+        /**
+         * Wrap native click handler to allow for added behavior
+         */
         click: () => {
           /* eslint-disable-next-line vue/no-side-effects-in-computed-properties */
           this.loading = false;
@@ -219,9 +239,10 @@ export default {
           })
         },
         selected: () => {
-          // Determine which onSelected to fire. This can be either from inside
-          // a section's object, from the @selected event, or from the deprecated
-          // native onSelected prop (to be removed later)
+          /**
+           * Determine which onSelected to fire. This can be either from inside
+           * a section's object, from the `@selected` event
+           */
           if (
             this.currentItem &&
             this.sectionConfigs[this.currentItem.name] &&
@@ -240,10 +261,17 @@ export default {
         }
       };
     },
+    /**
+     * @returns {Boolean}
+     */
     isOpen() {
       return this.shouldRenderSuggestions(this.totalResults, this.loading)
     },
-    /** @returns {Array<ResultSection>} */
+    /**
+     * Normalize suggestions into sections based on defaults and section 
+     * configs.
+     * @returns {Array<ResultSection>}  
+     */
     computedSections() {
       let tmpSize = 0
       return this.suggestions.map(section => {
@@ -285,6 +313,10 @@ export default {
         return computedSection
       })
     },
+    /**
+     * Calculate number of results in each section.
+     * @returns {Number}
+     */
     totalResults () {
       return this.computedSections.reduce((acc, section) => {
         // For each section, make sure we calculate the size
@@ -297,14 +329,19 @@ export default {
     }
   },
   watch: {
-    // Support initialValue
+    /**
+     * Support initialValue
+     */
     value: {
       handler(newValue){
         this.internalValue = newValue
       },
       immediate: true
     },
-    // Emits opened/closed events
+    /**
+     * Emits opened/closed events
+     * @returns {Boolean}
+     */
     isOpen: {
       handler(newValue, oldValue){
         if (newValue !== oldValue) {
@@ -326,6 +363,10 @@ export default {
     document.removeEventListener("mousedown", this.onDocumentMouseDown)
   },
   methods: {
+    /**
+     * handler for @input <input /> events to support v-model behavior.
+     * @param {InputEvent} e
+     */
     inputHandler(e) {
       const newValue = e.target.value
       this.$emit('input', newValue)
@@ -335,9 +376,17 @@ export default {
         this.currentIndex = null;
       }
     },
+    /**
+     * Helper for making sure the sectionRef getter is consistent
+     * @returns {String}
+     */
     getSectionRef(i) {
       return "computed_section_" + i;
     },
+    /**
+     * Helper for getting a suggestion item by index.
+     * @returns {ResultItem}
+     */
     getItemByIndex(index) {
       let obj = false;
       if (index === null) return obj;
@@ -347,7 +396,7 @@ export default {
           index <= this.computedSections[i].end_index
         ) {
           let trueIndex = index - this.computedSections[i].start_index;
-          let childSection = this.$refs["computed_section_" + i][0];
+          let childSection = this.$refs[this.getSectionRef(i)][0];
           if (childSection) {
             obj = this.normalizeItem(
               this.computedSections[i].name,
@@ -363,6 +412,13 @@ export default {
 
       return obj;
     },
+    /**
+     * Handler for 'keydown' event. Does a number of things, including making
+     * sure to ignore keycodes, ensure items are visible and also that the input
+     * value is updated/reset according to where the user has keyed to.
+     * @param {MouseEvent} e
+     * @returns {void}
+     */
     handleKeyStroke(e) {
       const { keyCode } = e;
 
@@ -421,7 +477,10 @@ export default {
             this.listeners.selected(this.didSelectFromOptions);
             break;
           case 27: // Escape
-            /* For 'search' input type, make sure the browser doesn't clear the input when Escape is pressed. */
+            /** 
+             * For 'search' input type, make sure the browser doesn't clear the 
+             * input when Escape is pressed. 
+             */
             this.loading = true;
             this.currentIndex = null;
             this.internalValue = this.searchInputOriginal;
@@ -431,6 +490,16 @@ export default {
         }
       }
     },
+    /**
+     * Wrapper around currentItem setter to emit events and ensure to update the
+     * searchInputOriginal when a user selects an option.
+     * @param {ResultItem} item
+     * @param {Boolean} overrideOriginalInput determine if the 'saved' original
+     *   input should be updated. When a user selects an option, this will be
+     *   updated, but if a user keys into the <input/> then the input will be
+     *   reset to the searchInputOriginal. 
+     * @return {void}
+     */
     setChangeItem(item, overrideOriginalInput = false) {
       if (this.currentIndex === null || !item) {
         this.currentItem = null;
@@ -449,7 +518,7 @@ export default {
     
     /**
      * Function to standardize suggestion item object picked from sections
-     * @returns {ResultSection}
+     * @returns {ResultItem}
      */
     normalizeItem(name, type, label, className, item) {
       return {
@@ -463,7 +532,7 @@ export default {
     
     /**
      * Adjust the scroll position to the item in the suggestions overflow
-     * @param {Object} item - suggestion item
+     * @param {ResultItem} item - suggestion item
      * @param {Number} index - item index
      * @param {String} selector - selector of item that is overflowed
      */
@@ -498,9 +567,18 @@ export default {
         resultsScrollElement.scrollTop = currentItemScrollOffset;
       }
     },
+    /**
+     * @param {Number} index
+     */
     updateCurrentIndex(index) {
       this.setCurrentIndex(index, -1, true);      
     },
+    /**
+     * Helper to detect if the user clicked on the scrollbar
+     * @param {MouseEvent} e
+     * @param {Number} mouseX - horizontal position of the mouse relative to
+     *   results e.g. an offset of clientX
+     */
     clickedOnScrollbar(e, mouseX){
       const results = this.$el.querySelector(`.${this.componentAttrClassAutosuggestResults}`);
 
@@ -508,10 +586,19 @@ export default {
         mouseX + 17 <= results.clientWidth + 34
       return e.target.tagName === 'DIV' && results && mouseIsInsideScrollbar || false;
     },
+    /**
+     * Capture mousedown position so we can use it to detect if the scrollbar
+     * was clicked
+     * @param {MouseEvent} e
+     */
     onDocumentMouseDown(e) {
       var rect = e.target.getBoundingClientRect ? e.target.getBoundingClientRect() : 0;
       this.clientXMouseDownInitial = e.clientX - rect.left;
     },
+    /**
+     * 'mouseup' event handler
+     * @param {MouseEvent} e
+     */
     onDocumentMouseUp(e) {
       /** Do not re-render list on input click  */
       const isChild = this.$el.contains(e.target);
@@ -534,10 +621,21 @@ export default {
       this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
       this.listeners.selected(true);
     },
-
+    /**
+     * Sets the current index of the highlighted object, useful for aria 
+     * attributes like `aria-activedescendant` and toggling which result item
+     * is highlighted.
+     * @param {Number} newIndex
+     * @param {Number} limit
+     * @param {Boolean} onHover detects if the user is hovering vs. selected
+     */
     setCurrentIndex(newIndex, limit = -1, onHover = false) {
       let adjustedValue = newIndex;
       
+      /**
+       * If you're not hovering, you might be keying outside of the bounds, so
+       * we need to make sure that we adjust for the limits.
+       */
       if (!onHover){
         const hitLowerLimt = this.currentIndex === null
         const hitUpperLimit = newIndex >= limit
