@@ -16,6 +16,70 @@ exports[`Autosuggest can click outside document to trigger close 1`] = `
 </div>
 `;
 
+exports[`Autosuggest can customize css prefix 1`] = `
+<div id="the-whole-thing" class="containerz"><input type="text" autocomplete="off" role="combobox" aria-autocomplete="list" aria-owns="v__results" aria-activedescendant="" aria-haspopup="true" aria-expanded="true" id="the-input-thing" placeholder="Type 'G'" value="G" class="v__input--open">
+  <div class="the-results-container">
+    <div aria-labelledby="the-whole-thing" class="the-results">
+      <ul role="listbox" aria-labelledby="autosuggest">
+        <li role="option" data-suggestion-index="0" data-section-name="default" id="v__results-item--0" class="v__results-item">
+          clifford kits
+        </li>
+        <li role="option" data-suggestion-index="1" data-section-name="default" id="v__results-item--1" class="v__results-item">
+          friendly chemistry
+        </li>
+        <li role="option" data-suggestion-index="2" data-section-name="default" id="v__results-item--2" class="v__results-item">
+          phonics
+        </li>
+        <li role="option" data-suggestion-index="3" data-section-name="default" id="v__results-item--3" class="v__results-item">
+          life of fred
+        </li>
+        <li role="option" data-suggestion-index="4" data-section-name="default" id="v__results-item--4" class="v__results-item">
+          life of fred math
+        </li>
+      </ul>
+      <ul role="listbox" aria-labelledby="autosuggest">
+        <li role="option" data-suggestion-index="5" data-section-name="dogs" id="v__results-item--5" class="v__results-item">
+          spike
+        </li>
+        <li role="option" data-suggestion-index="6" data-section-name="dogs" id="v__results-item--6" class="v__results-item">
+          bud
+        </li>
+        <li role="option" data-suggestion-index="7" data-section-name="dogs" id="v__results-item--7" class="v__results-item">
+          rover
+        </li>
+      </ul>
+      <ul role="listbox" aria-labelledby="autosuggest">
+        <li role="option" data-suggestion-index="8" data-section-name="cats" id="v__results-item--8" class="v__results-item">
+          sassy
+        </li>
+        <li role="option" data-suggestion-index="9" data-section-name="cats" id="v__results-item--9" class="v__results-item">
+          tuesday
+        </li>
+        <li role="option" data-suggestion-index="10" data-section-name="cats" id="v__results-item--10" class="v__results-item">
+          church
+        </li>
+      </ul>
+      <ul role="listbox" aria-labelledby="autosuggest">
+        <li role="option" data-suggestion-index="11" data-section-name="zeu" id="v__results-item--11" class="v__results-item">
+          elephant
+        </li>
+        <li role="option" data-suggestion-index="12" data-section-name="zeu" id="v__results-item--12" class="v__results-item">
+          lion
+        </li>
+      </ul>
+      <ul role="listbox" aria-labelledby="autosuggest">
+        <li role="option" data-suggestion-index="13" data-section-name="Uhh" id="v__results-item--13" class="v__results-item">
+          something
+        </li>
+        <li role="option" data-suggestion-index="14" data-section-name="Uhh" id="v__results-item--14" class="v__results-item">
+          something2
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Autosuggest can customize ids and classes for container divs 1`] = `
 <div id="automatischsuchen" class="containerz"><input type="text" autocomplete="off" role="combobox" aria-autocomplete="list" aria-owns="autosuggest__results" aria-activedescendant="" aria-haspopup="true" aria-expanded="true" id="autosuggest__input" placeholder="Type 'G'" value="G" class="autosuggest__input--open">
   <div class="resultz-containerz">

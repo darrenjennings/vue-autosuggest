@@ -589,6 +589,46 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
+  
+  it("can customize css prefix", async () => {
+    const wrapper = mount(Autosuggest, {
+      propsData: {
+        ...defaultProps,
+        class: "containerz",
+        'component-attr-prefix': 'v',
+        'component-attr-id-autosuggest': "the-whole-thing",
+        'component-attr-class-autosuggest-results-container': 'the-results-container',
+        'component-attr-class-autosuggest-results': 'the-results',
+        inputProps: {
+          ...defaultProps.inputProps,
+          id: 'the-input-thing',
+        }
+      },
+      attachToDocument: true
+    });
+    
+    const input = wrapper.find("input");
+    input.trigger("click");
+    input.setValue("G");
+
+    // Make sure the prefixes still allow for custom css/id's
+    expect(wrapper.find('#the-whole-thing').is('div')).toBe(true);
+    expect(wrapper.find('#the-input-thing').is('input')).toBe(true);
+    expect(wrapper.find('.the-results-container').is('div')).toBe(true);
+    expect(wrapper.find('.the-results').is('div')).toBe(true);
+    
+    // Prefix checks
+    expect(wrapper.find('#v__results-item--0').is('li')).toBeTruthy()
+    expect(wrapper.find('.v__results-item').is('li')).toBeTruthy()
+
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
+  });
 
   it("@click and @selected listener events works as expected", async () => {
     let props = Object.assign({}, defaultProps);

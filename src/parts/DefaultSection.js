@@ -5,7 +5,8 @@ const DefaultSection = {
     section: { type: Object, required: true },
     currentIndex: { type: [Number, String], required: false, default: Infinity },
     renderSuggestion: { type: Function, required: false },
-    normalizeItemFunction: { type: Function, required: true }
+    normalizeItemFunction: { type: Function, required: true },
+    componentAttrPrefix: { type: String, required: true }
   },
   data: function () {
     return {
@@ -43,13 +44,14 @@ const DefaultSection = {
   },
   // eslint-disable-next-line no-unused-vars
   render (h) {
+    const componentAttrPrefix = this.componentAttrPrefix
     const slots = {
       beforeSection: this.$scopedSlots[`before-section-${this.section.name}`],
       afterSectionDefault: this.$scopedSlots[`after-section`],
       afterSectionNamed: this.$scopedSlots[`after-section-${this.section.name}`]
     }
 
-    const beforeClassName = `autosuggest__results-before autosuggest__results-before--${this.section.name}`
+    const beforeClassName = `${componentAttrPrefix}__results-before ${componentAttrPrefix}__results-before--${this.section.name}`
     const before = slots.beforeSection && slots.beforeSection({
       section: this.section,
       className: beforeClassName
@@ -75,13 +77,13 @@ const DefaultSection = {
                 role: "option",
                 "data-suggestion-index": itemIndex,
                 "data-section-name": item.name,
-                id: "autosuggest__results-item--" + itemIndex,
+                id: `${componentAttrPrefix}__results-item--${itemIndex}`,
                 ...item.liAttributes
               },
               key: itemIndex,
               class: {
-                "autosuggest__results-item--highlighted": isHighlighted,
-                'autosuggest__results-item': true,
+                [`${componentAttrPrefix}__results-item--highlighted`]: isHighlighted,
+                [`${componentAttrPrefix}__results-item`]: true,
                 ...item.liClass
               },
               on: {
@@ -98,11 +100,11 @@ const DefaultSection = {
         }),
         slots.afterSectionDefault && slots.afterSectionDefault({
           section: this.section,
-          className: `autosuggest__results-after autosuggest__results-after--${this.section.name}`
+          className: `${componentAttrPrefix}__results-after ${componentAttrPrefix}__results-after--${this.section.name}`
         }),
         slots.afterSectionNamed && slots.afterSectionNamed({
           section: this.section,
-          className: `autosuggest__results_after autosuggest__results-after--${this.section.name}`
+          className: `${componentAttrPrefix}__results_after ${componentAttrPrefix}__results-after--${this.section.name}`
         })
       ]
     );
