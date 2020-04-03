@@ -26,8 +26,8 @@
         <component
           :is="cs.type"
           v-for="(cs, key) in computedSections"
-          :ref="getSectionRef(key)"
-          :key="getSectionRef(key)"
+          :ref="getSectionRef(`${cs.name}${key}`)"
+          :key="getSectionRef(`${cs.name}${key}`)"
           :current-index="currentIndex"
           :normalize-item-function="normalizeItem"
           :render-suggestion="renderSuggestion"
@@ -409,7 +409,8 @@ export default {
           index <= this.computedSections[i].end_index
         ) {
           let trueIndex = index - this.computedSections[i].start_index;
-          let childSection = this.$refs[this.getSectionRef(i)][0];
+          const sectionName = this.computedSections[i].name
+          let childSection = this.$refs[this.getSectionRef(`${sectionName}${i}`)][0];
           if (childSection) {
             obj = this.normalizeItem(
               this.computedSections[i].name,
