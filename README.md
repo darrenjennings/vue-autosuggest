@@ -15,7 +15,7 @@
 [![MIT License][license-badge]][LICENSE]
 [![gzip size][size-badge]](https://unpkg.com/vue-autosuggest@latest)
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs]
 [![Code of Conduct][coc-badge]][coc]
 
@@ -286,27 +286,28 @@ vue-autosuggest does not have an opinion about how you render the items in your 
 
 ## [Props](#props)
 
-| Prop                                        | Type     | Required | Description                                               |
-| :------------------------------------------ | :------- | :------: | :-------------------------------------------------------- |
-| [`suggestions`](#suggestionsProp)           | Array    |    ✓     | Suggestions to be rendered. e.g.`suggestions: [{data: ['harry','ron','hermione']}]`                               |
-| [`input-props`](#inputPropsTable)            | Object   |    ✓     | Add props to the `<input>`.                               |
-| [`section-configs`](#sectionConfigsProp)     | Object   |          | Define multiple sections `<input>`.                       |
-| [`render-suggestion`](#renderSuggestion)     | Function |          | Tell vue-autosuggest how to render inside the `<li>` tag. Overrides what is inside the default suggestion template slot. |
-| [`get-suggestion-value`](#getSuggestionValue) | Function |          | Tells vue-autosuggest what to put in the `<input/>` value |
-| [`should-render-suggestions`](#shouldRenderSuggestions) | Function |          | Tell vue-autosuggest if it should render the suggestions results popover |
-| `component-attr-id-autosuggest` | String |          | `id` of entire component |
-| `component-attr-class-autosuggest-results-container` | String |          | `class` of container of results container |
-| `component-attr-class-autosuggest-results` | String |          | `class` of results container |
-| `component-attr-prefix` | String |          | prefix to be used for results item classes/ids. default: `autosuggest` |
+| Prop                                                    | Type     | Required | Description                                                                                                              |
+| :------------------------------------------------------ | :------- | :------: | :----------------------------------------------------------------------------------------------------------------------- |
+| [`suggestions`](#suggestionsProp)                       | Array    |    ✓     | Suggestions to be rendered. e.g.`suggestions: [{data: ['harry','ron','hermione']}]`                                      |
+| [`input-props`](#inputPropsTable)                       | Object   |    ✓     | Add props to the `<input>`.                                                                                              |
+| [`section-configs`](#sectionConfigsProp)                | Object   |          | Define multiple sections `<input>`.                                                                                      |
+| [`render-suggestion`](#renderSuggestion)                | Function |          | Tell vue-autosuggest how to render inside the `<li>` tag. Overrides what is inside the default suggestion template slot. |
+| [`get-suggestion-value`](#getSuggestionValue)           | Function |          | Tells vue-autosuggest what to put in the `<input/>` value                                                                |
+| [`should-render-suggestions`](#shouldRenderSuggestions) | Function |          | Tell vue-autosuggest if it should render the suggestions results popover                                                 |
+| `component-attr-id-autosuggest`                         | String   |          | `id` of entire component                                                                                                 |
+| `component-attr-class-autosuggest-results-container`    | String   |          | `class` of container of results container                                                                                |
+| `component-attr-class-autosuggest-results`              | String   |          | `class` of results container                                                                                             |
+| `component-attr-class-autosuggest-item-highlight`       | String   |          | `class` of highlighted item                                                                                              |
+| `component-attr-prefix`                                 | String   |          | prefix to be used for results item classes/ids. default: `autosuggest`                                                   |
 
 <a name="inputPropsTable"></a>
 
 ### inputProps
 
-| Prop                     | Type                |  Required  | Description                                                                                                                                                                  |
-| :----------------------- | :------------------ | :--------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`id`](#inputPropsTable) | String              |     ✓      | id attribute on `<input>`.                                                                                                                                                   |
-| Any DOM Props            | \*                  |            | You can add any props to `<input>` as the component will `v-bind` inputProps. Similar to rest spread in JSX. See more details here: https://vuejs.org/v2/api/#v-bind. The `name` attribute is set to "`q`" by default.         |
+| Prop                     | Type   | Required | Description                                                                                                                                                                                                            |
+| :----------------------- | :----- | :------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`id`](#inputPropsTable) | String |    ✓     | id attribute on `<input>`.                                                                                                                                                                                             |
+| Any DOM Props            | \*     |          | You can add any props to `<input>` as the component will `v-bind` inputProps. Similar to rest spread in JSX. See more details here: https://vuejs.org/v2/api/#v-bind. The `name` attribute is set to "`q`" by default. |
 
 <a name="sectionConfigsProp"></a>
 
@@ -315,10 +316,10 @@ vue-autosuggest does not have an opinion about how you render the items in your 
 Multiple sections can be defined in the `sectionConfigs` prop which defines the control behavior for
 each section.
 
-| Prop         | Type     | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| :----------- | :------- | :------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `on-selected` | Function |    ✓     | Determine behavior for what should happen when a suggestion is selected. e.g. Submit a form, open a link, update a vue model, tweet at Ken Wheeler etc.                                                                                                                                                                                                                                                                                                                                                                     |
-| `limit`      | Number   |          | Limit each section by some value. Default: `Infinity`                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Prop          | Type     | Required | Description                                                                                                                                             |
+| :------------ | :------- | :------: | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `on-selected` | Function |    ✓     | Determine behavior for what should happen when a suggestion is selected. e.g. Submit a form, open a link, update a vue model, tweet at Ken Wheeler etc. |
+| `limit`       | Number   |          | Limit each section by some value. Default: `Infinity`                                                                                                   |
 
 Below we have defined a `default` section and a `blog` section. The `blog` section has a component
 `type` of `url-section` which corresponds to which component the Autosuggest loads. When type is not
@@ -431,8 +432,8 @@ For IE11 and below, some functionality may not work. For example, you will have 
 Thanks goes to these people ([emoji key][emojis]):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-| [<img src="https://avatars.githubusercontent.com/u/5770711?v=4" width="100px;"/><br /><sub><b>Darren Jennings</b></sub>](https://darrenjennings.github.io)<br />[💻](https://github.com/darrenjennings/vue-autosuggest/commits?author=darrenjennings "Code") [📖](https://github.com/darrenjennings/vue-autosuggest/commits?author=darrenjennings "Documentation") [🚇](#infra-darrenjennings "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/darrenjennings/vue-autosuggest/commits?author=darrenjennings "Tests") [🎨](#design-darrenjennings "Design") [💡](#example-darrenjennings "Examples") | [<img src="https://avatars2.githubusercontent.com/u/411772?v=4" width="100px;"/><br /><sub><b>Evgeniy Kulish</b></sub>](https://github.com/ekulish)<br />[💻](https://github.com/darrenjennings/vue-autosuggest/commits?author=ekulish "Code") [🎨](#design-ekulish "Design") [💡](#example-ekulish "Examples") [⚠️](https://github.com/darrenjennings/vue-autosuggest/commits?author=ekulish "Tests") | [<img src="https://avatars3.githubusercontent.com/u/1824850?v=4" width="100px;"/><br /><sub><b>Scott Smith</b></sub>](https://github.com/scottadamsmith)<br />[🐛](https://github.com/darrenjennings/vue-autosuggest/issues?q=author%3Ascottadamsmith "Bug reports") [💻](https://github.com/darrenjennings/vue-autosuggest/commits?author=scottadamsmith "Code") [⚠️](https://github.com/darrenjennings/vue-autosuggest/commits?author=scottadamsmith "Tests") | [<img src="https://avatars0.githubusercontent.com/u/864496?v=4" width="100px;"/><br /><sub><b>Fernando Machuca</b></sub>](https://github.com/chuca)<br />[🎨](#design-chuca "Design") | [<img src="https://avatars1.githubusercontent.com/u/12657810?v=4" width="100px;"/><br /><sub><b>BerniML</b></sub>](https://github.com/BerniML)<br />[💻](https://github.com/darrenjennings/vue-autosuggest/commits?author=BerniML "Code") [⚠️](https://github.com/darrenjennings/vue-autosuggest/commits?author=BerniML "Tests") |
-| :---: | :---: | :---: | :---: | :---: |
+| [<img src="https://avatars.githubusercontent.com/u/5770711?v=4" width="100px;"/><br /><sub><b>Darren Jennings</b></sub>](https://darrenjennings.github.io)<br />[💻](https://github.com/darrenjennings/vue-autosuggest/commits?author=darrenjennings "Code") [📖](https://github.com/darrenjennings/vue-autosuggest/commits?author=darrenjennings "Documentation") [🚇](#infra-darrenjennings "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/darrenjennings/vue-autosuggest/commits?author=darrenjennings "Tests") [🎨](#design-darrenjennings "Design") [💡](#example-darrenjennings "Examples") | [<img src="https://avatars2.githubusercontent.com/u/411772?v=4" width="100px;"/><br /><sub><b>Evgeniy Kulish</b></sub>](https://github.com/ekulish)<br />[💻](https://github.com/darrenjennings/vue-autosuggest/commits?author=ekulish "Code") [🎨](#design-ekulish "Design") [💡](#example-ekulish "Examples") [⚠️](https://github.com/darrenjennings/vue-autosuggest/commits?author=ekulish "Tests") | [<img src="https://avatars3.githubusercontent.com/u/1824850?v=4" width="100px;"/><br /><sub><b>Scott Smith</b></sub>](https://github.com/scottadamsmith)<br />[🐛](https://github.com/darrenjennings/vue-autosuggest/issues?q=author%3Ascottadamsmith "Bug reports") [💻](https://github.com/darrenjennings/vue-autosuggest/commits?author=scottadamsmith "Code") [⚠️](https://github.com/darrenjennings/vue-autosuggest/commits?author=scottadamsmith "Tests") | [<img src="https://avatars0.githubusercontent.com/u/864496?v=4" width="100px;"/><br /><sub><b>Fernando Machuca</b></sub>](https://github.com/chuca)<br />[🎨](#design-chuca "Design") | [<img src="https://avatars1.githubusercontent.com/u/12657810?v=4" width="100px;"/><br /><sub><b>BerniML</b></sub>](https://github.com/BerniML)<br />[💻](https://github.com/darrenjennings/vue-autosuggest/commits?author=BerniML "Code") [⚠️](https://github.com/darrenjennings/vue-autosuggest/commits?author=BerniML "Tests") | [<img src="https://avatars2.githubusercontent.com/u/16322466?v=4" width="100px;"/><br /><sub><b>Vivek Ashokan</b></sub>](https://github.com/vivekitis)<br />[💻](https://github.com/darrenjennings/vue-autosuggest/commits?author=vivekitis "Code") [📖](https://github.com/darrenjennings/vue-autosuggest/commits?author=vivekitis "Documentation") [💡](#example-vivekitis "Examples") |
+| :---: | :---: | :---: | :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 Thanks to [@chuca](https://github.com/chuca) for the logo design.

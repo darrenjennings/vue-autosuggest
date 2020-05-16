@@ -62,6 +62,17 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "vivekitis",
+      "name": "Vivek Ashokan",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/16322466?v=4",
+      "profile": "https://github.com/vivekitis",
+      "contributions": [
+        "code",
+        "doc",
+        "example"
+      ]
     }
   ]
 }
