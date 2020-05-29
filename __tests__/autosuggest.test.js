@@ -882,4 +882,30 @@ describe("Autosuggest", () => {
     expect(itemChangedEmpty[0]).toBeNull();
     expect(itemChangedEmpty[1]).toBeNull();
   });
+  
+  it("current index resilient against many keyups #190", async () => {
+    const props = { ...defaultProps };
+    props.inputProps = { ...defaultProps.inputProps };
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+    });
+    
+    const input = wrapper.find("input");
+    input.setValue("G");
+    input.trigger("keydown.down");
+    await wrapper.vm.$nextTick(() => {})
+    expect(wrapper.vm.currentIndex).toBe(0)
+    input.trigger("keydown.up");
+    expect(wrapper.vm.currentIndex).toBe(-1)
+    
+    // Go into the upside down, but make sure to come back unscathed
+    await wrapper.vm.$nextTick(() => {})
+    input.trigger("keydown.up");
+    await wrapper.vm.$nextTick(() => {})
+    input.trigger("keydown.up");
+    await wrapper.vm.$nextTick(() => {})
+    
+    expect(wrapper.vm.currentIndex).toBe(-1)
+  });
 });

@@ -105,6 +105,8 @@
 import DefaultSection from "./parts/DefaultSection.js";
 import { addClass, removeClass } from "./utils";
 
+const INDEX_IS_FOCUSED_ON_INPUT = -1
+
 const defaultSectionConfig = {
   name: "default",
   type: "default-section"
@@ -462,14 +464,14 @@ export default {
             }
             // Determine direction of arrow up/down and determine new currentIndex
             const direction = keyCode === 40 ? 1 : -1;
-            const newIndex = (parseInt(this.currentIndex) || 0) + (wasClosed ? 0 : direction);
+            const newIndex = Math.max((parseInt(this.currentIndex) || 0) + (wasClosed ? 0 : direction), INDEX_IS_FOCUSED_ON_INPUT);
 
             this.setCurrentIndex(newIndex, this.totalResults);
             this.didSelectFromOptions = true;
             if (this.totalResults > 0 && this.currentIndex >= 0) {
               this.setChangeItem(this.getItemByIndex(this.currentIndex));
               this.didSelectFromOptions = true;
-            } else if (this.currentIndex == -1) {
+            } else if (this.currentIndex === INDEX_IS_FOCUSED_ON_INPUT) {
               this.setChangeItem(null)
               this.internalValue = this.searchInputOriginal;
               e.preventDefault();
