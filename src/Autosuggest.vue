@@ -8,7 +8,7 @@
       :class="[isOpen ? `${componentAttrPrefix}__input--open` : '', internal_inputProps['class']]"
       v-bind="internal_inputProps"
       aria-autocomplete="list"
-      :aria-owns="`${componentAttrPrefix}__results`"
+      :aria-owns="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`"
       :aria-activedescendant="isOpen && currentIndex !== null ? `${componentAttrPrefix}__results-item--${currentIndex}` : ''"
       :aria-haspopup="isOpen ? 'true' : 'false'"
       :aria-expanded="isOpen ? 'true' : 'false'"
@@ -16,7 +16,10 @@
       @keydown="handleKeyStroke"
       v-on="listeners"
     ><slot name="after-input" />
-    <div :class="_componentAttrClassAutosuggestResultsContainer">
+    <div 
+      :id="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`" 
+      :class="_componentAttrClassAutosuggestResultsContainer"
+    >
       <div 
         v-if="isOpen"
         :class="_componentAttrClassAutosuggestResults"
@@ -33,6 +36,7 @@
           :render-suggestion="renderSuggestion"
           :section="cs"
           :component-attr-prefix="componentAttrPrefix"
+          :component-attr-id-autosuggest="componentAttrIdAutosuggest"
           @updateCurrentIndex="updateCurrentIndex"
         >
           <template 

@@ -6,7 +6,8 @@ const DefaultSection = {
     currentIndex: { type: [Number, String], required: false, default: Infinity },
     renderSuggestion: { type: Function, required: false },
     normalizeItemFunction: { type: Function, required: true },
-    componentAttrPrefix: { type: String, required: true }
+    componentAttrPrefix: { type: String, required: true },
+    componentAttrIdAutosuggest: { type: String, required: true }
   },
   data: function () {
     return {
@@ -60,11 +61,11 @@ const DefaultSection = {
     return h(
       "ul",
       {
-        attrs: { role: "listbox", "aria-labelledby": "autosuggest", ...this.section.ulAttributes },
+        attrs: { role: "listbox", "aria-labelledby": this.section.label && `${this.componentAttrIdAutosuggest}-${this.section.label}` },
         class: this.section.ulClass
       },
       [
-        before[0] && before[0] || this.section.label && <li class={beforeClassName}>{this.section.label}</li> || '',
+        before[0] && before[0] || this.section.label && <li class={beforeClassName} id={`${this.componentAttrIdAutosuggest}-${this.section.label}`}>{this.section.label}</li> || '',
         this.list.map((val, key) => {
           const item = this.normalizeItemFunction(this.section.name, this.section.type, this.section.label, this.section.liClass, val)
           const itemIndex = this.getItemIndex(key)

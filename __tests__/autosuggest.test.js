@@ -307,23 +307,39 @@ describe("Autosuggest", () => {
   });
 
   it("is aria complete", async () => {
-    const wrapper = mount(Autosuggest, {
-      propsData: defaultProps
-    });
+    const propsData = {
+      ...defaultProps,
+      sectionConfigs: {
+        default: {
+          label: "Suggestions",
+          limit: 5,
+          onSelected: () => {}
+        }
+      }
+    }
+    const wrapper = mount(Autosuggest, { propsData });
 
     const input = wrapper.find("input");
     expect(input.attributes()["role"]).toBe("combobox");
     expect(input.attributes()["aria-autocomplete"]).toBe("list");
     expect(input.attributes()["aria-activedescendant"]).toBe("");
-    expect(input.attributes()["aria-owns"]).toBe("autosuggest__results");
-    expect(input.attributes()["aria-owns"]).toBe("autosuggest__results");
-
+    expect(input.attributes()["aria-owns"]).toBe("autosuggest-autosuggest__results");
+    
+    // aria owns needs to be an "id", #191
+    const results = wrapper.find(`#${input.attributes()["aria-owns"]}`)
+    expect(results.exists()).toBeTruthy()
+  
     // TODO: Make sure aria-completeness is actually 2legit2quit.
 
     input.trigger("click");
     input.setValue("G");
 
     expect(input.attributes()["aria-haspopup"]).toBe("true");
+    
+    // make sure aria-labeledby references the section config label, and that it's an "id"
+    const ul = wrapper.find('ul')
+    expect(ul.attributes()['aria-labelledby']).toBe('autosuggest-Suggestions')
+    expect(ul.find(`#${ul.attributes()['aria-labelledby']}`).exists).toBeTruthy()
 
     const mouseDownTimes = 3;
     times(mouseDownTimes)(() => {
