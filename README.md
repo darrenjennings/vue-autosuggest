@@ -262,6 +262,20 @@ Slots for injecting content around the results/input. Useful for header/footer l
 </vue-autosuggest>
 ```
 
+### Adding labels
+
+It is common in forms to add a label next to the `<input />` tag for semantic html / accessibility. You can use the 
+`before-input` slot to accomplish this in conjunction with the `inputProps.id`:
+
+```html
+<vue-autosuggest ...>
+  <template slot="before-input">
+    <label :for="inputProps.id">Search here:</label>
+  </template>
+  ...
+</vue-autosuggest>
+```
+
 ### suggestion item (i.e. default slot)
 Used to style each suggestion inside the `<li>` tag. Using [scoped slots](https://vuejs.org/v2/guide/components-slots.html#Scoped-Slots) 
 you have access to the `suggestion` item inside the `v-for` suggestions loop. This gives you the power of Vue templating, since 
