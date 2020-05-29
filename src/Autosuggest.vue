@@ -462,14 +462,14 @@ export default {
             }
             // Determine direction of arrow up/down and determine new currentIndex
             const direction = keyCode === 40 ? 1 : -1;
-            const newIndex = (parseInt(this.currentIndex) || 0) + (wasClosed ? 0 : direction);
+            const newIndex = Math.max((parseInt(this.currentIndex) || 0) + (wasClosed ? 0 : direction), -1);
 
             this.setCurrentIndex(newIndex, this.totalResults);
             this.didSelectFromOptions = true;
             if (this.totalResults > 0 && this.currentIndex >= 0) {
               this.setChangeItem(this.getItemByIndex(this.currentIndex));
               this.didSelectFromOptions = true;
-            } else if (this.currentIndex == -1) {
+            } else if (this.currentIndex >= -1) {
               this.setChangeItem(null)
               this.internalValue = this.searchInputOriginal;
               e.preventDefault();
