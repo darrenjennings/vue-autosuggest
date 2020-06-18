@@ -1,0 +1,31 @@
+codecov:
+  require_ci_to_pass: yes
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"
+  status:
+    project:
+      default:
+       threshold: 0.2
+       if_not_found: success
+    patch:
+      default:
+        enabled: no
+        if_not_found: success
+    changes:
+      default:
+        enabled: no
+        if_not_found: success
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
+comment: false
+
