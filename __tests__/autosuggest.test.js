@@ -216,7 +216,7 @@ describe("Autosuggest", () => {
       }
     }
     const wrapper = mount(multipleAutosuggest, {
-      attachToDocument: true 
+      attachToDocument: true
     });
 
     const autosuggestInstances = wrapper.findAll(Autosuggest);
@@ -228,7 +228,7 @@ describe("Autosuggest", () => {
 
     input1.trigger("click");
     input2.trigger("click");
-    
+
     expect(autosuggest1.findAll("li.autosuggest__results-item").length).toBe(5);
     expect(autosuggest1.findAll("li.autosuggest__results-item").length).toBe(5);
 
@@ -262,7 +262,7 @@ describe("Autosuggest", () => {
     input.setValue("G");
     window.document.dispatchEvent(new Event("mousedown"));
     window.document.dispatchEvent(new Event("mouseup"));
-    
+
     await wrapper.vm.$nextTick(() => {});
 
     const renderer = createRenderer();
@@ -319,23 +319,29 @@ describe("Autosuggest", () => {
     }
     const wrapper = mount(Autosuggest, { propsData });
 
-    const input = wrapper.find("input");
-    expect(input.attributes()["role"]).toBe("combobox");
+    const combobox = wrapper.find("[role='combobox']");
+    expect(combobox.exists()).toBeTruthy();
+    expect(combobox.attributes()["aria-haspopup"]).toBe("listbox");
+    expect(combobox.attributes()["aria-owns"]).toBe("autosuggest-autosuggest__results");
+
+    const input = combobox.find("input");
     expect(input.attributes()["aria-autocomplete"]).toBe("list");
     expect(input.attributes()["aria-activedescendant"]).toBe("");
-    expect(input.attributes()["aria-owns"]).toBe("autosuggest-autosuggest__results");
-    
+    expect(input.attributes()["aria-controls"]).toBe("autosuggest-autosuggest__results");
+
     // aria owns needs to be an "id", #191
-    const results = wrapper.find(`#${input.attributes()["aria-owns"]}`)
+    let results = wrapper.find(`#${combobox.attributes()["aria-owns"]}`)
     expect(results.exists()).toBeTruthy()
-  
+    results = wrapper.find(`#${input.attributes()["aria-controls"]}`)
+    expect(results.exists()).toBeTruthy()
+
     // TODO: Make sure aria-completeness is actually 2legit2quit.
 
     input.trigger("click");
     input.setValue("G");
 
-    expect(input.attributes()["aria-haspopup"]).toBe("true");
-    
+    expect(combobox.attributes()["aria-expanded"]).toBe("true");
+
     // make sure aria-labeledby references the section config label, and that it's an "id"
     const ul = wrapper.find('ul')
     expect(ul.attributes()['aria-labelledby']).toBe('autosuggest-Suggestions')
@@ -457,7 +463,7 @@ describe("Autosuggest", () => {
 
   it("search input prop type handles string and integers only", async () => {
     let props = {
-      ...defaultProps, 
+      ...defaultProps,
       inputProps: {...defaultProps.inputProps}
     };
 
@@ -493,7 +499,7 @@ describe("Autosuggest", () => {
     wrapper.setData({ searchInput: () => { /* BAD */ } });
     await wrapper.vm.$nextTick(() => {});
     input.trigger("blur");
-    
+
     // Should throw validation error
     expect(mockConsole).toHaveBeenCalled();
   });
@@ -516,7 +522,7 @@ describe("Autosuggest", () => {
     const input = wrapper.find("input");
     input.trigger("click");
     input.setValue("G");
-    
+
     expect(wrapper.findAll('.header-dude').length).toEqual(1);
     expect(wrapper.findAll('#footer-dude span').length).toEqual(2);
     expect(wrapper.findAll('h1').length).toEqual(5);
@@ -531,7 +537,7 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
-  
+
   it("can render section slots", async () => {
     const props = { ...defaultProps };
     props.suggestions.push({ name: 'dogs', data: ['spike', 'bud', 'rover']})
@@ -587,7 +593,7 @@ describe("Autosuggest", () => {
       },
       attachToDocument: true
     });
-    
+
     const input = wrapper.find("input");
     input.trigger("click");
     input.setValue("G");
@@ -605,7 +611,7 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
-  
+
   it("can customize css prefix", async () => {
     const wrapper = mount(Autosuggest, {
       propsData: {
@@ -622,7 +628,7 @@ describe("Autosuggest", () => {
       },
       attachToDocument: true
     });
-    
+
     const input = wrapper.find("input");
     input.trigger("click");
     input.setValue("G");
@@ -632,7 +638,7 @@ describe("Autosuggest", () => {
     expect(wrapper.find('#the-input-thing').is('input')).toBe(true);
     expect(wrapper.find('.the-results-container').is('div')).toBe(true);
     expect(wrapper.find('.the-results').is('div')).toBe(true);
-    
+
     // Prefix checks
     expect(wrapper.find('#v__results-item--0').is('li')).toBeTruthy()
     expect(wrapper.find('.v__results-item').is('li')).toBeTruthy()
@@ -737,7 +743,7 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
-  
+
   it("can modify input props", async () => {
     const Parent = {
       template: `<div>
@@ -757,11 +763,11 @@ describe("Autosuggest", () => {
     const wrapper = mount(Parent);
     const input = wrapper.find('input[type="text"]')
     expect(input.attributes("placeholder")).toBe('Type here...');
-    
+
     wrapper.setData({ ph: 'Please type here...' })
     expect(input.attributes("placeholder")).toBe('Please type here...')
   });
-  
+
   it("can handle null data", async () => {
     const props = {...defaultProps, suggestions: [{ data: null }]};
 
@@ -775,7 +781,7 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
-  
+
   it("highlights first option on keydown when previously closed", async () => {
     const props = { ...defaultProps };
     props.inputProps = { ...defaultProps.inputProps };
@@ -795,7 +801,7 @@ describe("Autosuggest", () => {
     input.trigger("keydown.down");
 
     expect(wrapper.findAll("li.autosuggest__results-item--highlighted")).toHaveLength(1)
-    
+
     const item = wrapper.find("li.autosuggest__results-item--highlighted")
     expect(item.attributes('data-suggestion-index')).toBe('0')
     expect(input.attributes('aria-activedescendant')).toBe('autosuggest__results-item--0')
@@ -808,7 +814,7 @@ describe("Autosuggest", () => {
       expect(str).toMatchSnapshot();
     });
   });
-  
+
   it("can display ul and li classNames", async () => {
     const props = { ...defaultProps };
     props.sectionConfigs.default.liClass = { 'hello-li': true }
@@ -825,13 +831,13 @@ describe("Autosuggest", () => {
 
     input.trigger("click");
     input.setValue("G");
-    
+
     const ul = wrapper.find("ul")
     const li = ul.find("li:nth-child(1)")
 
     expect(ul.classes()).toContain('hello-ul');
     expect(li.classes()).toContain('hello-li');
-    
+
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
       if (err) {
@@ -860,7 +866,7 @@ describe("Autosuggest", () => {
     await wrapper.vm.$nextTick(() => {})
     expect(wrapper.emitted().closed).toBeTruthy();
   });
-  
+
   it("emits item-changed event", async () => {
     const props = { ...defaultProps };
     props.inputProps = { ...defaultProps.inputProps };
@@ -868,7 +874,7 @@ describe("Autosuggest", () => {
     const wrapper = mount(Autosuggest, {
       propsData: props,
     });
-    
+
     const input = wrapper.find("input");
     input.setValue("G");
     input.trigger("keydown.down");
@@ -878,19 +884,19 @@ describe("Autosuggest", () => {
     expect(wrapper.emitted()['item-changed']).toHaveLength(2);
     const itemChanged1 = wrapper.emitted()['item-changed'][0]
     const itemChanged2 = wrapper.emitted()['item-changed'][1]
-    
+
     // Emits with item and index
     expect(itemChanged1[0].item).toBe('clifford kits');
     expect(itemChanged1[1]).toBe(0);
     expect(itemChanged2[0].item).toBe('friendly chemistry');
     expect(itemChanged2[1]).toBe(1);
-    
+
     input.trigger("keydown.up");
     await wrapper.vm.$nextTick(() => {})
     input.trigger("keydown.up");
     await wrapper.vm.$nextTick(() => {})
     await wrapper.vm.$nextTick(() => {})
-    
+
     // Ensure empty item-changed is emitted when user keys back
     // to the input #177
     expect(wrapper.emitted()['item-changed']).toHaveLength(4)
@@ -898,7 +904,7 @@ describe("Autosuggest", () => {
     expect(itemChangedEmpty[0]).toBeNull();
     expect(itemChangedEmpty[1]).toBeNull();
   });
-  
+
   it("current index resilient against many keyups #190", async () => {
     const props = { ...defaultProps };
     props.inputProps = { ...defaultProps.inputProps };
@@ -906,7 +912,7 @@ describe("Autosuggest", () => {
     const wrapper = mount(Autosuggest, {
       propsData: props,
     });
-    
+
     const input = wrapper.find("input");
     input.setValue("G");
     input.trigger("keydown.down");
@@ -914,14 +920,14 @@ describe("Autosuggest", () => {
     expect(wrapper.vm.currentIndex).toBe(0)
     input.trigger("keydown.up");
     expect(wrapper.vm.currentIndex).toBe(-1)
-    
+
     // Go into the upside down, but make sure to come back unscathed
     await wrapper.vm.$nextTick(() => {})
     input.trigger("keydown.up");
     await wrapper.vm.$nextTick(() => {})
     input.trigger("keydown.up");
     await wrapper.vm.$nextTick(() => {})
-    
+
     expect(wrapper.vm.currentIndex).toBe(-1)
   });
 });
