@@ -1,26 +1,28 @@
 <template>
   <div :id="componentAttrIdAutosuggest">
-    <slot name="before-input" /><input
+    <slot name="before-input" /><div
+      role="combobox"
+      :aria-expanded="isOpen ? 'true' : 'false'"
+      aria-haspopup="listbox"
+      :aria-owns="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`"
+    ><input
       :type="internal_inputProps.type"
       :value="internalValue"
       :autocomplete="internal_inputProps.autocomplete"
-      role="combobox"
       :class="[isOpen ? `${componentAttrPrefix}__input--open` : '', internal_inputProps['class']]"
       v-bind="internal_inputProps"
       aria-autocomplete="list"
-      :aria-owns="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`"
       :aria-activedescendant="isOpen && currentIndex !== null ? `${componentAttrPrefix}__results-item--${currentIndex}` : ''"
-      :aria-haspopup="isOpen ? 'true' : 'false'"
-      :aria-expanded="isOpen ? 'true' : 'false'"
+      :aria-controls="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`"
       @input="inputHandler"
       @keydown="handleKeyStroke"
       v-on="listeners"
-    ><slot name="after-input" />
-    <div 
-      :id="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`" 
+    ></div><slot name="after-input" />
+    <div
+      :id="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`"
       :class="_componentAttrClassAutosuggestResultsContainer"
     >
-      <div 
+      <div
         v-if="isOpen"
         :class="_componentAttrClassAutosuggestResults"
         :aria-labelledby="componentAttrIdAutosuggest"
@@ -39,7 +41,7 @@
           :component-attr-id-autosuggest="componentAttrIdAutosuggest"
           @updateCurrentIndex="updateCurrentIndex"
         >
-          <template 
+          <template
             :slot="`before-section-${cs.name || cs.label}`"
             slot-scope="{section, className}"
           >
@@ -51,18 +53,18 @@
           </template>
           <template slot-scope="{ suggestion, _key }">
             <slot
-              :suggestion="suggestion" 
+              :suggestion="suggestion"
               :index="_key"
             >
               {{ suggestion.item }}
             </slot>
           </template>
-          <template 
+          <template
             :slot="`after-section-${cs.name || cs.label}`"
             slot-scope="{section}"
           >
-            <slot 
-              :name="`after-section-${cs.name || cs.label}`" 
+            <slot
+              :name="`after-section-${cs.name || cs.label}`"
               :section="section"
             />
           </template>
@@ -229,7 +231,7 @@ export default {
     internal_inputProps() {
       return {
         ...this.defaultInputProps,
-        ...this.inputProps 
+        ...this.inputProps
       }
     },
     listeners() {
@@ -280,9 +282,9 @@ export default {
       return this.shouldRenderSuggestions(this.totalResults, this.loading)
     },
     /**
-     * Normalize suggestions into sections based on defaults and section 
+     * Normalize suggestions into sections based on defaults and section
      * configs.
-     * @returns {Array<ResultSection>}  
+     * @returns {Array<ResultSection>}
      */
     computedSections() {
       let tmpSize = 0
@@ -291,7 +293,7 @@ export default {
 
         const name = section.name ? section.name : defaultSectionConfig.name;
         let limit, label, type, ulClass, liClass = null
-        
+
         if (this.sectionConfigs[name]) {
           limit = this.sectionConfigs[name].limit
           type = this.sectionConfigs[name].type
@@ -319,9 +321,9 @@ export default {
           ulClass,
           liClass
         }
-        
+
         tmpSize += limit;
-        
+
         return computedSection
       })
     },
@@ -339,7 +341,7 @@ export default {
         return acc + (data.length >= limit ? limit : data.length)
       }, 0)
     },
-    
+
     _componentAttrClassAutosuggestResultsContainer () {
       return this.componentAttrClassAutosuggestResultsContainer || `${this.componentAttrPrefix}__results-container`
     },
@@ -364,7 +366,7 @@ export default {
     isOpen: {
       handler(newValue, oldValue){
         if (newValue !== oldValue) {
-          this.$emit(newValue ? 'opened' : 'closed');      
+          this.$emit(newValue ? 'opened' : 'closed');
         }
       },
       immediate: true
@@ -454,7 +456,7 @@ export default {
       if (ignoredKeyCodes.indexOf(keyCode) > -1) {
         return;
       }
-      
+
       const wasClosed = !this.isOpen
       this.loading = false;
       this.didSelectFromOptions = false;
@@ -480,7 +482,7 @@ export default {
               this.internalValue = this.searchInputOriginal;
               e.preventDefault();
             }
-            
+
             this.$nextTick(() => {
               this.ensureItemVisible(this.currentItem, this.currentIndex);
             })
@@ -492,14 +494,14 @@ export default {
               this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
               this.didSelectFromOptions = true;
             }
-            
+
             this.loading = true;
             this.listeners.selected(this.didSelectFromOptions);
             break;
           case 27: // Escape
-            /** 
-             * For 'search' input type, make sure the browser doesn't clear the 
-             * input when Escape is pressed. 
+            /**
+             * For 'search' input type, make sure the browser doesn't clear the
+             * input when Escape is pressed.
              */
             this.loading = true;
             this.currentIndex = null;
@@ -517,7 +519,7 @@ export default {
      * @param {Boolean} overrideOriginalInput determine if the 'saved' original
      *   input should be updated. When a user selects an option, this will be
      *   updated, but if a user keys into the <input/> then the input will be
-     *   reset to the searchInputOriginal. 
+     *   reset to the searchInputOriginal.
      * @return {void}
      */
     setChangeItem(item, overrideOriginalInput = false) {
@@ -535,7 +537,7 @@ export default {
         this.ensureItemVisible(item, this.currentIndex);
       }
     },
-    
+
     /**
      * Function to standardize suggestion item object picked from sections
      * @returns {ResultItem}
@@ -549,7 +551,7 @@ export default {
         item
       };
     },
-    
+
     /**
      * Adjust the scroll position to the item in the suggestions overflow
      * @param {ResultItem} item - suggestion item
@@ -560,7 +562,7 @@ export default {
       const resultsScrollElement = this.$el.querySelector(
         selector || `.${this._componentAttrClassAutosuggestResults}`
       );
-      
+
       if (!resultsScrollElement) {
         return
       }
@@ -568,7 +570,7 @@ export default {
       const itemElement = resultsScrollElement.querySelector(`#${this.componentAttrPrefix}__results-item--${index}`);
       if (!itemElement) {
         return;
-      }      
+      }
 
       const resultsScrollWindowHeight = resultsScrollElement.clientHeight;
       const resultsScrollScrollTop = resultsScrollElement.scrollTop;
@@ -591,7 +593,7 @@ export default {
      * @param {Number} index
      */
     updateCurrentIndex(index) {
-      this.setCurrentIndex(index, -1, true);      
+      this.setCurrentIndex(index, -1, true);
     },
     /**
      * Helper to detect if the user clicked on the scrollbar
@@ -602,7 +604,7 @@ export default {
     clickedOnScrollbar(e, mouseX){
       const results = this.$el.querySelector(`.${this._componentAttrClassAutosuggestResults}`);
 
-      const mouseIsInsideScrollbar = results && results.clientWidth <= (mouseX + 17) && 
+      const mouseIsInsideScrollbar = results && results.clientWidth <= (mouseX + 17) &&
         mouseX + 17 <= results.clientWidth + 34
       return e.target.tagName === 'DIV' && results && mouseIsInsideScrollbar || false;
     },
@@ -642,7 +644,7 @@ export default {
       this.listeners.selected(true);
     },
     /**
-     * Sets the current index of the highlighted object, useful for aria 
+     * Sets the current index of the highlighted object, useful for aria
      * attributes like `aria-activedescendant` and toggling which result item
      * is highlighted.
      * @param {Number} newIndex
@@ -651,7 +653,7 @@ export default {
      */
     setCurrentIndex(newIndex, limit = -1, onHover = false) {
       let adjustedValue = newIndex;
-      
+
       /**
        * If you're not hovering, you might be keying outside of the bounds, so
        * we need to make sure that we adjust for the limits.
@@ -663,7 +665,7 @@ export default {
           adjustedValue = 0;
         }
       }
-      
+
       this.currentIndex = adjustedValue;
       const element = this.$el.querySelector(`#${this.componentAttrPrefix}__results-item--${this.currentIndex}`);
       const hoverClass = `${this.componentAttrPrefix}__results-item--highlighted`;
