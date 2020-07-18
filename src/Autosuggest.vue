@@ -16,7 +16,7 @@
       @input="inputHandler"
       @keydown="handleKeyStroke"
       v-on="listeners"
-    />
+    >
     <slot name="after-input" />
     <div :class="_componentAttrClassAutosuggestResultsContainer">
       <div
@@ -48,13 +48,28 @@
             />
           </template>
           <template slot-scope="{ suggestion, _key }">
-            <slot :suggestion="suggestion" :index="_key">{{ suggestion.item }}</slot>
+            <slot 
+              :suggestion="suggestion" 
+              :index="_key"
+            >{{ suggestion.item }}</slot>
           </template>
-          <template :slot="`after-section-${cs.name || cs.label}`" slot-scope="{section}">
-            <slot :name="`after-section-${cs.name || cs.label}`" :section="section" />
+          <template 
+            :slot="`after-section-${cs.name || cs.label}`" 
+            slot-scope="{section}"
+          >
+            <slot 
+              :name="`after-section-${cs.name || cs.label}`" 
+              :section="section" 
+            />
           </template>
-          <template slot="after-section" slot-scope="{section}">
-            <slot name="after-section" :section="section" />
+          <template 
+            slot="after-section" 
+            slot-scope="{section}"
+          >
+            <slot 
+              name="after-section" 
+              :section="section" 
+            />
           </template>
         </component>
         <slot name="after-suggestions" />
