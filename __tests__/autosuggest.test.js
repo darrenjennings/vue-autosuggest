@@ -930,4 +930,38 @@ describe("Autosuggest", () => {
 
     expect(wrapper.vm.currentIndex).toBe(-1)
   });
+
+  it("can customize class for highlighted element", async () => {
+    const props = { ...defaultProps };
+    props['componentAttrClassAutosuggestItemHighlight'] = 'custom-highlight-class'
+    props.inputProps = { ...defaultProps.inputProps };
+
+    const wrapper = mount(Autosuggest, {
+      propsData: props,
+      attachToDocument: true
+    });
+
+    const input = wrapper.find("input");
+    expect(input.attributes("id", defaultProps.inputProps.id)).toBeTruthy();
+
+    input.trigger("click");
+    input.setValue("G");
+    input.trigger("keydown.down");
+    input.trigger("keydown.enter");
+    input.trigger("keydown.down");
+
+    expect(wrapper.findAll("li.custom-highlight-class")).toHaveLength(1)
+
+    const item = wrapper.find("li.custom-highlight-class")
+    expect(item.attributes('data-suggestion-index')).toBe('0')
+    expect(input.attributes('aria-activedescendant')).toBe('autosuggest__results-item--0')
+
+    const renderer = createRenderer();
+    renderer.renderToString(wrapper.vm, (err, str) => {
+      if (err) {
+        return false;
+      }
+      expect(str).toMatchSnapshot();
+    });
+  });
 });

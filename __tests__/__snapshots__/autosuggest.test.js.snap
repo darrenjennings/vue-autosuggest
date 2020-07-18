@@ -18,6 +18,41 @@ exports[`Autosuggest can click outside document to trigger close 1`] = `
 </div>
 `;
 
+exports[`Autosuggest can customize class for highlighted element 1`] = `
+<div id="autosuggest">
+  <div role="combobox" aria-expanded="true" aria-haspopup="listbox" aria-owns="autosuggest-autosuggest__results"><input type="text" autocomplete="off" aria-autocomplete="list" aria-activedescendant="autosuggest__results-item--0" aria-controls="autosuggest-autosuggest__results" id="autosuggest__input" placeholder="Type 'G'" value="clifford kits" class="autosuggest__input--open"></div>
+  <div id="autosuggest-autosuggest__results" class="autosuggest__results-container">
+    <div aria-labelledby="autosuggest" class="autosuggest__results">
+      <ul role="listbox" class="hello-ul">
+        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="custom-highlight-class autosuggest__results-item hello-li">clifford kits</li>
+        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item hello-li">friendly chemistry</li>
+        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item hello-li">phonics</li>
+        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item hello-li">life of fred</li>
+        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item hello-li">life of fred math</li>
+      </ul>
+      <ul role="listbox">
+        <li role="option" data-suggestion-index="5" data-section-name="dogs" id="autosuggest__results-item--5" class="autosuggest__results-item">spike</li>
+        <li role="option" data-suggestion-index="6" data-section-name="dogs" id="autosuggest__results-item--6" class="autosuggest__results-item">bud</li>
+        <li role="option" data-suggestion-index="7" data-section-name="dogs" id="autosuggest__results-item--7" class="autosuggest__results-item">rover</li>
+      </ul>
+      <ul role="listbox">
+        <li role="option" data-suggestion-index="8" data-section-name="cats" id="autosuggest__results-item--8" class="autosuggest__results-item">sassy</li>
+        <li role="option" data-suggestion-index="9" data-section-name="cats" id="autosuggest__results-item--9" class="autosuggest__results-item">tuesday</li>
+        <li role="option" data-suggestion-index="10" data-section-name="cats" id="autosuggest__results-item--10" class="autosuggest__results-item">church</li>
+      </ul>
+      <ul role="listbox">
+        <li role="option" data-suggestion-index="11" data-section-name="zeu" id="autosuggest__results-item--11" class="autosuggest__results-item">elephant</li>
+        <li role="option" data-suggestion-index="12" data-section-name="zeu" id="autosuggest__results-item--12" class="autosuggest__results-item">lion</li>
+      </ul>
+      <ul role="listbox">
+        <li role="option" data-suggestion-index="13" data-section-name="Uhh" id="autosuggest__results-item--13" class="autosuggest__results-item">something</li>
+        <li role="option" data-suggestion-index="14" data-section-name="Uhh" id="autosuggest__results-item--14" class="autosuggest__results-item">something2</li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Autosuggest can customize css prefix 1`] = `
 <div id="the-whole-thing" class="containerz">
   <div role="combobox" aria-expanded="true" aria-haspopup="listbox" aria-owns="the-whole-thing-v__results"><input type="text" autocomplete="off" aria-autocomplete="list" aria-activedescendant="" aria-controls="the-whole-thing-v__results" id="the-input-thing" placeholder="Type 'G'" value="G" class="v__input--open"></div>
