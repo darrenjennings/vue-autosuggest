@@ -167,7 +167,7 @@ storiesOf("Vue-Autosuggest", module)
           onClick: this.onClick,
           placeholder: "Type 'g'"
         },
-        onSelected(i){
+        onSelected(i) {
           action('Selected')(i);
         }
       };
@@ -518,8 +518,8 @@ storiesOf("Vue-Autosuggest", module)
     }
   }))
   .add("with section before/after slots", () => ({
-      components: { Autosuggest },
-      template: `<div>
+    components: { Autosuggest },
+    template: `<div>
                       <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected {{selected}}</span></div>
                       <div>
                           <autosuggest 
@@ -539,58 +539,153 @@ storiesOf("Vue-Autosuggest", module)
                           </autosuggest>
                       </div>
                   </div>`,
-      data() {
-        return {
-          selected: "",
-          limit: 10,
-          query: '',
-          options: [
-            {
-              data: sharedData.options
-            }
-          ],
-          inputProps: {
-            id: "autosuggest__input",
-            placeholder: "Type 'g'"
+    data() {
+      return {
+        selected: "",
+        limit: 10,
+        query: '',
+        options: [
+          {
+            data: sharedData.options
           }
-        };
-      },
-      computed: {
-        filteredOptions() {
-          const suggestionsData = this.options[0].data.filter(item => {
-            return item.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
-          });
+        ],
+        inputProps: {
+          id: "autosuggest__input",
+          placeholder: "Type 'g'"
+        }
+      };
+    },
+    computed: {
+      filteredOptions() {
+        const suggestionsData = this.options[0].data.filter(item => {
+          return item.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+        });
 
-          return [
-              {
-                label: "Section 1",
-                data: suggestionsData,
-                limit: 2
-              },
-              {
-                label: "Section 2",
-                data: suggestionsData.map(a => `${a} ${this.rando()}` )
-                  .concat(suggestionsData.map(a => `${a} ${this.rando()}`))
-                  .concat(suggestionsData.map(a => `${a} ${this.rando()}`))
-              }
-          ]
-        }
-      },
-      methods: {
-        rando(){
-          return Math.floor(Math.random() * (100 - 1)) + 1
-        },
-        onSelected(item) {
-          action('Selected')(item.item)
-          
-          this.query = item.item
-        },
-        onInputChange(text) {
-          action('onInputChange')(text)
-          if (text === null) {
-            return;
+        return [
+          {
+            label: "Section 1",
+            data: suggestionsData,
+            limit: 2
+          },
+          {
+            label: "Section 2",
+            data: suggestionsData.map(a => `${a} ${this.rando()}`)
+              .concat(suggestionsData.map(a => `${a} ${this.rando()}`))
+              .concat(suggestionsData.map(a => `${a} ${this.rando()}`))
           }
-          this.query = text
-        }
+        ]
       }
-    }));
+    },
+    methods: {
+      rando() {
+        return Math.floor(Math.random() * (100 - 1)) + 1
+      },
+      onSelected(item) {
+        action('Selected')(item.item)
+
+        this.query = item.item
+      },
+      onInputChange(text) {
+        action('onInputChange')(text)
+        if (text === null) {
+          return;
+        }
+        this.query = text
+      }
+    }
+  }))
+  .add("custom highlight class", () => ({
+    components: { Autosuggest },
+    template: `<div>
+                    <div style="padding-top:10px; margin-bottom: 10px;"><span v-if="selected">You have selected '{{selected}}'</span></div>
+                    <div>
+                        <autosuggest @input="onInputChange" :suggestions="filteredOptions" :inputProps="inputProps" @selected="onSelected" :componentAttrClassAutosuggestItemHighlight="componentAttrClassAutosuggestItemHighlight" />
+                    </div>
+                </div>`,
+    data() {
+      return {
+        selected: "",
+        filteredOptions: [],
+        options: [{ data: sharedData.options.slice(0, 10) }],
+        inputProps: {
+          id: "autosuggest__input",
+          placeholder: "Type 'e'"
+        },
+        componentAttrClassAutosuggestItemHighlight: 'highlightAutoItem',
+        onSelected: item => {
+          action("Selected")(item)
+          this.selected = item;
+        }
+      };
+    },
+    methods: sharedData.methods
+  }))
+  .add("multiple instances with custom highlight class", () => ({
+    components: { Autosuggest },
+    template: `
+              <div>
+                <div style="width: 100%;">
+                    <p>Tab throw each component and use arrow keys to test isolation of functionality.</p>
+                </div>
+                <div style="display: flex; justify-content: center;">
+                  <autosuggest
+                    style="display: block; width: 100%; margin-right: 1rem;"
+                    :suggestions="filteredOptions[0]"
+                    @input="(text) => this.onInputChange(text, 0)"
+                    :componentAttrClassAutosuggestItemHighlight="componentAttrClassAutosuggestItemHighlight"
+                    :inputProps="{...inputProps}">
+                  </autosuggest>
+                  <autosuggest
+                    style="display: block; width: 100%; margin-right: 1rem;"
+                    :suggestions="filteredOptions[1]"
+                    :inputProps="{...inputProps}"
+                    :componentAttrClassAutosuggestItemHighlight="componentAttrClassAutosuggestItemHighlight"
+                    @input="(text) => this.onInputChange(text, 1)">
+                  </autosuggest>
+                  <autosuggest
+                    style="display: block; width: 100%;"
+                    :suggestions="filteredOptions[2]"
+                    :inputProps="{...inputProps}"
+                    :componentAttrClassAutosuggestItemHighlight="componentAttrClassAutosuggestItemHighlight"
+                    @input="(text) => this.onInputChange(text, 2)">
+                  </autosuggest>
+                </div>
+              </div>
+              `,
+    data() {
+      return {
+        selected: [],
+        limit: 10,
+        filteredOptions: {
+          0: [],
+          1: [],
+          2: []
+        },
+        options: [
+          {
+            data: [...sharedData.options]
+          }
+        ],
+        inputProps: {
+          id: "autosuggest__input",
+          onClick: this.onClick,
+          placeholder: "Type 'g'"
+        },
+        componentAttrClassAutosuggestItemHighlight: 'highlightAutoItem',
+      };
+    },
+    methods: {
+      onInputChange(text, index) {
+        action('onInputChange')(text)
+        if (text === null) {
+          return;
+        }
+        const filteredData = this.options[0].data.filter(item => {
+          return item.toLowerCase().indexOf(text.toLowerCase()) > -1;
+        });
+
+        this.filteredOptions[index] = [{ data: filteredData }];
+      }
+    }
+  }))
+  ;

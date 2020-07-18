@@ -18,65 +18,70 @@ exports[`Autosuggest can click outside document to trigger close 1`] = `
 </div>
 `;
 
+exports[`Autosuggest can customize class for highlighted element 1`] = `
+<div id="autosuggest">
+  <div role="combobox" aria-expanded="true" aria-haspopup="listbox" aria-owns="autosuggest-autosuggest__results"><input type="text" autocomplete="off" aria-autocomplete="list" aria-activedescendant="autosuggest__results-item--0" aria-controls="autosuggest-autosuggest__results" id="autosuggest__input" placeholder="Type 'G'" value="clifford kits" class="autosuggest__input--open"></div>
+  <div id="autosuggest-autosuggest__results" class="autosuggest__results-container">
+    <div aria-labelledby="autosuggest" class="autosuggest__results">
+      <ul role="listbox" class="hello-ul">
+        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="custom-highlight-class autosuggest__results-item hello-li">clifford kits</li>
+        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item hello-li">friendly chemistry</li>
+        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item hello-li">phonics</li>
+        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item hello-li">life of fred</li>
+        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item hello-li">life of fred math</li>
+      </ul>
+      <ul role="listbox">
+        <li role="option" data-suggestion-index="5" data-section-name="dogs" id="autosuggest__results-item--5" class="autosuggest__results-item">spike</li>
+        <li role="option" data-suggestion-index="6" data-section-name="dogs" id="autosuggest__results-item--6" class="autosuggest__results-item">bud</li>
+        <li role="option" data-suggestion-index="7" data-section-name="dogs" id="autosuggest__results-item--7" class="autosuggest__results-item">rover</li>
+      </ul>
+      <ul role="listbox">
+        <li role="option" data-suggestion-index="8" data-section-name="cats" id="autosuggest__results-item--8" class="autosuggest__results-item">sassy</li>
+        <li role="option" data-suggestion-index="9" data-section-name="cats" id="autosuggest__results-item--9" class="autosuggest__results-item">tuesday</li>
+        <li role="option" data-suggestion-index="10" data-section-name="cats" id="autosuggest__results-item--10" class="autosuggest__results-item">church</li>
+      </ul>
+      <ul role="listbox">
+        <li role="option" data-suggestion-index="11" data-section-name="zeu" id="autosuggest__results-item--11" class="autosuggest__results-item">elephant</li>
+        <li role="option" data-suggestion-index="12" data-section-name="zeu" id="autosuggest__results-item--12" class="autosuggest__results-item">lion</li>
+      </ul>
+      <ul role="listbox">
+        <li role="option" data-suggestion-index="13" data-section-name="Uhh" id="autosuggest__results-item--13" class="autosuggest__results-item">something</li>
+        <li role="option" data-suggestion-index="14" data-section-name="Uhh" id="autosuggest__results-item--14" class="autosuggest__results-item">something2</li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Autosuggest can customize css prefix 1`] = `
 <div id="the-whole-thing" class="containerz">
   <div role="combobox" aria-expanded="true" aria-haspopup="listbox" aria-owns="the-whole-thing-v__results"><input type="text" autocomplete="off" aria-autocomplete="list" aria-activedescendant="" aria-controls="the-whole-thing-v__results" id="the-input-thing" placeholder="Type 'G'" value="G" class="v__input--open"></div>
   <div id="the-whole-thing-v__results" class="the-results-container">
     <div aria-labelledby="the-whole-thing" class="the-results">
       <ul role="listbox">
-        <li role="option" data-suggestion-index="0" data-section-name="default" id="v__results-item--0" class="v__results-item">
-          clifford kits
-        </li>
-        <li role="option" data-suggestion-index="1" data-section-name="default" id="v__results-item--1" class="v__results-item">
-          friendly chemistry
-        </li>
-        <li role="option" data-suggestion-index="2" data-section-name="default" id="v__results-item--2" class="v__results-item">
-          phonics
-        </li>
-        <li role="option" data-suggestion-index="3" data-section-name="default" id="v__results-item--3" class="v__results-item">
-          life of fred
-        </li>
-        <li role="option" data-suggestion-index="4" data-section-name="default" id="v__results-item--4" class="v__results-item">
-          life of fred math
-        </li>
+        <li role="option" data-suggestion-index="0" data-section-name="default" id="v__results-item--0" class="v__results-item">clifford kits</li>
+        <li role="option" data-suggestion-index="1" data-section-name="default" id="v__results-item--1" class="v__results-item">friendly chemistry</li>
+        <li role="option" data-suggestion-index="2" data-section-name="default" id="v__results-item--2" class="v__results-item">phonics</li>
+        <li role="option" data-suggestion-index="3" data-section-name="default" id="v__results-item--3" class="v__results-item">life of fred</li>
+        <li role="option" data-suggestion-index="4" data-section-name="default" id="v__results-item--4" class="v__results-item">life of fred math</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="5" data-section-name="dogs" id="v__results-item--5" class="v__results-item">
-          spike
-        </li>
-        <li role="option" data-suggestion-index="6" data-section-name="dogs" id="v__results-item--6" class="v__results-item">
-          bud
-        </li>
-        <li role="option" data-suggestion-index="7" data-section-name="dogs" id="v__results-item--7" class="v__results-item">
-          rover
-        </li>
+        <li role="option" data-suggestion-index="5" data-section-name="dogs" id="v__results-item--5" class="v__results-item">spike</li>
+        <li role="option" data-suggestion-index="6" data-section-name="dogs" id="v__results-item--6" class="v__results-item">bud</li>
+        <li role="option" data-suggestion-index="7" data-section-name="dogs" id="v__results-item--7" class="v__results-item">rover</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="8" data-section-name="cats" id="v__results-item--8" class="v__results-item">
-          sassy
-        </li>
-        <li role="option" data-suggestion-index="9" data-section-name="cats" id="v__results-item--9" class="v__results-item">
-          tuesday
-        </li>
-        <li role="option" data-suggestion-index="10" data-section-name="cats" id="v__results-item--10" class="v__results-item">
-          church
-        </li>
+        <li role="option" data-suggestion-index="8" data-section-name="cats" id="v__results-item--8" class="v__results-item">sassy</li>
+        <li role="option" data-suggestion-index="9" data-section-name="cats" id="v__results-item--9" class="v__results-item">tuesday</li>
+        <li role="option" data-suggestion-index="10" data-section-name="cats" id="v__results-item--10" class="v__results-item">church</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="11" data-section-name="zeu" id="v__results-item--11" class="v__results-item">
-          elephant
-        </li>
-        <li role="option" data-suggestion-index="12" data-section-name="zeu" id="v__results-item--12" class="v__results-item">
-          lion
-        </li>
+        <li role="option" data-suggestion-index="11" data-section-name="zeu" id="v__results-item--11" class="v__results-item">elephant</li>
+        <li role="option" data-suggestion-index="12" data-section-name="zeu" id="v__results-item--12" class="v__results-item">lion</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="13" data-section-name="Uhh" id="v__results-item--13" class="v__results-item">
-          something
-        </li>
-        <li role="option" data-suggestion-index="14" data-section-name="Uhh" id="v__results-item--14" class="v__results-item">
-          something2
-        </li>
+        <li role="option" data-suggestion-index="13" data-section-name="Uhh" id="v__results-item--13" class="v__results-item">something</li>
+        <li role="option" data-suggestion-index="14" data-section-name="Uhh" id="v__results-item--14" class="v__results-item">something2</li>
       </ul>
     </div>
   </div>
@@ -89,59 +94,29 @@ exports[`Autosuggest can customize ids and classes for container divs 1`] = `
   <div id="automatischsuchen-autosuggest__results" class="resultz-containerz">
     <div aria-labelledby="automatischsuchen" class="resultz">
       <ul role="listbox">
-        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item">
-          clifford kits
-        </li>
-        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item">
-          friendly chemistry
-        </li>
-        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item">
-          phonics
-        </li>
-        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item">
-          life of fred
-        </li>
-        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item">
-          life of fred math
-        </li>
+        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item">clifford kits</li>
+        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item">friendly chemistry</li>
+        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item">phonics</li>
+        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item">life of fred</li>
+        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item">life of fred math</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="5" data-section-name="dogs" id="autosuggest__results-item--5" class="autosuggest__results-item">
-          spike
-        </li>
-        <li role="option" data-suggestion-index="6" data-section-name="dogs" id="autosuggest__results-item--6" class="autosuggest__results-item">
-          bud
-        </li>
-        <li role="option" data-suggestion-index="7" data-section-name="dogs" id="autosuggest__results-item--7" class="autosuggest__results-item">
-          rover
-        </li>
+        <li role="option" data-suggestion-index="5" data-section-name="dogs" id="autosuggest__results-item--5" class="autosuggest__results-item">spike</li>
+        <li role="option" data-suggestion-index="6" data-section-name="dogs" id="autosuggest__results-item--6" class="autosuggest__results-item">bud</li>
+        <li role="option" data-suggestion-index="7" data-section-name="dogs" id="autosuggest__results-item--7" class="autosuggest__results-item">rover</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="8" data-section-name="cats" id="autosuggest__results-item--8" class="autosuggest__results-item">
-          sassy
-        </li>
-        <li role="option" data-suggestion-index="9" data-section-name="cats" id="autosuggest__results-item--9" class="autosuggest__results-item">
-          tuesday
-        </li>
-        <li role="option" data-suggestion-index="10" data-section-name="cats" id="autosuggest__results-item--10" class="autosuggest__results-item">
-          church
-        </li>
+        <li role="option" data-suggestion-index="8" data-section-name="cats" id="autosuggest__results-item--8" class="autosuggest__results-item">sassy</li>
+        <li role="option" data-suggestion-index="9" data-section-name="cats" id="autosuggest__results-item--9" class="autosuggest__results-item">tuesday</li>
+        <li role="option" data-suggestion-index="10" data-section-name="cats" id="autosuggest__results-item--10" class="autosuggest__results-item">church</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="11" data-section-name="zeu" id="autosuggest__results-item--11" class="autosuggest__results-item">
-          elephant
-        </li>
-        <li role="option" data-suggestion-index="12" data-section-name="zeu" id="autosuggest__results-item--12" class="autosuggest__results-item">
-          lion
-        </li>
+        <li role="option" data-suggestion-index="11" data-section-name="zeu" id="autosuggest__results-item--11" class="autosuggest__results-item">elephant</li>
+        <li role="option" data-suggestion-index="12" data-section-name="zeu" id="autosuggest__results-item--12" class="autosuggest__results-item">lion</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="13" data-section-name="Uhh" id="autosuggest__results-item--13" class="autosuggest__results-item">
-          something
-        </li>
-        <li role="option" data-suggestion-index="14" data-section-name="Uhh" id="autosuggest__results-item--14" class="autosuggest__results-item">
-          something2
-        </li>
+        <li role="option" data-suggestion-index="13" data-section-name="Uhh" id="autosuggest__results-item--13" class="autosuggest__results-item">something</li>
+        <li role="option" data-suggestion-index="14" data-section-name="Uhh" id="autosuggest__results-item--14" class="autosuggest__results-item">something2</li>
       </ul>
     </div>
   </div>
@@ -155,21 +130,11 @@ exports[`Autosuggest can display section header 1`] = `
     <div aria-labelledby="autosuggest" class="autosuggest__results">
       <ul role="listbox" aria-labelledby="autosuggest-Suggestions">
         <li id="autosuggest-Suggestions" class="autosuggest__results-before autosuggest__results-before--default">Suggestions</li>
-        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item">
-          clifford kits
-        </li>
-        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item">
-          friendly chemistry
-        </li>
-        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item">
-          phonics
-        </li>
-        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item">
-          life of fred
-        </li>
-        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item">
-          life of fred math
-        </li>
+        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item">clifford kits</li>
+        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item">friendly chemistry</li>
+        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item">phonics</li>
+        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item">life of fred</li>
+        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item">life of fred math</li>
       </ul>
     </div>
   </div>
@@ -182,59 +147,29 @@ exports[`Autosuggest can display ul and li classNames 1`] = `
   <div id="autosuggest-autosuggest__results" class="autosuggest__results-container">
     <div aria-labelledby="autosuggest" class="autosuggest__results">
       <ul role="listbox" class="hello-ul">
-        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item hello-li">
-          clifford kits
-        </li>
-        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item hello-li">
-          friendly chemistry
-        </li>
-        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item hello-li">
-          phonics
-        </li>
-        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item hello-li">
-          life of fred
-        </li>
-        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item hello-li">
-          life of fred math
-        </li>
+        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item hello-li">clifford kits</li>
+        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item hello-li">friendly chemistry</li>
+        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item hello-li">phonics</li>
+        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item hello-li">life of fred</li>
+        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item hello-li">life of fred math</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="5" data-section-name="dogs" id="autosuggest__results-item--5" class="autosuggest__results-item">
-          spike
-        </li>
-        <li role="option" data-suggestion-index="6" data-section-name="dogs" id="autosuggest__results-item--6" class="autosuggest__results-item">
-          bud
-        </li>
-        <li role="option" data-suggestion-index="7" data-section-name="dogs" id="autosuggest__results-item--7" class="autosuggest__results-item">
-          rover
-        </li>
+        <li role="option" data-suggestion-index="5" data-section-name="dogs" id="autosuggest__results-item--5" class="autosuggest__results-item">spike</li>
+        <li role="option" data-suggestion-index="6" data-section-name="dogs" id="autosuggest__results-item--6" class="autosuggest__results-item">bud</li>
+        <li role="option" data-suggestion-index="7" data-section-name="dogs" id="autosuggest__results-item--7" class="autosuggest__results-item">rover</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="8" data-section-name="cats" id="autosuggest__results-item--8" class="autosuggest__results-item">
-          sassy
-        </li>
-        <li role="option" data-suggestion-index="9" data-section-name="cats" id="autosuggest__results-item--9" class="autosuggest__results-item">
-          tuesday
-        </li>
-        <li role="option" data-suggestion-index="10" data-section-name="cats" id="autosuggest__results-item--10" class="autosuggest__results-item">
-          church
-        </li>
+        <li role="option" data-suggestion-index="8" data-section-name="cats" id="autosuggest__results-item--8" class="autosuggest__results-item">sassy</li>
+        <li role="option" data-suggestion-index="9" data-section-name="cats" id="autosuggest__results-item--9" class="autosuggest__results-item">tuesday</li>
+        <li role="option" data-suggestion-index="10" data-section-name="cats" id="autosuggest__results-item--10" class="autosuggest__results-item">church</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="11" data-section-name="zeu" id="autosuggest__results-item--11" class="autosuggest__results-item">
-          elephant
-        </li>
-        <li role="option" data-suggestion-index="12" data-section-name="zeu" id="autosuggest__results-item--12" class="autosuggest__results-item">
-          lion
-        </li>
+        <li role="option" data-suggestion-index="11" data-section-name="zeu" id="autosuggest__results-item--11" class="autosuggest__results-item">elephant</li>
+        <li role="option" data-suggestion-index="12" data-section-name="zeu" id="autosuggest__results-item--12" class="autosuggest__results-item">lion</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="13" data-section-name="Uhh" id="autosuggest__results-item--13" class="autosuggest__results-item">
-          something
-        </li>
-        <li role="option" data-suggestion-index="14" data-section-name="Uhh" id="autosuggest__results-item--14" class="autosuggest__results-item">
-          something2
-        </li>
+        <li role="option" data-suggestion-index="13" data-section-name="Uhh" id="autosuggest__results-item--13" class="autosuggest__results-item">something</li>
+        <li role="option" data-suggestion-index="14" data-section-name="Uhh" id="autosuggest__results-item--14" class="autosuggest__results-item">something2</li>
       </ul>
     </div>
   </div>
@@ -284,63 +219,33 @@ exports[`Autosuggest can render section slots 1`] = `
     <div aria-labelledby="autosuggest" class="autosuggest__results">
       <ul role="listbox" aria-labelledby="autosuggest-Suggestions">
         <li id="autosuggest-Suggestions" class="autosuggest__results-before autosuggest__results-before--default">Suggestions</li>
-        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item">
-          clifford kits
-        </li>
-        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item">
-          friendly chemistry
-        </li>
-        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item">
-          phonics
-        </li>
-        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item">
-          life of fred
-        </li>
-        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item">
-          life of fred math
-        </li>
+        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item">clifford kits</li>
+        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item">friendly chemistry</li>
+        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item">phonics</li>
+        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item">life of fred</li>
+        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item">life of fred math</li>
       </ul>
       <ul role="listbox">
         <li class="autosuggest__results-before autosuggest__results-before--dogs">The Dogs</li>
-        <li role="option" data-suggestion-index="5" data-section-name="dogs" id="autosuggest__results-item--5" class="autosuggest__results-item">
-          spike
-        </li>
-        <li role="option" data-suggestion-index="6" data-section-name="dogs" id="autosuggest__results-item--6" class="autosuggest__results-item">
-          bud
-        </li>
-        <li role="option" data-suggestion-index="7" data-section-name="dogs" id="autosuggest__results-item--7" class="autosuggest__results-item">
-          rover
-        </li>
+        <li role="option" data-suggestion-index="5" data-section-name="dogs" id="autosuggest__results-item--5" class="autosuggest__results-item">spike</li>
+        <li role="option" data-suggestion-index="6" data-section-name="dogs" id="autosuggest__results-item--6" class="autosuggest__results-item">bud</li>
+        <li role="option" data-suggestion-index="7" data-section-name="dogs" id="autosuggest__results-item--7" class="autosuggest__results-item">rover</li>
       </ul>
       <ul role="listbox">
         <li>Moar Cats is good</li>
-        <li role="option" data-suggestion-index="8" data-section-name="cats" id="autosuggest__results-item--8" class="autosuggest__results-item">
-          sassy
-        </li>
-        <li role="option" data-suggestion-index="9" data-section-name="cats" id="autosuggest__results-item--9" class="autosuggest__results-item">
-          tuesday
-        </li>
-        <li role="option" data-suggestion-index="10" data-section-name="cats" id="autosuggest__results-item--10" class="autosuggest__results-item">
-          church
-        </li>
+        <li role="option" data-suggestion-index="8" data-section-name="cats" id="autosuggest__results-item--8" class="autosuggest__results-item">sassy</li>
+        <li role="option" data-suggestion-index="9" data-section-name="cats" id="autosuggest__results-item--9" class="autosuggest__results-item">tuesday</li>
+        <li role="option" data-suggestion-index="10" data-section-name="cats" id="autosuggest__results-item--10" class="autosuggest__results-item">church</li>
       </ul>
       <ul role="listbox">
         <li>zoo animals?</li>
-        <li role="option" data-suggestion-index="11" data-section-name="zeu" id="autosuggest__results-item--11" class="autosuggest__results-item">
-          elephant
-        </li>
-        <li role="option" data-suggestion-index="12" data-section-name="zeu" id="autosuggest__results-item--12" class="autosuggest__results-item">
-          lion
-        </li>
+        <li role="option" data-suggestion-index="11" data-section-name="zeu" id="autosuggest__results-item--11" class="autosuggest__results-item">elephant</li>
+        <li role="option" data-suggestion-index="12" data-section-name="zeu" id="autosuggest__results-item--12" class="autosuggest__results-item">lion</li>
       </ul>
       <ul role="listbox" aria-labelledby="autosuggest-uhh">
         <li id="autosuggest-uhh" class="autosuggest__results-before autosuggest__results-before--Uhh">uhh</li>
-        <li role="option" data-suggestion-index="13" data-section-name="Uhh" id="autosuggest__results-item--13" class="autosuggest__results-item">
-          something
-        </li>
-        <li role="option" data-suggestion-index="14" data-section-name="Uhh" id="autosuggest__results-item--14" class="autosuggest__results-item">
-          something2
-        </li>
+        <li role="option" data-suggestion-index="13" data-section-name="Uhh" id="autosuggest__results-item--13" class="autosuggest__results-item">something</li>
+        <li role="option" data-suggestion-index="14" data-section-name="Uhh" id="autosuggest__results-item--14" class="autosuggest__results-item">something2</li>
       </ul>
     </div>
   </div>
@@ -353,66 +258,26 @@ exports[`Autosuggest can render simplest component with single onSelected 1`] = 
   <div id="autosuggest-autosuggest__results" class="autosuggest__results-container">
     <div aria-labelledby="autosuggest" class="autosuggest__results">
       <ul role="listbox">
-        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item">
-          clifford kits
-        </li>
-        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item">
-          friendly chemistry
-        </li>
-        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item">
-          phonics
-        </li>
-        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item">
-          life of fred
-        </li>
-        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item">
-          life of fred math
-        </li>
-        <li role="option" data-suggestion-index="5" data-section-name="default" id="autosuggest__results-item--5" class="autosuggest__results-item">
-          magic school bus
-        </li>
-        <li role="option" data-suggestion-index="6" data-section-name="default" id="autosuggest__results-item--6" class="autosuggest__results-item">
-          math mammoth light blue
-        </li>
-        <li role="option" data-suggestion-index="7" data-section-name="default" id="autosuggest__results-item--7" class="autosuggest__results-item">
-          handwriting
-        </li>
-        <li role="option" data-suggestion-index="8" data-section-name="default" id="autosuggest__results-item--8" class="autosuggest__results-item">
-          math
-        </li>
-        <li role="option" data-suggestion-index="9" data-section-name="default" id="autosuggest__results-item--9" class="autosuggest__results-item">
-          minecraft
-        </li>
-        <li role="option" data-suggestion-index="10" data-section-name="default" id="autosuggest__results-item--10" class="autosuggest__results-item">
-          free worksheets
-        </li>
-        <li role="option" data-suggestion-index="11" data-section-name="default" id="autosuggest__results-item--11" class="autosuggest__results-item">
-          4th grade
-        </li>
-        <li role="option" data-suggestion-index="12" data-section-name="default" id="autosuggest__results-item--12" class="autosuggest__results-item">
-          snap circuits
-        </li>
-        <li role="option" data-suggestion-index="13" data-section-name="default" id="autosuggest__results-item--13" class="autosuggest__results-item">
-          bath toys
-        </li>
-        <li role="option" data-suggestion-index="14" data-section-name="default" id="autosuggest__results-item--14" class="autosuggest__results-item">
-          channies
-        </li>
-        <li role="option" data-suggestion-index="15" data-section-name="default" id="autosuggest__results-item--15" class="autosuggest__results-item">
-          fred
-        </li>
-        <li role="option" data-suggestion-index="16" data-section-name="default" id="autosuggest__results-item--16" class="autosuggest__results-item">
-          lego
-        </li>
-        <li role="option" data-suggestion-index="17" data-section-name="default" id="autosuggest__results-item--17" class="autosuggest__results-item">
-          math life of fred
-        </li>
-        <li role="option" data-suggestion-index="18" data-section-name="default" id="autosuggest__results-item--18" class="autosuggest__results-item">
-          multiplication
-        </li>
-        <li role="option" data-suggestion-index="19" data-section-name="default" id="autosuggest__results-item--19" class="autosuggest__results-item">
-          thinking tree
-        </li>
+        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item">clifford kits</li>
+        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item">friendly chemistry</li>
+        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item">phonics</li>
+        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item">life of fred</li>
+        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item">life of fred math</li>
+        <li role="option" data-suggestion-index="5" data-section-name="default" id="autosuggest__results-item--5" class="autosuggest__results-item">magic school bus</li>
+        <li role="option" data-suggestion-index="6" data-section-name="default" id="autosuggest__results-item--6" class="autosuggest__results-item">math mammoth light blue</li>
+        <li role="option" data-suggestion-index="7" data-section-name="default" id="autosuggest__results-item--7" class="autosuggest__results-item">handwriting</li>
+        <li role="option" data-suggestion-index="8" data-section-name="default" id="autosuggest__results-item--8" class="autosuggest__results-item">math</li>
+        <li role="option" data-suggestion-index="9" data-section-name="default" id="autosuggest__results-item--9" class="autosuggest__results-item">minecraft</li>
+        <li role="option" data-suggestion-index="10" data-section-name="default" id="autosuggest__results-item--10" class="autosuggest__results-item">free worksheets</li>
+        <li role="option" data-suggestion-index="11" data-section-name="default" id="autosuggest__results-item--11" class="autosuggest__results-item">4th grade</li>
+        <li role="option" data-suggestion-index="12" data-section-name="default" id="autosuggest__results-item--12" class="autosuggest__results-item">snap circuits</li>
+        <li role="option" data-suggestion-index="13" data-section-name="default" id="autosuggest__results-item--13" class="autosuggest__results-item">bath toys</li>
+        <li role="option" data-suggestion-index="14" data-section-name="default" id="autosuggest__results-item--14" class="autosuggest__results-item">channies</li>
+        <li role="option" data-suggestion-index="15" data-section-name="default" id="autosuggest__results-item--15" class="autosuggest__results-item">fred</li>
+        <li role="option" data-suggestion-index="16" data-section-name="default" id="autosuggest__results-item--16" class="autosuggest__results-item">lego</li>
+        <li role="option" data-suggestion-index="17" data-section-name="default" id="autosuggest__results-item--17" class="autosuggest__results-item">math life of fred</li>
+        <li role="option" data-suggestion-index="18" data-section-name="default" id="autosuggest__results-item--18" class="autosuggest__results-item">multiplication</li>
+        <li role="option" data-suggestion-index="19" data-section-name="default" id="autosuggest__results-item--19" class="autosuggest__results-item">thinking tree</li>
       </ul>
     </div>
   </div>
@@ -454,21 +319,11 @@ exports[`Autosuggest can render suggestions 1`] = `
   <div id="autosuggest-autosuggest__results" class="autosuggest__results-container">
     <div aria-labelledby="autosuggest" class="autosuggest__results">
       <ul role="listbox">
-        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item--highlighted autosuggest__results-item">
-          clifford kits
-        </li>
-        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item">
-          friendly chemistry
-        </li>
-        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item">
-          phonics
-        </li>
-        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item">
-          life of fred
-        </li>
-        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item">
-          life of fred math
-        </li>
+        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item--highlighted autosuggest__results-item">clifford kits</li>
+        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item">friendly chemistry</li>
+        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item">phonics</li>
+        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item">life of fred</li>
+        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item">life of fred math</li>
       </ul>
     </div>
   </div>
@@ -499,59 +354,29 @@ exports[`Autosuggest highlights first option on keydown when previously closed 1
   <div id="autosuggest-autosuggest__results" class="autosuggest__results-container">
     <div aria-labelledby="autosuggest" class="autosuggest__results">
       <ul role="listbox">
-        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item--highlighted autosuggest__results-item">
-          clifford kits
-        </li>
-        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item">
-          friendly chemistry
-        </li>
-        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item">
-          phonics
-        </li>
-        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item">
-          life of fred
-        </li>
-        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item">
-          life of fred math
-        </li>
+        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item--highlighted autosuggest__results-item">clifford kits</li>
+        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item">friendly chemistry</li>
+        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item">phonics</li>
+        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item">life of fred</li>
+        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item">life of fred math</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="5" data-section-name="dogs" id="autosuggest__results-item--5" class="autosuggest__results-item">
-          spike
-        </li>
-        <li role="option" data-suggestion-index="6" data-section-name="dogs" id="autosuggest__results-item--6" class="autosuggest__results-item">
-          bud
-        </li>
-        <li role="option" data-suggestion-index="7" data-section-name="dogs" id="autosuggest__results-item--7" class="autosuggest__results-item">
-          rover
-        </li>
+        <li role="option" data-suggestion-index="5" data-section-name="dogs" id="autosuggest__results-item--5" class="autosuggest__results-item">spike</li>
+        <li role="option" data-suggestion-index="6" data-section-name="dogs" id="autosuggest__results-item--6" class="autosuggest__results-item">bud</li>
+        <li role="option" data-suggestion-index="7" data-section-name="dogs" id="autosuggest__results-item--7" class="autosuggest__results-item">rover</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="8" data-section-name="cats" id="autosuggest__results-item--8" class="autosuggest__results-item">
-          sassy
-        </li>
-        <li role="option" data-suggestion-index="9" data-section-name="cats" id="autosuggest__results-item--9" class="autosuggest__results-item">
-          tuesday
-        </li>
-        <li role="option" data-suggestion-index="10" data-section-name="cats" id="autosuggest__results-item--10" class="autosuggest__results-item">
-          church
-        </li>
+        <li role="option" data-suggestion-index="8" data-section-name="cats" id="autosuggest__results-item--8" class="autosuggest__results-item">sassy</li>
+        <li role="option" data-suggestion-index="9" data-section-name="cats" id="autosuggest__results-item--9" class="autosuggest__results-item">tuesday</li>
+        <li role="option" data-suggestion-index="10" data-section-name="cats" id="autosuggest__results-item--10" class="autosuggest__results-item">church</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="11" data-section-name="zeu" id="autosuggest__results-item--11" class="autosuggest__results-item">
-          elephant
-        </li>
-        <li role="option" data-suggestion-index="12" data-section-name="zeu" id="autosuggest__results-item--12" class="autosuggest__results-item">
-          lion
-        </li>
+        <li role="option" data-suggestion-index="11" data-section-name="zeu" id="autosuggest__results-item--11" class="autosuggest__results-item">elephant</li>
+        <li role="option" data-suggestion-index="12" data-section-name="zeu" id="autosuggest__results-item--12" class="autosuggest__results-item">lion</li>
       </ul>
       <ul role="listbox">
-        <li role="option" data-suggestion-index="13" data-section-name="Uhh" id="autosuggest__results-item--13" class="autosuggest__results-item">
-          something
-        </li>
-        <li role="option" data-suggestion-index="14" data-section-name="Uhh" id="autosuggest__results-item--14" class="autosuggest__results-item">
-          something2
-        </li>
+        <li role="option" data-suggestion-index="13" data-section-name="Uhh" id="autosuggest__results-item--13" class="autosuggest__results-item">something</li>
+        <li role="option" data-suggestion-index="14" data-section-name="Uhh" id="autosuggest__results-item--14" class="autosuggest__results-item">something2</li>
       </ul>
     </div>
   </div>
@@ -565,21 +390,11 @@ exports[`Autosuggest is aria complete 1`] = `
     <div aria-labelledby="autosuggest" class="autosuggest__results">
       <ul role="listbox" aria-labelledby="autosuggest-Suggestions">
         <li id="autosuggest-Suggestions" class="autosuggest__results-before autosuggest__results-before--default">Suggestions</li>
-        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item">
-          clifford kits
-        </li>
-        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item">
-          friendly chemistry
-        </li>
-        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item--highlighted autosuggest__results-item">
-          phonics
-        </li>
-        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item">
-          life of fred
-        </li>
-        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item">
-          life of fred math
-        </li>
+        <li role="option" data-suggestion-index="0" data-section-name="default" id="autosuggest__results-item--0" class="autosuggest__results-item">clifford kits</li>
+        <li role="option" data-suggestion-index="1" data-section-name="default" id="autosuggest__results-item--1" class="autosuggest__results-item">friendly chemistry</li>
+        <li role="option" data-suggestion-index="2" data-section-name="default" id="autosuggest__results-item--2" class="autosuggest__results-item--highlighted autosuggest__results-item">phonics</li>
+        <li role="option" data-suggestion-index="3" data-section-name="default" id="autosuggest__results-item--3" class="autosuggest__results-item">life of fred</li>
+        <li role="option" data-suggestion-index="4" data-section-name="default" id="autosuggest__results-item--4" class="autosuggest__results-item">life of fred math</li>
       </ul>
     </div>
   </div>

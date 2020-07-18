@@ -28,23 +28,23 @@ const DefaultSection = {
     }
   },
   methods: {
-    getItemIndex (i) {
+    getItemIndex(i) {
       return this.section.start_index + i;
     },
-    getItemByIndex (i) {
+    getItemByIndex(i) {
       return this.section.data[i];
     },
-    onMouseEnter (event) {
+    onMouseEnter(event) {
       const idx = parseInt(event.currentTarget.getAttribute("data-suggestion-index"))
       this._currentIndex = idx
       this.$emit('updateCurrentIndex', idx)
     },
-    onMouseLeave () {
+    onMouseLeave() {
       this.$emit('updateCurrentIndex', null)
     }
   },
   // eslint-disable-next-line no-unused-vars
-  render (h) {
+  render(h) {
     const componentAttrPrefix = this.componentAttrPrefix
     const slots = {
       beforeSection: this.$scopedSlots[`before-section-${this.section.name}`],
@@ -70,7 +70,7 @@ const DefaultSection = {
           const item = this.normalizeItemFunction(this.section.name, this.section.type, this.section.label, this.section.liClass, val)
           const itemIndex = this.getItemIndex(key)
           const isHighlighted = this._currentIndex === itemIndex || parseInt(this.currentIndex) === itemIndex
-
+          const highlightClass = this.section.highlightClass;
           return h(
             "li",
             {
@@ -83,7 +83,8 @@ const DefaultSection = {
               },
               key: itemIndex,
               class: {
-                [`${componentAttrPrefix}__results-item--highlighted`]: isHighlighted,
+                [highlightClass]: isHighlighted,
+                //[`${componentAttrPrefix}__results-item--highlighted`]: isHighlighted,
                 [`${componentAttrPrefix}__results-item`]: true,
                 ...item.liClass
               },
