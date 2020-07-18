@@ -1,10 +1,11 @@
 <template>
-  <div class="demo" v-if="theme">
+  <main class="demo" v-if="theme">
     <button @click="toggleTheme(oppositeTheme)">{{ oppositeTheme === 'light' ? '🌞 Go Light' : 'Go Dark 🌛' }}</button>
     <h1>🔍 Vue-autosuggest</h1>
     <div>
       <vue-autosuggest
         v-model="searchText"
+        componentAttrIdAutosuggest="demo-autosuggest"
         @input="(...args) => logEvent('input', args)"
         @highlighted="(...args) => logEvent('highlighted', args)"
         @selected="onSelected"
@@ -15,6 +16,9 @@
         :should-render-suggestions="(size, loading) => size >= 0 && !loading && searchText !== ''"
         ref="autocomplete"
       >
+        <template slot="before-input">
+          <label :for="inputProps.id">Select a LOTR Character</label>
+        </template>
         <template slot-scope="{suggestion, index, cs}">
           <div>{{ suggestion && suggestion.item.Name }}</div>
         </template>
@@ -52,7 +56,7 @@
         <span class="evt-name">{{ evt.name }}</span>: <span class="evt-val">{{ evt.value }}</span>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -201,6 +205,11 @@ h1 {
 * {
   transition: height 0.2s linear;
   transition: border-color linear 0.1s;
+}
+
+#demo-autosuggest label {
+  margin-bottom: 1rem;
+  display:block;
 }
 
 #autosuggest__input {

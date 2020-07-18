@@ -1,24 +1,27 @@
 <template>
   <div :id="componentAttrIdAutosuggest">
-    <slot name="before-input" />
-    <input
+    <slot name="before-input" /><div
+      role="combobox"
+      :aria-expanded="isOpen ? 'true' : 'false'"
+      aria-haspopup="listbox"
+      :aria-owns="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`"
+    ><input
       :type="internal_inputProps.type"
       :value="internalValue"
       :autocomplete="internal_inputProps.autocomplete"
-      role="combobox"
       :class="[isOpen ? `${componentAttrPrefix}__input--open` : '', internal_inputProps['class']]"
       v-bind="internal_inputProps"
       aria-autocomplete="list"
-      :aria-owns="`${componentAttrPrefix}__results`"
       :aria-activedescendant="isOpen && currentIndex !== null ? `${componentAttrPrefix}__results-item--${currentIndex}` : ''"
-      :aria-haspopup="isOpen ? 'true' : 'false'"
-      :aria-expanded="isOpen ? 'true' : 'false'"
+      :aria-controls="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`"
       @input="inputHandler"
       @keydown="handleKeyStroke"
       v-on="listeners"
+    ></div><slot name="after-input" />
+    <div
+      :id="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`"
+      :class="_componentAttrClassAutosuggestResultsContainer"
     >
-    <slot name="after-input" />
-    <div :class="_componentAttrClassAutosuggestResultsContainer">
       <div
         v-if="isOpen"
         :class="_componentAttrClassAutosuggestResults"
@@ -35,6 +38,7 @@
           :render-suggestion="renderSuggestion"
           :section="cs"
           :component-attr-prefix="componentAttrPrefix"
+          :component-attr-id-autosuggest="componentAttrIdAutosuggest"
           @updateCurrentIndex="updateCurrentIndex"
         >
           <template
@@ -48,18 +52,18 @@
             />
           </template>
           <template slot-scope="{ suggestion, _key }">
-            <slot 
-              :suggestion="suggestion" 
+            <slot
+              :suggestion="suggestion"
               :index="_key"
             >{{ suggestion.item }}</slot>
           </template>
-          <template 
-            :slot="`after-section-${cs.name || cs.label}`" 
+          <template
+            :slot="`after-section-${cs.name || cs.label}`"
             slot-scope="{section}"
           >
-            <slot 
-              :name="`after-section-${cs.name || cs.label}`" 
-              :section="section" 
+            <slot
+              :name="`after-section-${cs.name || cs.label}`"
+              :section="section"
             />
           </template>
           <template 
@@ -103,6 +107,8 @@
 
 import DefaultSection from "./parts/DefaultSection.js";
 import { addClass, removeClass } from "./utils";
+
+const INDEX_IS_FOCUSED_ON_INPUT = -1
 
 const defaultSectionConfig = {
   name: "default",
@@ -228,7 +234,7 @@ export default {
       return {
         ...this.defaultInputProps,
         ...this.inputProps
-      };
+      }
     },
     listeners() {
       return {
@@ -478,15 +484,15 @@ export default {
             }
             // Determine direction of arrow up/down and determine new currentIndex
             const direction = keyCode === 40 ? 1 : -1;
-            const newIndex = (parseInt(this.currentIndex) || 0) + (wasClosed ? 0 : direction);
+            const newIndex = Math.max((parseInt(this.currentIndex) || 0) + (wasClosed ? 0 : direction), INDEX_IS_FOCUSED_ON_INPUT);
 
             this.setCurrentIndex(newIndex, this.totalResults);
             this.didSelectFromOptions = true;
             if (this.totalResults > 0 && this.currentIndex >= 0) {
               this.setChangeItem(this.getItemByIndex(this.currentIndex));
               this.didSelectFromOptions = true;
-            } else if (this.currentIndex == -1) {
-              this.setChangeItem(null);
+            } else if (this.currentIndex === INDEX_IS_FOCUSED_ON_INPUT) {
+              this.setChangeItem(null)
               this.internalValue = this.searchInputOriginal;
               e.preventDefault();
             }
@@ -615,9 +621,9 @@ export default {
     clickedOnScrollbar(e, mouseX) {
       const results = this.$el.querySelector(`.${this._componentAttrClassAutosuggestResults}`);
 
-      const mouseIsInsideScrollbar =
-        results && results.clientWidth <= mouseX + 17 && mouseX + 17 <= results.clientWidth + 34;
-      return (e.target.tagName === "DIV" && results && mouseIsInsideScrollbar) || false;
+      const mouseIsInsideScrollbar = results && results.clientWidth <= (mouseX + 17) &&
+        mouseX + 17 <= results.clientWidth + 34
+      return e.target.tagName === 'DIV' && results && mouseIsInsideScrollbar || false;
     },
     /**
      * Capture mousedown position so we can use it to detect if the scrollbar
