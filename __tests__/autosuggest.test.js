@@ -716,8 +716,8 @@ describe("Autosuggest", () => {
     });
 
     wrapper.destroy()
-    expect(AEL).toHaveBeenCalledTimes(2)
-    expect(REL).toHaveBeenCalledTimes(2)
+    expect(AEL).toHaveBeenCalledTimes(4)
+    expect(REL).toHaveBeenCalledTimes(4)
   });
 
   it("can modify input type attribute", async () => {
