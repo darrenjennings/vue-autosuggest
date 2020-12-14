@@ -88,6 +88,7 @@ const DefaultSection = {
                 ...item.liClass
               },
               on: {
+                touchstart: this.onMouseEnter,
                 mouseenter: this.onMouseEnter,
                 mouseleave: this.onMouseLeave
               }

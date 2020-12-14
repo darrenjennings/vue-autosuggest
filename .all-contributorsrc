@@ -72,6 +72,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "tmazeika",
+      "name": "TJ Mazeika",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/5958957?v=4",
+      "profile": "https://mazeika.me",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
