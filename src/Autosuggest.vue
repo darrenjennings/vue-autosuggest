@@ -376,10 +376,12 @@ export default {
     this.loading = true;
   },
   mounted() {
+    document.addEventListener("touchend", this.onDocumentMouseUp);
     document.addEventListener("mouseup", this.onDocumentMouseUp);
     document.addEventListener("mousedown", this.onDocumentMouseDown);
   },
   beforeDestroy() {
+    document.removeEventListener("touchend", this.onDocumentMouseUp);
     document.removeEventListener("mouseup", this.onDocumentMouseUp)
     document.removeEventListener("mousedown", this.onDocumentMouseDown)
   },
