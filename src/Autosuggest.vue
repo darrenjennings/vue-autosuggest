@@ -377,13 +377,11 @@ export default {
   },
   mounted() {
     document.addEventListener("touchend", this.onDocumentMouseUp);
-    document.addEventListener("touchstart", this.onDocumentMouseDown);
     document.addEventListener("mouseup", this.onDocumentMouseUp);
     document.addEventListener("mousedown", this.onDocumentMouseDown);
   },
   beforeDestroy() {
     document.removeEventListener("touchend", this.onDocumentMouseUp);
-    document.removeEventListener("touchstart", this.onDocumentMouseDown);
     document.removeEventListener("mouseup", this.onDocumentMouseUp)
     document.removeEventListener("mousedown", this.onDocumentMouseDown)
   },

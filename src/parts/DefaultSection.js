@@ -34,6 +34,10 @@ const DefaultSection = {
     getItemByIndex (i) {
       return this.section.data[i];
     },
+    onTouchStart (event) {
+      event.preventDefault()
+      this.onMouseEnter(event)
+    },
     onMouseEnter (event) {
       const idx = parseInt(event.currentTarget.getAttribute("data-suggestion-index"))
       this._currentIndex = idx
@@ -88,7 +92,7 @@ const DefaultSection = {
                 ...item.liClass
               },
               on: {
-                touchstart: this.onMouseEnter,
+                touchstart: this.onTouchStart,
                 mouseenter: this.onMouseEnter,
                 mouseleave: this.onMouseLeave
               }
