@@ -42,16 +42,15 @@
           @updateCurrentIndex="updateCurrentIndex"
         >
           <template
-            :slot="`before-section-${cs.name || cs.label}`"
-            slot-scope="{section, className}"
+            v-slot:[beforeSlot(cs)]="{section, className}"
           >
             <slot
-              :name="`before-section-${cs.name || cs.label}`"
+              :name="beforeSlot(cs)"
               :section="section"
               :className="className"
             />
           </template>
-          <template slot-scope="{ suggestion, _key }">
+          <template v-slot="{ suggestion, _key }">
             <slot
               :suggestion="suggestion"
               :index="_key"
@@ -59,19 +58,15 @@
               {{ suggestion.item }}
             </slot>
           </template>
-          <template
-            :slot="`after-section-${cs.name || cs.label}`"
-            slot-scope="{section}"
+          <template 
+            v-slot:[afterSlot(cs)]="{section}"
           >
             <slot
               :name="`after-section-${cs.name || cs.label}`"
               :section="section"
             />
           </template>
-          <template
-            slot="after-section"
-            slot-scope="{section}"
-          >
+          <template v-slot:after-section="{section}">
             <slot
               name="after-section"
               :section="section"
@@ -124,9 +119,10 @@ export default {
     /* eslint-disable-next-line vue/no-unused-components */
     DefaultSection
   },
+  inheritAttrs: false,
   props: {
     /** Allows for v-model support */
-    value: {
+    modelValue: {
       type: String,
       default: null
     },
@@ -235,8 +231,9 @@ export default {
       }
     },
     listeners() {
+      // console.log({...this.$attrs})
       return {
-        ...this.$listeners,
+        // ...this.$attrs,
         input: e => {
           // Don't do anything native here, since we have inputHandler
           return
@@ -247,7 +244,7 @@ export default {
         click: () => {
           /* eslint-disable-next-line vue/no-side-effects-in-computed-properties */
           this.loading = false;
-          this.$listeners.click && this.$listeners.click(this.currentItem);
+          this.$attrs.click && this.$attrs.click(this.currentItem);
           this.$nextTick(() => {
             this.ensureItemVisible(this.currentItem, this.currentIndex);
           })
@@ -268,7 +265,7 @@ export default {
             );
           } else if (this.sectionConfigs["default"].onSelected) {
             this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
-          } else if (this.$listeners.selected) {
+          } else if (this.$attrs.selected) {
             this.$emit('selected', this.currentItem, this.currentIndex);
           }
           this.setChangeItem(null)
@@ -379,18 +376,24 @@ export default {
     document.addEventListener("mouseup", this.onDocumentMouseUp);
     document.addEventListener("mousedown", this.onDocumentMouseDown);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     document.removeEventListener("mouseup", this.onDocumentMouseUp)
     document.removeEventListener("mousedown", this.onDocumentMouseDown)
   },
   methods: {
+    afterSlot(cs) {
+      return `after-section-${cs.name || cs.label}`
+    },
+    beforeSlot(cs) {
+      return `before-section-${cs.name || cs.label}`
+    },
     /**
      * handler for @input <input /> events to support v-model behavior.
      * @param {InputEvent} e
      */
     inputHandler(e) {
       const newValue = e.target.value
-      this.$emit('input', newValue)
+      this.$emit('update:modelValue', newValue)
       this.internalValue = newValue
       if (!this.didSelectFromOptions) {
         this.searchInputOriginal = newValue;
@@ -418,7 +421,7 @@ export default {
         ) {
           let trueIndex = index - this.computedSections[i].start_index;
           const sectionName = this.computedSections[i].name
-          let childSection = this.$refs[this.getSectionRef(`${sectionName}${i}`)][0];
+          let childSection = this.$refs[this.getSectionRef(`${sectionName}${i}`)];
           if (childSection) {
             obj = this.normalizeItem(
               this.computedSections[i].name,

@@ -1,3 +1,5 @@
+import { h } from 'vue'
+
 const DefaultSection = {
   name: "default-section",
   props: {
@@ -44,12 +46,12 @@ const DefaultSection = {
     }
   },
   // eslint-disable-next-line no-unused-vars
-  render (h) {
+  render () {
     const componentAttrPrefix = this.componentAttrPrefix
     const slots = {
-      beforeSection: this.$scopedSlots[`before-section-${this.section.name}`],
-      afterSectionDefault: this.$scopedSlots[`after-section`],
-      afterSectionNamed: this.$scopedSlots[`after-section-${this.section.name}`]
+      beforeSection: this.$slots[`before-section-${this.section.name}`],
+      afterSectionDefault: this.$slots[`after-section`],
+      afterSectionNamed: this.$slots[`after-section-${this.section.name}`]
     }
 
     const beforeClassName = `${componentAttrPrefix}__results-before ${componentAttrPrefix}__results-before--${this.section.name}`
@@ -61,11 +63,15 @@ const DefaultSection = {
     return h(
       "ul",
       {
-        attrs: { role: "listbox", "aria-labelledby": this.section.label && `${this.componentAttrIdAutosuggest}-${this.section.label}` },
-        class: this.section.ulClass
+        role: "listbox",
+        class: this.section.ulClass,
+        "aria-labelledby": this.section.label && `${this.componentAttrIdAutosuggest}-${this.section.label}`
       },
       [
-        before[0] && before[0] || this.section.label && <li class={beforeClassName} id={`${this.componentAttrIdAutosuggest}-${this.section.label}`}>{this.section.label}</li> || '',
+        before[0] && before[0] || this.section.label && h('li', {
+          class: beforeClassName,
+          id: `${this.componentAttrIdAutosuggest}-${this.section.label}`
+        }, [this.section.label]) || '',
         this.list.map((val, key) => {
           const item = this.normalizeItemFunction(this.section.name, this.section.type, this.section.label, this.section.liClass, val)
           const itemIndex = this.getItemIndex(key)
@@ -74,26 +80,22 @@ const DefaultSection = {
           return h(
             "li",
             {
-              attrs: {
-                role: "option",
-                "data-suggestion-index": itemIndex,
-                "data-section-name": item.name,
-                id: `${componentAttrPrefix}__results-item--${itemIndex}`,
-                ...item.liAttributes
-              },
+              role: "option",
+              "data-suggestion-index": itemIndex,
+              "data-section-name": item.name,
+              id: `${componentAttrPrefix}__results-item--${itemIndex}`,
+              ...item.liAttributes,
               key: itemIndex,
               class: {
                 [`${componentAttrPrefix}__results-item--highlighted`]: isHighlighted,
                 [`${componentAttrPrefix}__results-item`]: true,
                 ...item.liClass
               },
-              on: {
-                mouseenter: this.onMouseEnter,
-                mouseleave: this.onMouseLeave
-              }
+              onMouseenter: this.onMouseEnter,
+              onMouseleave: this.onMouseLeave
             },
             [this.renderSuggestion ? this.renderSuggestion(item)
-              : this.$scopedSlots.default && this.$scopedSlots.default({
+              : this.$slots.default && this.$slots.default({
                 _key: key,
                 suggestion: item
               })]
