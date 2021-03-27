@@ -143,11 +143,11 @@ export default {
     },
     highlightFirstSuggestion: {
       type: Boolean,
-      default: true
+      default: false
     },
     persistHighlighted: {
       type: Boolean,
-      default: true
+      default: false
     },
     suggestions: {
       type: Array,
