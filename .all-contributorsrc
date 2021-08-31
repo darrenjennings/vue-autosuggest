@@ -72,6 +72,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "gabrielcramer",
+      "name": "Gabriel Cramer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11447859?v=4",
+      "profile": "https://github.com/gabrielcramer",
+      "contributions": [
+        "doc"
+      ]
     }
   ]
 }
