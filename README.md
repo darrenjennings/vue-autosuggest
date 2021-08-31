@@ -29,8 +29,11 @@
 * [Features](#features)
 * [Installation](#installation)
 * [Usage](#usage)
+* [Slots](#slots)
 * [Props](#props)
+* [Events](#events)
 * [Inspiration](#inspiration)
+* [Browser support](#browser-support)
 * [Contributors](#contributors)
 * [LICENSE](#license)
 
