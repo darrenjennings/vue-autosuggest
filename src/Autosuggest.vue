@@ -269,7 +269,8 @@ export default {
             );
           } else if (this.sectionConfigs["default"].onSelected) {
             this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
-          } else if (this.$attrs.selected) {
+          } else if (this.onSelected) {
+            // NOTE `this.onSelected` and `this.$emit('selected', ...)` are equivalent in vue3
             this.$emit('selected', this.currentItem, this.currentIndex);
           }
           this.setChangeItem(null)
