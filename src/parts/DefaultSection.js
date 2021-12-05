@@ -1,6 +1,6 @@
-import { h } from 'vue'
+import { h, defineComponent, Fragment  } from 'vue'
 
-const DefaultSection = {
+const DefaultSection = defineComponent({
   name: "default-section",
   props: {
     /** @type ResultSection */
@@ -58,7 +58,9 @@ const DefaultSection = {
     const before = slots.beforeSection && slots.beforeSection({
       section: this.section,
       className: beforeClassName
-    }) || []
+    })
+    // Skip fragments without children, this can be for example `<slot>` or empty `<template>`
+    .filter(x=>x.type !== Fragment && x.children.length === 0) || []
 
     return h(
       "ul",
@@ -112,6 +114,6 @@ const DefaultSection = {
       ]
     );
   }
-};
+});
 
 export default DefaultSection;

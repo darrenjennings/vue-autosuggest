@@ -1,5 +1,5 @@
 <template>
-  <div :id="componentAttrIdAutosuggest">
+  <div :id="componentAttrIdAutosuggest" :class="$props.class" :style="$props.style">
     <slot name="before-input" /><div
       role="combobox"
       :aria-expanded="isOpen ? 'true' : 'false'"
@@ -16,7 +16,6 @@
       :aria-controls="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`"
       @input="inputHandler"
       @keydown="handleKeyStroke"
-      v-on="listeners"
     ></div><slot name="after-input" />
     <div
       :id="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`"
@@ -200,7 +199,11 @@ export default {
       type: String,
       required: false,
       default: "autosuggest"
-    }
+    },
+
+    // do not fallthrough, class and style
+    class: null,
+    style: null
   },
   data() {
     return {
@@ -227,21 +230,22 @@ export default {
     internal_inputProps() {
       return {
         ...this.defaultInputProps,
-        ...this.inputProps
+        ...this.inputProps,
+        ...this.listeners
       }
     },
     listeners() {
       // console.log({...this.$attrs})
       return {
         // ...this.$attrs,
-        input: e => {
+        onInput: e => {
           // Don't do anything native here, since we have inputHandler
           return
         },
         /**
          * Wrap native click handler to allow for added behavior
          */
-        click: () => {
+        onClick: () => {
           /* eslint-disable-next-line vue/no-side-effects-in-computed-properties */
           this.loading = false;
           this.$attrs.click && this.$attrs.click(this.currentItem);
@@ -249,7 +253,7 @@ export default {
             this.ensureItemVisible(this.currentItem, this.currentIndex);
           })
         },
-        selected: () => {
+        onSelected: () => {
           /**
            * Determine which onSelected to fire. This can be either from inside
            * a section's object, from the `@selected` event
@@ -499,7 +503,7 @@ export default {
             }
 
             this.loading = true;
-            this.listeners.selected(this.didSelectFromOptions);
+            this.listeners.onSelected(this.didSelectFromOptions);
             break;
           case 27: // Escape
             /**
@@ -644,7 +648,7 @@ export default {
       this.loading = true;
       this.didSelectFromOptions = true;
       this.setChangeItem(this.getItemByIndex(this.currentIndex), true);
-      this.listeners.selected(true);
+      this.listeners.onSelected(true);
     },
     /**
      * Sets the current index of the highlighted object, useful for aria
