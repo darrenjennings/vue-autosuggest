@@ -1,0 +1,22 @@
+name: "Test"
+
+on: push
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node 8
+        uses: actions/setup-node@v2
+        with:
+          node-version: 8
+          cache: "yarn"
+      - name: Install dependencies
+        run: yarn install
+      - name: Run Tests
+        run: yarn test-compat
+      - name: Run Coverage
+        run: yarn test:coverage
+      - name: Run Build
+        run: yarn build:umd
