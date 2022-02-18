@@ -29,8 +29,8 @@ as you want/need to. Nobody can ask any more of you than that.
 As a maintainer, you're fine to make your branches on the main repo or on your own fork. Either
 way is fine.
 
-When we receive a pull request, a travis build is kicked off automatically (see the `.travis.yml`
-for what runs in the travis build). We avoid merging anything that breaks the travis build.
+When we receive a pull request, an Actions build is kicked off automatically (see `.github/workflows/test.yml`
+for what runs in the Actions build). We avoid merging anything that breaks the Actions build.
 
 Please review PRs and focus on the code rather than the individual. You never know when this is
 someone's first ever PR and we want their experience to be as positive as possible, so be
