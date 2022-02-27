@@ -91,7 +91,7 @@
     "codecov": "3.0.0",
     "codecov.io": "0.1.6",
     "commitizen": "2.9.6",
-    "css-loader": "0.28.7",
+    "css-loader": "^5",
     "cz-conventional-changelog": "2.0.0",
     "diffable-html": "3.0.0",
     "eslint": "^5.6.0",
