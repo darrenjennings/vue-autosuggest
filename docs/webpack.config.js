@@ -1,5 +1,6 @@
 const path = require("path");
 const eslintFriendlyFormatter = require("eslint-friendly-formatter");
+const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
     context: __dirname,
@@ -28,6 +29,10 @@ module.exports = {
                 test: /\.vue$/,
                 loaders: ["vue-loader"],
                 exclude: /node_modules/
+            },
+            {
+                test: /\.css$/,
+                loaders: ["vue-style-loader", "css-loader"]
             }
         ]
     },
@@ -50,5 +55,9 @@ module.exports = {
     devServer: {
         contentBase: __dirname,
         port: 2000
-    }
+    },
+
+    plugins : [
+        new VueLoaderPlugin()
+    ]
 };
