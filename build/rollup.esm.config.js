@@ -1,8 +1,8 @@
 import vue from "rollup-plugin-vue";
-import buble from "rollup-plugin-buble";
+import buble from "@rollup/plugin-buble";
 import filesize from "rollup-plugin-filesize";
-import uglify from "rollup-plugin-uglify";
-import json from "rollup-plugin-json";
+import { uglify } from "rollup-plugin-uglify";
+import json from "@rollup/plugin-json";
 
 export default {
   input: "src/vue-autosuggest.js",
