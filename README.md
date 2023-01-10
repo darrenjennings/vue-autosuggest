@@ -415,7 +415,7 @@ This function will tell vue-autosuggest if it should display the suggestions pop
  */
 shouldRenderSuggestions (size, loading) {
   // This is the default behavior
-  return size >= 0 && !loading
+  return size > 0 && !loading
 }
 ```
 
